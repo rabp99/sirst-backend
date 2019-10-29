@@ -104,9 +104,20 @@ Router::scope('/', function (RouteBuilder $routes) {
  */
 
 Router::scope('/', function ($routes) {
-    $routes->extensions(['json']);
+    $routes->setExtensions(['json']);
     
-    $routes->resources('Antenas');
+    $routes->resources('Antenas', [
+        'map' => [
+            'getConntected/:id' => [
+                'action' => 'getConntected',
+                'method' => 'GET'
+            ],
+            'getByEnlace/:enlace_id' => [
+                'action' => 'getByEnlace',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
     $routes->resources('Centrales');
     $routes->resources('Cruces');
     $routes->resources('Enlaces');
@@ -145,5 +156,3 @@ Router::scope('/', function ($routes) {
         ]
     ]);
 });
-
-Plugin::routes();
