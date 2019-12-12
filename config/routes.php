@@ -119,7 +119,22 @@ Router::scope('/', function ($routes) {
         ]
     ]);
     $routes->resources('Centrales');
-    $routes->resources('Cruces');
+    $routes->resources('Cruces', [
+        'map' => [
+            'getByCentral/:central_id' => [
+                'action' => 'getByCentral',
+                'method' => 'GET'
+            ],
+            'getByRegulador/:regulador_id' => [
+                'action' => 'getByRegulador',
+                'method' => 'GET'
+            ],
+            'getByPunto/:punto_id' => [
+                'action' => 'getByPunto',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
     $routes->resources('Enlaces');
     $routes->resources('Marcas');
     $routes->resources('Modelos');
