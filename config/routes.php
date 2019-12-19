@@ -135,9 +135,52 @@ Router::scope('/', function ($routes) {
             ]
         ]
     ]);
-    $routes->resources('Enlaces');
+    $routes->resources('Enlaces', [
+        'map' => [
+            'getPuntos/:id' => [
+                'action' => 'getPuntos',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
     $routes->resources('Marcas');
     $routes->resources('Modelos');
+    $routes->resources('Puntos', [
+        'map' => [
+            'getAssociated/:id' => [
+                'action' => 'getAssociated',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
+    $routes->resources('Reguladores', [
+        'map' => [
+            'getByCentral/:id_central' => [
+                'action' => 'getByCentral',
+                'method' => 'GET'
+            ],
+            'getByPunto/:id_punto' => [
+                'action' => 'getByPunto',
+                'method' => 'GET'
+            ],
+            'getByMarca/:id_marca' => [
+                'action' => 'getByMarca',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
+    $routes->resources('TSwitches', [
+        'map' => [
+            'getByMarca/:id_marca' => [
+                'action' => 'getByMarca',
+                'method' => 'GET'
+            ],
+            'getByPunto/:id_punto' => [
+                'action' => 'getByPunto',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
     $routes->resources('Infos', [
         'map' => [
             'getMany' => [
