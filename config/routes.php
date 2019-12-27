@@ -118,7 +118,14 @@ Router::scope('/', function ($routes) {
             ]
         ]
     ]);
-    $routes->resources('Centrales');
+    $routes->resources('Centrales', [
+        'map' => [
+            'getList' => [
+                'action' => 'getList',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
     $routes->resources('Cruces', [
         'map' => [
             'getByCentral/:central_id' => [
