@@ -35,22 +35,22 @@ class AntenasTable extends Table
         parent::initialize($config);
 
         $this->setTable('antenas');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey(['id', 'punto_id', 'enlace_id', 'modelo_id']);
+        $this->setDisplayField('device_name');
+        $this->setPrimaryKey('id');
 
-        $this->belongsTo('Puntos', [
-            'foreignKey' => 'punto_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Enlaces', [
-            'foreignKey' => 'enlace_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Modelos', [
-            'foreignKey' => 'modelo_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Puertos', [
+        $this->belongsTo("Puntos")
+            ->setForeignKey("punto_id")
+            ->setJoinType("INNER");
+        
+        $this->belongsTo("Enlaces")
+            ->setForeignKey("enlace_id")
+            ->setJoinType("INNER");
+
+        $this->belongsTo("Modelos")
+            ->setForeignKey("modelo_id")
+            ->setJoinType("INNER");
+        
+        $this->hasOne('Puertos', [
             'foreignKey' => 'puerto_id',
             'joinType' => 'INNER'
         ]);
@@ -99,7 +99,6 @@ class AntenasTable extends Table
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['enlace_id'], 'Enlaces'));
         $rules->add($rules->existsIn(['modelo_id'], 'Modelos'));
-        $rules->add($rules->existsIn(['puerto_id'], 'Puertos'));
 
         return $rules;
     }

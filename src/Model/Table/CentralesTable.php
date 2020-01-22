@@ -30,8 +30,13 @@ class CentralesTable extends Table
         parent::initialize($config);
 
         $this->setTable('centrales');
-        $this->setDisplayField('id');
+        $this->setDisplayField('descripcion');
         $this->setPrimaryKey('id');
+        
+        
+        $this->hasMany("Cruces")
+            ->setForeignKey("central_id")
+            ->setJoinType("INNER");
     }
 
     /**
