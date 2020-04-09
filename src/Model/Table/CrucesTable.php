@@ -33,17 +33,16 @@ class CrucesTable extends Table
         parent::initialize($config);
 
         $this->setTable('cruces');
-        $this->setDisplayField('id');
+        $this->setDisplayField('descripcion');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Puntos', [
-            'foreignKey' => 'punto_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Reguladores', [
-            'foreignKey' => 'regulador_id',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('Puntos')
+            ->setForeignKey("punto_id")
+            ->setJoinType("INNER");
+        
+        $this->belongsTo('Reguladores')
+            ->setForeignKey("regulador_id")
+            ->setJoinType("INNER");
     }
 
     /**
