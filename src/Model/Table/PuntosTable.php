@@ -35,21 +35,20 @@ class PuntosTable extends Table
         parent::initialize($config);
 
         $this->setTable('puntos');
-        $this->setDisplayField('id');
+        $this->setDisplayField('descripcion');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Antenas', [
-            'foreignKey' => 'punto_id'
-        ]);
-        $this->hasMany('Cruces', [
-            'foreignKey' => 'punto_id'
-        ]);
-        $this->hasMany('Reguladores', [
-            'foreignKey' => 'punto_id'
-        ]);
-        $this->hasMany('TSwitches', [
-            'foreignKey' => 'punto_id'
-        ]);
+        $this->hasMany('Antenas')
+            ->setForeignKey('punto_id');
+        
+        $this->hasMany('Cruces')
+            ->setForeignKey('punto_id');
+        
+        $this->hasMany('Reguladores')
+            ->setForeignKey('punto_id');
+        
+        $this->hasMany('TSwitches')
+            ->setForeignKey('punto_id');
     }
 
     /**

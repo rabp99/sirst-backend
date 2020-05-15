@@ -32,12 +32,11 @@ class EnlacesTable extends Table
         parent::initialize($config);
 
         $this->setTable('enlaces');
-        $this->setDisplayField('id');
+        $this->setDisplayField('ssid');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Antenas', [
-            'foreignKey' => 'enlace_id'
-        ]);
+        $this->hasMany('Antenas')
+            ->setForeignKey('enlace_id');
     }
 
     /**

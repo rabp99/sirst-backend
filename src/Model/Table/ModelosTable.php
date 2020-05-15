@@ -32,13 +32,12 @@ class ModelosTable extends Table
         parent::initialize($config);
 
         $this->setTable('modelos');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey(['id', 'marca_id']);
+        $this->setDisplayField('descripcion');
+        $this->setPrimaryKey('id');
 
-        $this->belongsTo('Marcas', [
-            'foreignKey' => 'marca_id',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('Marcas')
+            ->setForeignKey('marca_id')
+            ->setJoinType('INNER');
     }
 
     /**

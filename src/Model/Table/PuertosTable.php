@@ -32,13 +32,12 @@ class PuertosTable extends Table
         parent::initialize($config);
 
         $this->setTable('puertos');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey(['id', 't_switche_id']);
+        $this->setDisplayField('nro_puerto');
+        $this->setPrimaryKey('id');
 
-        $this->belongsTo('TSwitches', [
-            'foreignKey' => 't_switche_id',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('TSwitches')
+            ->setForeignKey('t_switche_id')
+            ->setJoinType('INNER');
     }
 
     /**

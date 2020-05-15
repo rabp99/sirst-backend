@@ -32,12 +32,11 @@ class MarcasTable extends Table
         parent::initialize($config);
 
         $this->setTable('marcas');
-        $this->setDisplayField('id');
+        $this->setDisplayField('descripcion');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Modelos', [
-            'foreignKey' => 'marca_id'
-        ]);
+        $this->hasMany('Modelos')
+            ->setForeignKey('marca_id');
     }
 
     /**
