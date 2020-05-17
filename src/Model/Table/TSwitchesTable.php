@@ -33,17 +33,16 @@ class TSwitchesTable extends Table
         parent::initialize($config);
 
         $this->setTable('t_switches');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey(['id', 'modelo_id', 'punto_id']);
+        $this->setDisplayField('ip');
+        $this->setPrimaryKey('id');
 
-        $this->belongsTo('Modelos', [
-            'foreignKey' => 'modelo_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Puntos', [
-            'foreignKey' => 'punto_id',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('Modelos')
+            ->setForeignKey('modelo_id')
+            ->setJoinType('INNER');
+        
+        $this->belongsTo('Puntos')
+            ->setForeignKey('punto_id')
+            ->setJoinType('INNER');
     }
 
     /**

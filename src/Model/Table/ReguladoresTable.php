@@ -35,25 +35,24 @@ class ReguladoresTable extends Table
         parent::initialize($config);
 
         $this->setTable('reguladores');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey(['id', 'modelo_id']);
+        $this->setDisplayField('codigo');
+        $this->setPrimaryKey('id');
 
-        $this->belongsTo('Modelos', [
-            'foreignKey' => 'modelo_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Centrales', [
-            'foreignKey' => 'central_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Puntos', [
-            'foreignKey' => 'punto_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Puertos', [
-            'foreignKey' => 'puerto_id',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('Modelos')
+            ->setForeignKey('modelo_id')
+            ->setJoinType('INNER');
+
+        $this->belongsTo('Centrales')
+            ->setForeignKey('central_id')
+            ->setJoinType('INNER');
+
+        $this->belongsTo('Puntos')
+            ->setForeignKey('punto_id')
+            ->setJoinType('INNER');
+
+        $this->belongsTo('Puertos')
+            ->setForeignKey('puerto_id')
+            ->setJoinType('INNER');
     }
 
     /**

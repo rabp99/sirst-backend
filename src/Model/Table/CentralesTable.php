@@ -9,14 +9,14 @@ use Cake\Validation\Validator;
 /**
  * Centrales Model
  *
- * @method \App\Model\Entity\Centrale get($primaryKey, $options = [])
- * @method \App\Model\Entity\Centrale newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Centrale[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Centrale|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Centrale saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Centrale patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Centrale[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Centrale findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Central get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Central newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Central[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Central|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Central saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Central patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Central[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Central findOrCreate($search, callable $callback = null, $options = [])
  */
 class CentralesTable extends Table
 {
