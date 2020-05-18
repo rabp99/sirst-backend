@@ -18,6 +18,21 @@ class AntenasController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index() {
+        $puntoId = $this->request->getQuery('punto_id');
+        $enlaceId = $this->request->getQuery('enlace_id');
+        $modeloId = $this->request->getQuery('modelo_id');
+        $puertoId = $this->request->getQuery('puerto_id');
+        $ip = $this->request->getQuery('ip');
+        $device_name = $this->request->getQuery('device_name');
+        $mode = $this->request->getQuery('mode');
+        
+        $this->paginate = [
+            'limit' => $items_per_page
+        ];
+        
+        $query = $this->Recibos->find()
+            ->contain(['Estados', 'Servicios' => ['Tipos']]);
+        
         $this->paginate = [
             'contain' => ['Puntos', 'Enlaces', 'Modelos', 'Puertos']
         ];

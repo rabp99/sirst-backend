@@ -108,8 +108,8 @@ Router::scope('/', function ($routes) {
     
     $routes->resources('Antenas', [
         'map' => [
-            'getConntected/:id' => [
-                'action' => 'getConntected',
+            'isConntected/:id' => [
+                'action' => 'isConntected',
                 'method' => 'GET'
             ],
             'getByEnlace/:enlace_id' => [
