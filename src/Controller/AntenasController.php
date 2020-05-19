@@ -12,6 +12,11 @@ use App\Controller\AppController;
  */
 class AntenasController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
@@ -25,20 +30,53 @@ class AntenasController extends AppController
         $ip = $this->request->getQuery('ip');
         $device_name = $this->request->getQuery('device_name');
         $mode = $this->request->getQuery('mode');
+        $items_per_page = $this->request->getQuery('items_per_page');
         
         $this->paginate = [
             'limit' => $items_per_page
         ];
         
-        $query = $this->Recibos->find()
-            ->contain(['Estados', 'Servicios' => ['Tipos']]);
+        $query = $this->Antenas->find()
+            ->contain(['Puntos', 'Enlaces', 'Modelos', 'Puertos']);
         
-        $this->paginate = [
-            'contain' => ['Puntos', 'Enlaces', 'Modelos', 'Puertos']
+        if ($puntoId) {
+            $query->where(['Antenas.punto_id' => $puntoId]);
+        }
+        
+        if ($enlaceId) {
+            $query->where(['Antenas.enlace_id' => $enlaceId]);
+        }
+        
+        if ($modeloId) {
+            $query->where(['Antenas.modelo_id' => $modeloId]);
+        }
+        
+        if ($puertoId) {
+            $query->where(['Antenas.puerto_id' => $puertoId]);
+        }
+        
+        if ($ip) {
+            $query->where(['Antenas.ip' => $ip]);
+        }
+        
+        if ($device_name) {
+            $query->where(['Antenas.device_name' => $device_name]);
+        }
+        
+        if ($mode) {
+            $query->where(['Antenas.mode' => $mode]);
+        }
+        
+        $count = $query->count();
+        $antenas = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Antenas'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
         ];
-        $antenas = $this->paginate($this->Antenas);
-
-        $this->set(compact('antenas'));
+        
+        $this->set(compact('antenas', 'pagination', 'count'));
+        $this->set('_serialize', ['antenas', 'pagination', 'count']);
     }
 
     /**

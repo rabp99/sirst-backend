@@ -2,9 +2,9 @@
 use Migrations\AbstractSeed;
 
 /**
- * Antenas seed.
+ * Reguladores seed.
  */
-class AntenasSeed extends AbstractSeed
+class ReguladoresSeed extends AbstractSeed
 {
     /**
      * Run Method.
@@ -20,19 +20,18 @@ class AntenasSeed extends AbstractSeed
         $faker = Faker\Factory::create();
         $data = [];
         
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $data[] = [
-                'punto_id' =>  $faker->numberBetween(1, 100),
-                'enlace_id' => $faker->numberBetween(1, 100),
                 'modelo_id' => $faker->numberBetween(1, 100),
+                'central_id' => $faker->numberBetween(1, 4),
+                'punto_id' => $i + 1,
                 'puerto_id' => $faker->numberBetween(1, 300),
+                'codigo' => $faker->unique()->randomNumber(2),
                 'ip' => $faker->ipv4,
-                'device_name' => $faker->text(30),
-                'mode' => $faker->randomElement($array = ['ST', 'AP', 'ST WDS', 'AP WDS'])
             ];
         }
         
-        $table = $this->table('antenas');
+        $table = $this->table('reguladores');
         $table->insert($data)->save();
     }
 }

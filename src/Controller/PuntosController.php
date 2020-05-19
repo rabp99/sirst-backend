@@ -12,17 +12,47 @@ use App\Controller\AppController;
  */
 class PuntosController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $puntos = $this->paginate($this->Puntos);
-
-        $this->set(compact('puntos'));
+        $codigo = $this->request->getQuery('codigo');
+        $descripcion = $this->request->getQuery('descripcion');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
+        $this->paginate = [
+            'limit' => $items_per_page
+        ];
+        
+        $query = $this->Puntos->find();
+        
+        if ($codigo) {
+            $query->where(['Puntos.codigo' => $codigo]);
+        }
+        
+        if ($descripcion) {
+            $query->where(['Puntos.descripcion LIKE' => $descripcion]);
+        }
+        
+        $count = $query->count();
+        $puntos = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Puntos'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('puntos', 'pagination', 'count'));
+        $this->set('_serialize', ['puntos', 'pagination', 'count']);
     }
-
+    
     /**
      * View method
      *

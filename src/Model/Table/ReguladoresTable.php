@@ -44,7 +44,8 @@ class ReguladoresTable extends Table
 
         $this->belongsTo('Centrales')
             ->setForeignKey('central_id')
-            ->setJoinType('INNER');
+            ->setJoinType('INNER')
+            ->setProperty('central');
 
         $this->belongsTo('Puntos')
             ->setForeignKey('punto_id')

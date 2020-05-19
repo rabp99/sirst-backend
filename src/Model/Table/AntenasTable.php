@@ -50,10 +50,9 @@ class AntenasTable extends Table
             ->setForeignKey("modelo_id")
             ->setJoinType("INNER");
         
-        $this->hasOne('Puertos', [
-            'foreignKey' => 'puerto_id',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('Puertos')
+            ->setForeignKey('puerto_id')
+            ->setJoinType('INNER');
     }
 
     /**

@@ -152,6 +152,7 @@ Router::scope('/', function ($routes) {
     ]);
     $routes->resources('Marcas');
     $routes->resources('Modelos');
+    $routes->resources('Puertos');
     $routes->resources('Puntos', [
         'map' => [
             'getAssociated/:id' => [

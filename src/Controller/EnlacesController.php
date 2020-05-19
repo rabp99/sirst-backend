@@ -12,15 +12,45 @@ use App\Controller\AppController;
  */
 class EnlacesController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $enlaces = $this->paginate($this->Enlaces);
-
-        $this->set(compact('enlaces'));
+        $ssid = $this->request->getQuery('ssid');
+        $channel_width = $this->request->getQuery('channel_width');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
+        $this->paginate = [
+            'limit' => $items_per_page
+        ];
+        
+        $query = $this->Enlaces->find();
+        
+        if ($ssid) {
+            $query->where(['Enlaces.ssid like' => $ssid]);
+        }
+        
+        if ($channel_width) {
+            $query->where(['Enlaces.channel_width' => $channel_width]);
+        }
+        
+        $count = $query->count();
+        $enlaces = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Enlaces'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('enlaces', 'pagination', 'count'));
+        $this->set('_serialize', ['enlaces', 'pagination', 'count']);
     }
 
     /**

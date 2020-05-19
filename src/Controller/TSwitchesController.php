@@ -12,18 +12,51 @@ use App\Controller\AppController;
  */
 class TSwitchesController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
+        $modelo_id = $this->request->getQuery('modelo_id');
+        $punto_id = $this->request->getQuery('punto_id');
+        $ip = $this->request->getQuery('ip');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
         $this->paginate = [
-            'contain' => ['Modelos', 'Puntos']
+            'limit' => $items_per_page
         ];
-        $tSwitches = $this->paginate($this->TSwitches);
-
-        $this->set(compact('tSwitches'));
+        
+        $query = $this->TSwitches->find()
+            ->contain(['Modelos', 'Puntos']);
+        
+        if ($modelo_id) {
+            $query->where(['TSwitches.modelo_id' => $modelo_id]);
+        }
+        
+        if ($punto_id) {
+            $query->where(['TSwitches.punto_id' => $punto_id]);
+        }
+        
+        if ($ip) {
+            $query->where(['TSwitches.ip LIKE' => $ip]);
+        }
+        
+        $count = $query->count();
+        $tSwitches = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['TSwitches'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('tSwitches', 'pagination', 'count'));
+        $this->set('_serialize', ['tSwitches', 'pagination', 'count']);
     }
 
     /**

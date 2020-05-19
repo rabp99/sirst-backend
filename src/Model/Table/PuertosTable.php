@@ -36,7 +36,7 @@ class PuertosTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('TSwitches')
-            ->setForeignKey('t_switche_id')
+            ->setForeignKey('t_switch_id')
             ->setJoinType('INNER');
     }
 

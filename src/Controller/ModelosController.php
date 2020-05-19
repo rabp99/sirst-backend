@@ -12,18 +12,51 @@ use App\Controller\AppController;
  */
 class ModelosController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
+        $marca_id = $this->request->getQuery('marca_id');
+        $descripcion = $this->request->getQuery('descripcion');
+        $observacion = $this->request->getQuery('observacion');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
         $this->paginate = [
-            'contain' => ['Marcas']
+            'limit' => $items_per_page
         ];
-        $modelos = $this->paginate($this->Modelos);
-
-        $this->set(compact('modelos'));
+        
+        $query = $this->Modelos->find()
+            ->contain(['Marcas']);
+        
+        if ($marca_id) {
+            $query->where(['Modelos.marca_id' => $marca_id]);
+        }
+        
+        if ($descripcion) {
+            $query->where(['Modelos.descripcion LIKE' => $descripcion]);
+        }
+        
+        if ($observacion) {
+            $query->where(['Modelos.observacion LIKE' => $observacion]);
+        }
+        
+        $count = $query->count();
+        $modelos = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Modelos'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('modelos', 'pagination', 'count'));
+        $this->set('_serialize', ['modelos', 'pagination', 'count']);
     }
 
     /**

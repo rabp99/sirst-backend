@@ -12,18 +12,66 @@ use App\Controller\AppController;
  */
 class ReguladoresController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
+        $modeloId = $this->request->getQuery('modelo_id');
+        $centralId = $this->request->getQuery('central_id');
+        $puntoId = $this->request->getQuery('punto_id');
+        $puertoId = $this->request->getQuery('puerto_id');
+        $codigo = $this->request->getQuery('codigo');
+        $ip = $this->request->getQuery('ip');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
         $this->paginate = [
-            'contain' => ['Modelos', 'Centrales', 'Puntos', 'Puertos']
+            'limit' => $items_per_page
         ];
-        $reguladores = $this->paginate($this->Reguladores);
-
-        $this->set(compact('reguladores'));
+        
+        $query = $this->Reguladores->find()
+            ->contain(['Modelos', 'Centrales', 'Puntos', 'Puertos']);
+        
+        if ($modeloId) {
+            $query->where(['Reguladores.modelo_id' => $modeloId]);
+        }
+        
+        if ($centralId) {
+            $query->where(['Reguladores.central_id' => $centralId]);
+        }
+        
+        if ($puntoId) {
+            $query->where(['Reguladores.punto_id' => $puntoId]);
+        }
+        
+        if ($puertoId) {
+            $query->where(['Reguladores.puerto_id' => $puertoId]);
+        }
+        
+        if ($codigo) {
+            $query->where(['Reguladores.codigo' => $codigo]);
+        }
+        
+        if ($ip) {
+            $query->where(['Reguladores.ip' => $ip]);
+        }
+        
+        $count = $query->count();
+        $reguladores = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Reguladores'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('reguladores', 'pagination', 'count'));
+        $this->set('_serialize', ['reguladores', 'pagination', 'count']);
     }
 
     /**

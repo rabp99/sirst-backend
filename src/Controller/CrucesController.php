@@ -12,18 +12,51 @@ use App\Controller\AppController;
  */
 class CrucesController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
+        $reguladorId = $this->request->getQuery('regulador_id');
+        $codigo = $this->request->getQuery('codigo');
+        $descripcion = $this->request->getQuery('descripcion');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
         $this->paginate = [
-            'contain' => ['Puntos', 'Reguladores']
+            'limit' => $items_per_page
         ];
-        $cruces = $this->paginate($this->Cruces);
-
-        $this->set(compact('cruces'));
+        
+        $query = $this->Cruces->find()
+            ->contain(['Reguladores']);
+        
+        if ($reguladorId) {
+            $query->where(['Cruces.regulador_id' => $reguladorId]);
+        }
+        
+        if ($codigo) {
+            $query->where(['Cruces.codigo' => $codigo]);
+        }
+        
+        if ($descripcion) {
+            $query->where(['Cruces.descripcion' => $descripcion]);
+        }
+        
+        $count = $query->count();
+        $cruces = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Cruces'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('cruces', 'pagination', 'count'));
+        $this->set('_serialize', ['cruces', 'pagination', 'count']);
     }
 
     /**

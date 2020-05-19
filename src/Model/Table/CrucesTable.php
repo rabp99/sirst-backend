@@ -42,7 +42,8 @@ class CrucesTable extends Table
         
         $this->belongsTo('Reguladores')
             ->setForeignKey("regulador_id")
-            ->setJoinType("INNER");
+            ->setJoinType("INNER")
+            ->setProperty('regulador');
     }
 
     /**

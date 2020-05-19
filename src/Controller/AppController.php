@@ -37,19 +37,41 @@ class AppController extends Controller
      *
      * @return void
      */
-    public function initialize()
-    {
+    public function initialize() {
         parent::initialize();
 
-        $this->loadComponent('RequestHandler', [
-            'enableBeforeRedirect' => false,
-        ]);
+        $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'storage' => 'Memory',
+            'authenticate' => [
+                'Form' => [
+                    'scope' => ['Users.Idestado' => 1],
+                    'fields' => [
+                        'username' => 'cPerUsuCodigo',
+                        'password' => 'cPerUsuClave'
+                    ],
+                    'passwordHasher' => [
+                        'className' => 'Md5',
+                    ]
+                ],
+                'ADmad/JwtAuth.Jwt' => [
+                    'parameter' => 'token',
+                    'userModel' => 'Users',
+                    'scope' => ['Users.Idestado' => 1],
+                    'fields' => [
+                        'username' => 'PerCod'
+                    ],
+                    'queryDatasource' => true
+                ]
+            ],
+            'unauthorizedRedirect' => false,
+            'checkAuthIn' => 'Controller.initialize'
+        ]);
 
         /*
-         * Enable the following component for recommended CakePHP security settings.
+         * Enable the following components for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
-        //$this->loadComponent('Security');
     }
 }

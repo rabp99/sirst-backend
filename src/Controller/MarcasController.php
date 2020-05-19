@@ -12,17 +12,42 @@ use App\Controller\AppController;
  */
 class MarcasController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $marcas = $this->paginate($this->Marcas);
-
-        $this->set(compact('marcas'));
+        $descripcion = $this->request->getQuery('descripcion');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
+        $this->paginate = [
+            'limit' => $items_per_page
+        ];
+        
+        $query = $this->Marcas->find();
+        
+        if ($descripcion) {
+            $query->where(['Marcas.descripcion LIKE' => $descripcion]);
+        }
+        
+        $count = $query->count();
+        $marcas = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Marcas'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('marcas', 'pagination', 'count'));
+        $this->set('_serialize', ['marcas', 'pagination', 'count']);
     }
-
+    
     /**
      * View method
      *

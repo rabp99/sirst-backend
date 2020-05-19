@@ -12,15 +12,45 @@ use App\Controller\AppController;
  */
 class CentralesController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $centrales = $this->paginate($this->Centrales);
-
-        $this->set(compact('centrales'));
+        $descripcion = $this->request->getQuery('descripcion');
+        $nro = $this->request->getQuery('nro');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
+        $this->paginate = [
+            'limit' => $items_per_page
+        ];
+        
+        $query = $this->Centrales->find();
+        
+        if ($descripcion) {
+            $query->where(['Centrales.descripcion like' => $descripcion]);
+        }
+        
+        if ($nro) {
+            $query->where(['Centrales.nro' => $nro]);
+        }
+        
+        $count = $query->count();
+        $centrales = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Centrales'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('centrales', 'pagination', 'count'));
+        $this->set('_serialize', ['centrales', 'pagination', 'count']);
     }
 
     /**

@@ -12,18 +12,46 @@ use App\Controller\AppController;
  */
 class PuertosController extends AppController
 {
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index() {
+        $tSwitchId = $this->request->getQuery('t_switch_id');
+        $nro_puerto = $this->request->getQuery('nro_puerto');
+        $items_per_page = $this->request->getQuery('items_per_page');
+        
         $this->paginate = [
-            'contain' => ['TSwitches']
+            'limit' => $items_per_page
         ];
-        $puertos = $this->paginate($this->Puertos);
-
-        $this->set(compact('puertos'));
+        
+        $query = $this->Puertos->find()
+            ->contain(['TSwitches']);
+        
+        if ($tSwitchId) {
+            $query->where(['Puertos.t_switch_id' => $tSwitchId]);
+        }
+        
+        if ($nro_puerto) {
+            $query->where(['Puertos.nro_puerto' => $nro_puerto]);
+        }
+                
+        $count = $query->count();
+        $puertos = $this->paginate($query);
+        $paginate = $this->request->getParam('paging')['Puertos'];
+        $pagination = [
+            'totalItems' => $paginate['count'],
+            'itemsPerPage' =>  $paginate['perPage']
+        ];
+        
+        $this->set(compact('puertos', 'pagination', 'count'));
+        $this->set('_serialize', ['puertos', 'pagination', 'count']);
     }
 
     /**
