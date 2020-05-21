@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use Cake\ORM\TableRegistry;
 use App\Controller\CentralesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -26,19 +27,18 @@ class CentralesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     */
-    public function testView()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testIndex() {
+        $this->get('/centrales.json');
+        $this->assertResponseContains('"totalItems": 4');
+        
+        $this->get('/centrales.json?descripcion=Cent');
+        $this->assertResponseContains('"totalItems": 4');
+        
+        $this->get('/centrales.json?nro=2');
+        $this->assertResponseContains('"totalItems": 1');
+        
+        $this->get('/centrales.json?descripcion=España&nro=4');
+        $this->assertResponseContains('"totalItems": 0');
     }
 
     /**
@@ -46,28 +46,30 @@ class CentralesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testAdd() {
+        $dataTest1 = [
+            'descripcion' => 'Central 5 Extra',
+            'nro' => '5'
+        ];
+        $this->post('/centrales.json', $dataTest1);
+        $this->assertResponseCode(200);
+        
+        $centrales = TableRegistry::getTableLocator()->get('Centrales');
+        $queryTest1 = $centrales->find()->where(['descripcion' => $dataTest1['descripcion']]);
+        $this->assertEquals(1, $queryTest1->count());
+        
+        $this->assertResponseContains('"message": "La central fue registrada correctamente"');
+        
+        $dataTest2 = [
+            'descripcion' => 'Central 6 Extra',
+            'nro' => '2'
+        ];
+        $this->post('/centrales.json', $dataTest2);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $centrales->find()->where(['descripcion' => $dataTest2['descripcion']]);
+        $this->assertEquals(0, $queryTest2->count());
+        
+        $this->assertResponseContains('"message": "La central no fue registrada correctamente"');
     }
 }

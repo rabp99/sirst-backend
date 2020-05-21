@@ -14,7 +14,7 @@ class CentralesController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -34,7 +34,7 @@ class CentralesController extends AppController
         $query = $this->Centrales->find();
         
         if ($descripcion) {
-            $query->where(['Centrales.descripcion like' => $descripcion]);
+            $query->where(['Centrales.descripcion like' => '%' . $descripcion . '%']);
         }
         
         if ($nro) {
@@ -61,11 +61,9 @@ class CentralesController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null) {
-        $centrale = $this->Centrales->get($id, [
-            'contain' => []
-        ]);
+        $central = $this->Centrales->get($id);
 
-        $this->set('centrale', $centrale);
+        $this->set(compact('central'));
     }
 
     /**
@@ -74,17 +72,19 @@ class CentralesController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add() {
-        $centrale = $this->Centrales->newEntity();
+        $central = $this->Centrales->newEntity();
+        
         if ($this->request->is('post')) {
-            $centrale = $this->Centrales->patchEntity($centrale, $this->request->getData());
-            if ($this->Centrales->save($centrale)) {
-                $this->Flash->success(__('The centrale has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            $central = $this->Centrales->patchEntity($central, $this->request->getData());
+            if ($this->Centrales->save($central)) {
+                $code = 200;
+                $message = 'La central fue registrada correctamente';
+            } else {
+                $message = 'La central no fue registrada correctamente';
             }
-            $this->Flash->error(__('The centrale could not be saved. Please, try again.'));
         }
-        $this->set(compact('centrale'));
+        $this->set(compact('central', 'code', 'message'));
+        $this->set('_serialize', ['central', 'code', 'message']);
     }
 
     /**

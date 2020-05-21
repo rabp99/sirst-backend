@@ -32,6 +32,7 @@ class CentralesTable extends Table
         $this->setTable('centrales');
         $this->setDisplayField('descripcion');
         $this->setPrimaryKey('id');
+        $this->setEntityClass('Central');
         
         
         $this->hasMany("Cruces")
@@ -60,7 +61,8 @@ class CentralesTable extends Table
             ->scalar('nro')
             ->maxLength('nro', 1)
             ->requirePresence('nro', 'create')
-            ->notEmptyString('nro');
+            ->notEmptyString('nro')
+            ->add('nro', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
     }
