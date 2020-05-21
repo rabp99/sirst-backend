@@ -27,6 +27,7 @@ class Modelo extends Entity
     protected $_accessible = [
         'descripcion' => true,
         'observacion' => true,
-        'marca' => true
-    ];
+        'marca' => true,
+        'marca_id' => true
+   ];
 }

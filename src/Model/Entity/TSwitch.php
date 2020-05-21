@@ -28,6 +28,8 @@ class TSwitch extends Entity
     protected $_accessible = [
         'ip' => true,
         'modelo' => true,
-        'punto' => true
+        'punto' => true,
+        'modelo_id' => true,
+        'punto_id' => true,
     ];
 }

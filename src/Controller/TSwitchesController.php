@@ -14,7 +14,7 @@ class TSwitchesController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -44,7 +44,7 @@ class TSwitchesController extends AppController
         }
         
         if ($ip) {
-            $query->where(['TSwitches.ip LIKE' => $ip]);
+            $query->where(['TSwitches.ip LIKE' => '%' . $ip . '%']);
         }
         
         $count = $query->count();
@@ -71,7 +71,7 @@ class TSwitchesController extends AppController
             'contain' => ['Modelos', 'Puntos']
         ]);
 
-        $this->set('tSwitch', $tSwitch);
+        $this->set(compact('tSwitch'));
     }
 
     /**
@@ -84,15 +84,14 @@ class TSwitchesController extends AppController
         if ($this->request->is('post')) {
             $tSwitch = $this->TSwitches->patchEntity($tSwitch, $this->request->getData());
             if ($this->TSwitches->save($tSwitch)) {
-                $this->Flash->success(__('The t switch has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $code = 200;
+                $message = 'El switch fue registrado correctamente';
+            } else {
+                $message = 'El switch no fue registrado correctamente';
             }
-            $this->Flash->error(__('The t switch could not be saved. Please, try again.'));
         }
-        $modelos = $this->TSwitches->Modelos->find('list', ['limit' => 200]);
-        $puntos = $this->TSwitches->Puntos->find('list', ['limit' => 200]);
-        $this->set(compact('tSwitch', 'modelos', 'puntos'));
+        $this->set(compact('tSwitch', 'code', 'message'));
+        $this->set('_serialize', ['tSwitch', 'code', 'message']);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use Cake\ORM\TableRegistry;
 use App\Controller\TSwitchesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -28,19 +29,18 @@ class TSwitchesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     */
-    public function testView()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testIndex() {
+        $this->get('/t_switches.json');
+        $this->assertResponseContains('"totalItems": 7');
+        
+        $this->get('/t_switches.json?modelo_id=1');
+        $this->assertResponseContains('"totalItems": 4');
+        
+        $this->get('/t_switches.json?punto_id=2');
+        $this->assertResponseContains('"totalItems": 2');
+        
+        $this->get('/t_switches.json?ip=10.3');
+        $this->assertResponseContains('"totalItems": 2');
     }
 
     /**
@@ -48,28 +48,19 @@ class TSwitchesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testAdd() {
+        $data = [
+            'modelo_id' => 3,
+            'punto_id' => 2,
+            'ip' => '192.168.20.21'
+        ];
+        $this->post('/t_switches.json', $data);
+        $this->assertResponseCode(200);
+        
+        $tSwitches = TableRegistry::getTableLocator()->get('TSwitches');
+        $query = $tSwitches->find()->where(['ip' => $data['ip']]);
+        $this->assertEquals(1, $query->count());
+        
+        $this->assertResponseContains('"message": "El switch fue registrado correctamente"');
     }
 }

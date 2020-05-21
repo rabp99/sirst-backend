@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use Cake\ORM\TableRegistry;
 use App\Controller\ModelosController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -27,19 +28,18 @@ class ModelosControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     */
-    public function testView()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testIndex() {
+        $this->get('/modelos.json');
+        $this->assertResponseContains('"totalItems": 6');
+        
+        $this->get('/modelos.json?marca_id=1');
+        $this->assertResponseContains('"totalItems": 3');
+        
+        $this->get('/modelos.json?descripcion=Dell');
+        $this->assertResponseContains('"totalItems": 2');
+        
+        $this->get('/modelos.json?observacion=dolor');
+        $this->assertResponseContains('"totalItems": 6');
     }
 
     /**
@@ -47,28 +47,19 @@ class ModelosControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testAdd() {
+        $data = [
+            'marca_id' => 3,
+            'descripcion' => 'Modelo unico',
+            'observacion' => 'Lorem ipsum dolor sit amet'
+        ];
+        $this->post('/modelos.json', $data);
+        $this->assertResponseCode(200);
+        
+        $modelos = TableRegistry::getTableLocator()->get('Modelos');
+        $query = $modelos->find()->where(['descripcion' => $data['descripcion']]);
+        $this->assertEquals(1, $query->count());
+        
+        $this->assertResponseContains('"message": "El modelo fue registrado correctamente"');
     }
 }

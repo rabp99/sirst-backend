@@ -8,48 +8,43 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class TSwitchesFixture extends TestFixture
 {
-    /**
-     * Fields
-     *
-     * @var array
-     */
-    // @codingStandardsIgnoreStart
-    public $fields = [
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'modelo_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'punto_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'ip' => ['type' => 'string', 'length' => 15, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        '_indexes' => [
-            'fk_switches_puntos1_idx' => ['type' => 'index', 'columns' => ['punto_id'], 'length' => []],
-            'fk_switches_modelos1_idx' => ['type' => 'index', 'columns' => ['modelo_id'], 'length' => []],
+    public $import = ['model' => 'Tswitches'];
+    
+    public $records = [
+        [
+            'modelo_id' => 1,
+            'punto_id' => 1,
+            'ip' => '192.168.10.15'
         ],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id', 'modelo_id', 'punto_id'], 'length' => []],
-            'ip_UNIQUE' => ['type' => 'unique', 'columns' => ['ip'], 'length' => []],
-            'fk_switches_modelos1' => ['type' => 'foreign', 'columns' => ['modelo_id'], 'references' => ['modelos', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
-            'fk_switches_puntos1' => ['type' => 'foreign', 'columns' => ['punto_id'], 'references' => ['puntos', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
+        [
+            'modelo_id' => 2,
+            'punto_id' => 2,
+            'ip' => '192.168.10.20'
         ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
+        [
+            'modelo_id' => 1,
+            'punto_id' => 2,
+            'ip' => '192.168.10.30'
         ],
+        [
+            'modelo_id' => 2,
+            'punto_id' => 1,
+            'ip' => '192.168.10.31'
+        ],
+        [
+            'modelo_id' => 1,
+            'punto_id' => 1,
+            'ip' => '192.168.10.24'
+        ],
+        [
+            'modelo_id' => 3,
+            'punto_id' => 5,
+            'ip' => '192.168.10.54'
+        ],
+        [
+            'modelo_id' => 1,
+            'punto_id' => 4,
+            'ip' => '192.168.10.68'
+        ]
     ];
-    // @codingStandardsIgnoreEnd
-    /**
-     * Init method
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->records = [
-            [
-                'id' => 1,
-                'modelo_id' => 1,
-                'punto_id' => 1,
-                'ip' => 'Lorem ipsum d'
-            ],
-        ];
-        parent::init();
-    }
 }

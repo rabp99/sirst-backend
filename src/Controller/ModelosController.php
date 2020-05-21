@@ -14,7 +14,7 @@ class ModelosController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -40,11 +40,11 @@ class ModelosController extends AppController
         }
         
         if ($descripcion) {
-            $query->where(['Modelos.descripcion LIKE' => $descripcion]);
+            $query->where(['Modelos.descripcion LIKE' => '%' . $descripcion . '%']);
         }
         
         if ($observacion) {
-            $query->where(['Modelos.observacion LIKE' => $observacion]);
+            $query->where(['Modelos.observacion LIKE' => '%' . $observacion . '%']);
         }
         
         $count = $query->count();
@@ -84,14 +84,14 @@ class ModelosController extends AppController
         if ($this->request->is('post')) {
             $modelo = $this->Modelos->patchEntity($modelo, $this->request->getData());
             if ($this->Modelos->save($modelo)) {
-                $this->Flash->success(__('The modelo has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $code = 200;
+                $message = 'El modelo fue registrado correctamente';
+            } else {
+                $message = 'El modelo no fue registrado correctamente';
             }
-            $this->Flash->error(__('The modelo could not be saved. Please, try again.'));
         }
-        $marcas = $this->Modelos->Marcas->find('list', ['limit' => 200]);
-        $this->set(compact('modelo', 'marcas'));
+        $this->set(compact('modelo', 'code', 'message'));
+        $this->set('_serialize', ['modelo', 'code', 'message']);
     }
 
     /**
