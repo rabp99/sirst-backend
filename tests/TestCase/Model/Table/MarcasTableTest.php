@@ -11,32 +11,20 @@ use Cake\TestSuite\TestCase;
 class MarcasTableTest extends TestCase
 {
     /**
-     * Test subject
-     *
-     * @var \App\Model\Table\MarcasTable
-     */
-    public $Marcas;
-
-    /**
      * Fixtures
      *
      * @var array
      */
-    public $fixtures = [
-        'app.Marcas',
-        'app.Modelos'
-    ];
-
+    public $fixtures = ['app.Marcas'];
+    
     /**
      * setUp method
      *
      * @return void
      */
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Marcas') ? [] : ['className' => MarcasTable::class];
-        $this->Marcas = TableRegistry::getTableLocator()->get('Marcas', $config);
+        $this->Marcas = TableRegistry::getTableLocator()->get('Marcas');
     }
 
     /**
@@ -44,30 +32,22 @@ class MarcasTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
-    {
+    public function tearDown() {
         unset($this->Marcas);
 
         parent::tearDown();
     }
+    
+    public function testFind() {
+        $query = $this->Marcas->find();
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
 
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $result = $query->enableHydration(false)->toArray();
 
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $expected = [
+            ['id' => 1, 'descripcion' => 'Lorem ipsum dolor sit amet']
+        ];
+        
+        $this->assertEquals($expected, $result);
     }
 }

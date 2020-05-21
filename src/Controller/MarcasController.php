@@ -14,7 +14,7 @@ class MarcasController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -33,7 +33,7 @@ class MarcasController extends AppController
         $query = $this->Marcas->find();
         
         if ($descripcion) {
-            $query->where(['Marcas.descripcion LIKE' => $descripcion]);
+            $query->where(['Marcas.descripcion LIKE' => '%' . $descripcion . '%']);
         }
         
         $count = $query->count();
@@ -60,7 +60,8 @@ class MarcasController extends AppController
             'contain' => ['Modelos']
         ]);
 
-        $this->set('marca', $marca);
+        $this->set(compact('marca'));
+        $this->set('_serialize', ['marca']);
     }
 
     /**
@@ -73,13 +74,14 @@ class MarcasController extends AppController
         if ($this->request->is('post')) {
             $marca = $this->Marcas->patchEntity($marca, $this->request->getData());
             if ($this->Marcas->save($marca)) {
-                $this->Flash->success(__('The marca has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $code = 200;
+                $message = 'La marca fue registrada correctamente';
+            } else {
+                $message = 'La marca no fue registrada correctamente';
             }
-            $this->Flash->error(__('The marca could not be saved. Please, try again.'));
         }
-        $this->set(compact('marca'));
+        $this->set(compact('marca', 'code', 'message'));
+        $this->set('_serialize', ['marca', 'code', 'message']);
     }
 
     /**

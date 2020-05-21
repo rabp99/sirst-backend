@@ -14,7 +14,7 @@ class PuntosController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -38,7 +38,7 @@ class PuntosController extends AppController
         }
         
         if ($descripcion) {
-            $query->where(['Puntos.descripcion LIKE' => $descripcion]);
+            $query->where(['Puntos.descripcion LIKE' => '%' . $descripcion . '%']);
         }
         
         $count = $query->count();
@@ -65,7 +65,7 @@ class PuntosController extends AppController
             'contain' => ['Antenas', 'Cruces', 'Reguladores', 'TSwitches']
         ]);
 
-        $this->set('punto', $punto);
+        $this->set(compact('punto'));
     }
 
     /**
@@ -78,13 +78,14 @@ class PuntosController extends AppController
         if ($this->request->is('post')) {
             $punto = $this->Puntos->patchEntity($punto, $this->request->getData());
             if ($this->Puntos->save($punto)) {
-                $this->Flash->success(__('The punto has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $code = 200;
+                $message = 'El punto fue registrado correctamente';
+            } else {
+                $message = 'El punto no fue registrado correctamente';
             }
-            $this->Flash->error(__('The punto could not be saved. Please, try again.'));
         }
-        $this->set(compact('punto'));
+        $this->set(compact('punto', 'code', 'message'));
+        $this->set('_serialize', ['punto', 'code', 'message']);
     }
 
     /**

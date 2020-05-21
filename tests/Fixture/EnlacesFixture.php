@@ -8,39 +8,32 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class EnlacesFixture extends TestFixture
 {
-    /**
-     * Fields
-     *
-     * @var array
-     */
-    // @codingStandardsIgnoreStart
-    public $fields = [
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'ssid' => ['type' => 'string', 'length' => 10, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'channel_width' => ['type' => 'string', 'length' => 8, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+    public $import = ['table' => 'enlaces'];
+    
+    public $records = [
+        [
+            'ssid' => 'TM_10_20',
+            'channel_width' => '20MHZ'
         ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
+        [
+            'ssid' => 'TM_15_24',
+            'channel_width' => '40MHZ '
         ],
+        [
+            'ssid' => 'TM_11_23',
+            'channel_width' => '40MHZ '
+        ],
+        [
+            'ssid' => 'TM_11_24',
+            'channel_width' => '40MHZ '
+        ],
+        [
+            'ssid' => 'TM_12_15',
+            'channel_width' => '20MHZ '
+        ],
+        [
+            'ssid' => 'TM_12_11',
+            'channel_width' => '20MHZ '
+        ]
     ];
-    // @codingStandardsIgnoreEnd
-    /**
-     * Init method
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->records = [
-            [
-                'id' => 1,
-                'ssid' => 'Lorem ip',
-                'channel_width' => 'Lorem '
-            ],
-        ];
-        parent::init();
-    }
 }

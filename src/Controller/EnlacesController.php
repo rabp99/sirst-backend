@@ -14,7 +14,7 @@ class EnlacesController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -34,7 +34,7 @@ class EnlacesController extends AppController
         $query = $this->Enlaces->find();
         
         if ($ssid) {
-            $query->where(['Enlaces.ssid like' => $ssid]);
+            $query->where(['Enlaces.ssid like' => '%' . $ssid . '%']);
         }
         
         if ($channel_width) {
@@ -65,7 +65,7 @@ class EnlacesController extends AppController
             'contain' => ['Antenas']
         ]);
 
-        $this->set('enlace', $enlace);
+        $this->set(compact('enlace'));
     }
 
     /**
@@ -78,13 +78,14 @@ class EnlacesController extends AppController
         if ($this->request->is('post')) {
             $enlace = $this->Enlaces->patchEntity($enlace, $this->request->getData());
             if ($this->Enlaces->save($enlace)) {
-                $this->Flash->success(__('The enlace has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $code = 200;
+                $message = 'El enlace fue registrado correctamente';
+            } else {
+                $message = 'El enlace no fue registrado correctamente';
             }
-            $this->Flash->error(__('The enlace could not be saved. Please, try again.'));
         }
-        $this->set(compact('enlace'));
+        $this->set(compact('enlace', 'code', 'message'));
+        $this->set('_serialize', ['enlace', 'code', 'message']);
     }
 
     /**

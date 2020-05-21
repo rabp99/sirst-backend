@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use Cake\ORM\TableRegistry;
 use App\Controller\MarcasController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -27,19 +28,15 @@ class MarcasControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     */
-    public function testView()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testIndex() {
+        $this->get('/marcas.json');
+        $this->assertResponseContains('"totalItems": 5');
+        
+        $this->get('/marcas.json?descripcion=Epson');
+        $this->assertResponseContains('"totalItems": 2');
+        
+        $this->get('/marcas.json?descripcion=HP');
+        $this->assertResponseContains('"totalItems": 1');
     }
 
     /**
@@ -47,28 +44,17 @@ class MarcasControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testAdd() {
+        $data = [
+            'descripcion' => 'Nueva Marca XX'
+        ];
+        $this->post('/marcas.json', $data);
+        $this->assertResponseCode(200);
+        
+        $marcas = TableRegistry::getTableLocator()->get('Marcas');
+        $query = $marcas->find()->where(['descripcion' => $data['descripcion']]);
+        $this->assertEquals(1, $query->count());
+        
+        $this->assertResponseContains('"message": "La marca fue registrada correctamente"');
     }
 }

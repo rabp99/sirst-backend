@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use Cake\ORM\TableRegistry;
 use App\Controller\EnlacesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -27,19 +28,18 @@ class EnlacesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     */
-    public function testView()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testIndex() {
+        $this->get('/enlaces.json');
+        $this->assertResponseContains('"totalItems": 6');
+        
+        $this->get('/enlaces.json?ssid=11');
+        $this->assertResponseContains('"totalItems": 3');
+        
+        $this->get('/enlaces.json?channel_width=40MHZ');
+        $this->assertResponseContains('"totalItems": 3');
+        
+        $this->get('/enlaces.json?ssid=11&channel_width=40MHZ');
+        $this->assertResponseContains('"totalItems": 2');
     }
 
     /**
@@ -47,28 +47,18 @@ class EnlacesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testAdd() {
+        $data = [
+            'ssid' => 'TM_24_35',
+            'channel_width' => '40MHZ '
+        ];
+        $this->post('/enlaces.json', $data);
+        $this->assertResponseCode(200);
+        
+        $marcas = TableRegistry::getTableLocator()->get('Enlaces');
+        $query = $marcas->find()->where(['ssid' => $data['ssid']]);
+        $this->assertEquals(1, $query->count());
+        
+        $this->assertResponseContains('"message": "El enlace fue registrado correctamente"');
     }
 }

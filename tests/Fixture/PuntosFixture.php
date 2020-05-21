@@ -8,44 +8,38 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class PuntosFixture extends TestFixture
 {
-    /**
-     * Fields
-     *
-     * @var array
-     */
-    // @codingStandardsIgnoreStart
-    public $fields = [
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'codigo' => ['type' => 'string', 'fixed' => true, 'length' => 4, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'descripcion' => ['type' => 'string', 'length' => 60, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'latitud' => ['type' => 'string', 'length' => 20, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'longitud' => ['type' => 'string', 'length' => 20, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'descripcion_UNIQUE' => ['type' => 'unique', 'columns' => ['codigo'], 'length' => []],
+    public $import = ['table' => 'puntos'];
+    
+    public $records = [
+        [
+            'codigo' => '10',
+            'descripcion' => 'Av. América Sur UPAO',
+            'latitud' => '-78.84727100',
+            'longitud' => '153.61805600'
         ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
+        [
+            'codigo' => '24',
+            'descripcion' => 'Av. Húsares de Junín',
+            'latitud' => '-78.84747800',
+            'longitud' => '153.61832600'
         ],
+        [
+            'codigo' => '34',
+            'descripcion' => 'Av. América Norte',
+            'latitud' => '-78.84723100',
+            'longitud' => '153.61818600'
+        ],
+        [
+            'codigo' => '48',
+            'descripcion' => 'Av. Víctor Larco',
+            'latitud' => '-78.84723400',
+            'longitud' => '153.61821600'
+        ],
+        [
+            'codigo' => '52',
+            'descripcion' => 'Av. España',
+            'latitud' => '-78.84723000',
+            'longitud' => '153.61835600'
+        ]
     ];
-    // @codingStandardsIgnoreEnd
-    /**
-     * Init method
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->records = [
-            [
-                'id' => 1,
-                'codigo' => 'Lo',
-                'descripcion' => 'Lorem ipsum dolor sit amet',
-                'latitud' => 'Lorem ipsum dolor ',
-                'longitud' => 'Lorem ipsum dolor '
-            ],
-        ];
-        parent::init();
-    }
 }
