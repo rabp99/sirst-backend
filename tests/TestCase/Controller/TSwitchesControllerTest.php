@@ -31,16 +31,16 @@ class TSwitchesControllerTest extends TestCase
      */
     public function testIndex() {
         $this->get('/t_switches.json');
-        $this->assertResponseContains('"totalItems": 7');
+        $this->assertResponseContains('"count": 7');
         
         $this->get('/t_switches.json?modelo_id=1');
-        $this->assertResponseContains('"totalItems": 4');
+        $this->assertResponseContains('"count": 4');
         
         $this->get('/t_switches.json?punto_id=2');
-        $this->assertResponseContains('"totalItems": 2');
+        $this->assertResponseContains('"count": 2');
         
         $this->get('/t_switches.json?ip=10.3');
-        $this->assertResponseContains('"totalItems": 2');
+        $this->assertResponseContains('"count": 2');
     }
 
     /**

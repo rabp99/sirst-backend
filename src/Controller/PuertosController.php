@@ -14,7 +14,7 @@ class PuertosController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow([]);
     }
     
     /**
@@ -24,7 +24,7 @@ class PuertosController extends AppController
      */
     public function index() {
         $tSwitchId = $this->request->getQuery('t_switch_id');
-        $nro_puerto = $this->request->getQuery('nro_puerto');
+        $nroPuerto = $this->request->getQuery('nro_puerto');
         $items_per_page = $this->request->getQuery('items_per_page');
         
         $this->paginate = [
@@ -38,8 +38,8 @@ class PuertosController extends AppController
             $query->where(['Puertos.t_switch_id' => $tSwitchId]);
         }
         
-        if ($nro_puerto) {
-            $query->where(['Puertos.nro_puerto' => $nro_puerto]);
+        if ($nroPuerto) {
+            $query->where(['Puertos.nro_puerto' => $nroPuerto]);
         }
                 
         $count = $query->count();
@@ -66,7 +66,7 @@ class PuertosController extends AppController
             'contain' => ['TSwitches']
         ]);
 
-        $this->set('puerto', $puerto);
+        $this->set(compact('puerto'));
     }
 
     /**

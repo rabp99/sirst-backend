@@ -29,16 +29,16 @@ class CentralesControllerTest extends TestCase
      */
     public function testIndex() {
         $this->get('/centrales.json');
-        $this->assertResponseContains('"totalItems": 4');
+        $this->assertResponseContains('"count": 4');
         
         $this->get('/centrales.json?descripcion=Cent');
-        $this->assertResponseContains('"totalItems": 4');
+        $this->assertResponseContains('"count": 4');
         
         $this->get('/centrales.json?nro=2');
-        $this->assertResponseContains('"totalItems": 1');
+        $this->assertResponseContains('"count": 1');
         
         $this->get('/centrales.json?descripcion=España&nro=4');
-        $this->assertResponseContains('"totalItems": 0');
+        $this->assertResponseContains('"count": 0');
     }
 
     /**

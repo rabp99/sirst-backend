@@ -39,6 +39,7 @@ class Regulador extends Entity
         'modelo' => true,
         'central' => true,
         'punto' => true,
-        'puerto' => true
+        'puerto' => true,
+        'modelo_id' => true
     ];
 }

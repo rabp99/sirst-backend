@@ -14,7 +14,7 @@ class AntenasController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -28,7 +28,7 @@ class AntenasController extends AppController
         $modeloId = $this->request->getQuery('modelo_id');
         $puertoId = $this->request->getQuery('puerto_id');
         $ip = $this->request->getQuery('ip');
-        $device_name = $this->request->getQuery('device_name');
+        $deviceName = $this->request->getQuery('device_name');
         $mode = $this->request->getQuery('mode');
         $items_per_page = $this->request->getQuery('items_per_page');
         
@@ -56,11 +56,11 @@ class AntenasController extends AppController
         }
         
         if ($ip) {
-            $query->where(['Antenas.ip' => $ip]);
+            $query->where(['Antenas.ip LIKE' => '%' . $ip . '%']);
         }
         
-        if ($device_name) {
-            $query->where(['Antenas.device_name' => $device_name]);
+        if ($deviceName) {
+            $query->where(['Antenas.device_name LIKE' => '%' . $deviceName . '%']);
         }
         
         if ($mode) {

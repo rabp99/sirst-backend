@@ -30,16 +30,16 @@ class ModelosControllerTest extends TestCase
      */
     public function testIndex() {
         $this->get('/modelos.json');
-        $this->assertResponseContains('"totalItems": 6');
+        $this->assertResponseContains('"count": 6');
         
         $this->get('/modelos.json?marca_id=1');
-        $this->assertResponseContains('"totalItems": 3');
+        $this->assertResponseContains('"count": 3');
         
         $this->get('/modelos.json?descripcion=Dell');
-        $this->assertResponseContains('"totalItems": 2');
+        $this->assertResponseContains('"count": 2');
         
         $this->get('/modelos.json?observacion=dolor');
-        $this->assertResponseContains('"totalItems": 6');
+        $this->assertResponseContains('"count": 6');
     }
 
     /**

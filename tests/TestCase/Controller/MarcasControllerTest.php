@@ -30,13 +30,13 @@ class MarcasControllerTest extends TestCase
      */
     public function testIndex() {
         $this->get('/marcas.json');
-        $this->assertResponseContains('"totalItems": 5');
+        $this->assertResponseContains('"count": 5');
         
         $this->get('/marcas.json?descripcion=Epson');
-        $this->assertResponseContains('"totalItems": 2');
+        $this->assertResponseContains('"count": 2');
         
         $this->get('/marcas.json?descripcion=HP');
-        $this->assertResponseContains('"totalItems": 1');
+        $this->assertResponseContains('"count": 1');
     }
 
     /**

@@ -30,16 +30,16 @@ class EnlacesControllerTest extends TestCase
      */
     public function testIndex() {
         $this->get('/enlaces.json');
-        $this->assertResponseContains('"totalItems": 6');
+        $this->assertResponseContains('"count": 6');
         
         $this->get('/enlaces.json?ssid=11');
-        $this->assertResponseContains('"totalItems": 3');
+        $this->assertResponseContains('"count": 3');
         
         $this->get('/enlaces.json?channel_width=40MHZ');
-        $this->assertResponseContains('"totalItems": 3');
+        $this->assertResponseContains('"count": 3');
         
         $this->get('/enlaces.json?ssid=11&channel_width=40MHZ');
-        $this->assertResponseContains('"totalItems": 2');
+        $this->assertResponseContains('"count": 2');
     }
 
     /**

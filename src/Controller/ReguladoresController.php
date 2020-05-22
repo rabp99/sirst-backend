@@ -14,7 +14,7 @@ class ReguladoresController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -59,7 +59,7 @@ class ReguladoresController extends AppController
         }
         
         if ($ip) {
-            $query->where(['Reguladores.ip' => $ip]);
+            $query->where(['Reguladores.ip LIKE' => '%' . $ip . '%']);
         }
         
         $count = $query->count();
@@ -82,11 +82,11 @@ class ReguladoresController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null) {
-        $reguladore = $this->Reguladores->get($id, [
+        $regulador = $this->Reguladores->get($id, [
             'contain' => ['Modelos', 'Centrales', 'Puntos', 'Puertos']
         ]);
 
-        $this->set('reguladore', $reguladore);
+        $this->set(compact('regulador'));
     }
 
     /**
@@ -95,21 +95,18 @@ class ReguladoresController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add() {
-        $reguladore = $this->Reguladores->newEntity();
+        $regulador = $this->Reguladores->newEntity();
         if ($this->request->is('post')) {
-            $reguladore = $this->Reguladores->patchEntity($reguladore, $this->request->getData());
-            if ($this->Reguladores->save($reguladore)) {
-                $this->Flash->success(__('The reguladore has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            $regulador = $this->Reguladores->patchEntity($regulador, $this->request->getData());
+            if ($this->Reguladores->save($regulador)) {
+                $code = 200;
+                $message = 'El regulador fue registrado correctamente';
+            } else {
+                $message = 'El regulador no fue registrado correctamente';
             }
-            $this->Flash->error(__('The reguladore could not be saved. Please, try again.'));
         }
-        $modelos = $this->Reguladores->Modelos->find('list', ['limit' => 200]);
-        $centrales = $this->Reguladores->Centrales->find('list', ['limit' => 200]);
-        $puntos = $this->Reguladores->Puntos->find('list', ['limit' => 200]);
-        $puertos = $this->Reguladores->Puertos->find('list', ['limit' => 200]);
-        $this->set(compact('reguladore', 'modelos', 'centrales', 'puntos', 'puertos'));
+        $this->set(compact('regulador', 'code', 'message'));
+        $this->set('_serialize', ['regulador', 'code', 'message']);
     }
 
     /**

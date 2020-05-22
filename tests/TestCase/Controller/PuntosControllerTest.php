@@ -33,19 +33,19 @@ class PuntosControllerTest extends TestCase
      */
     public function testIndex() {
         $this->get('/puntos.json');
-        $this->assertResponseContains('"totalItems": 5');
+        $this->assertResponseContains('"count": 5');
         
         $this->get('/puntos.json?codigo=10');
-        $this->assertResponseContains('"totalItems": 1');
+        $this->assertResponseContains('"count": 1');
         
         $this->get('/puntos.json?descripcion=América');
-        $this->assertResponseContains('"totalItems": 2');
+        $this->assertResponseContains('"count": 2');
         
         $this->get('/puntos.json?codigo=10&descripcion=América');
-        $this->assertResponseContains('"totalItems": 1');
+        $this->assertResponseContains('"count": 1');
         
         $this->get('/puntos.json?codigo=10&descripcion=España');
-        $this->assertResponseContains('"totalItems": 0');
+        $this->assertResponseContains('"count": 0');
     }
     
     /**

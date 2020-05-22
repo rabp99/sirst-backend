@@ -37,6 +37,7 @@ class ReguladoresTable extends Table
         $this->setTable('reguladores');
         $this->setDisplayField('codigo');
         $this->setPrimaryKey('id');
+        $this->setEntityClass('regulador');
 
         $this->belongsTo('Modelos')
             ->setForeignKey('modelo_id')

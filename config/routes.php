@@ -106,42 +106,6 @@ Router::scope('/', function (RouteBuilder $routes) {
 Router::scope('/', function ($routes) {
     $routes->setExtensions(['json']);
     
-    $routes->resources('Antenas', [
-        'map' => [
-            'isConntected/:id' => [
-                'action' => 'isConntected',
-                'method' => 'GET'
-            ],
-            'getByEnlace/:enlace_id' => [
-                'action' => 'getByEnlace',
-                'method' => 'GET'
-            ]
-        ]
-    ]);
-    $routes->resources('Centrales', [
-        'map' => [
-            'getList' => [
-                'action' => 'getList',
-                'method' => 'GET'
-            ]
-        ]
-    ]);
-    $routes->resources('Cruces', [
-        'map' => [
-            'getByCentral/:central_id' => [
-                'action' => 'getByCentral',
-                'method' => 'GET'
-            ],
-            'getByRegulador/:regulador_id' => [
-                'action' => 'getByRegulador',
-                'method' => 'GET'
-            ],
-            'getByPunto/:punto_id' => [
-                'action' => 'getByPunto',
-                'method' => 'GET'
-            ]
-        ]
-    ]);
     $routes->resources('Enlaces', [
         'map' => [
             'getPuntos/:id' => [
@@ -150,13 +114,32 @@ Router::scope('/', function ($routes) {
             ]
         ]
     ]);
-    $routes->resources('Marcas');
-    $routes->resources('Modelos');
-    $routes->resources('Puertos');
     $routes->resources('Puntos', [
         'map' => [
             'getAssociated/:id' => [
                 'action' => 'getAssociated',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
+    $routes->resources('Marcas');
+    $routes->resources('Centrales', [
+        'map' => [
+            'getList' => [
+                'action' => 'getList',
+                'method' => 'GET'
+            ]
+        ]
+    ]);
+    $routes->resources('Modelos');
+    $routes->resources('TSwitches', [
+        'map' => [
+            'getByMarca/:id_marca' => [
+                'action' => 'getByMarca',
+                'method' => 'GET'
+            ],
+            'getByPunto/:id_punto' => [
+                'action' => 'getByPunto',
                 'method' => 'GET'
             ]
         ]
@@ -177,47 +160,31 @@ Router::scope('/', function ($routes) {
             ]
         ]
     ]);
-    $routes->resources('TSwitches', [
+    $routes->resources('Antenas', [
         'map' => [
-            'getByMarca/:id_marca' => [
-                'action' => 'getByMarca',
+            'isConntected/:id' => [
+                'action' => 'isConntected',
                 'method' => 'GET'
             ],
-            'getByPunto/:id_punto' => [
-                'action' => 'getByPunto',
+            'getByEnlace/:enlace_id' => [
+                'action' => 'getByEnlace',
                 'method' => 'GET'
             ]
         ]
     ]);
-    $routes->resources('Infos', [
+    $routes->resources('Cruces', [
         'map' => [
-            'getMany' => [
-                'action' => 'getMany',
-                'method' => 'POST'
+            'getByCentral/:central_id' => [
+                'action' => 'getByCentral',
+                'method' => 'GET'
             ],
-            'indexAdmin' => [
-                'action' => 'indexAdmin',
-                'method' => 'POST'
+            'getByRegulador/:regulador_id' => [
+                'action' => 'getByRegulador',
+                'method' => 'GET'
             ],
-            'previewImagen' => [
-                'action' => 'previewImagen',
-                'method' => 'POST'
-            ],
-            'previewVideo' => [
-                'action' => 'previewVideo',
-                'method' => 'POST'
-            ],
-            'send' => [
-                'action' => 'send',
-                'method' => 'POST'
-            ],
-            'upload' => [
-                'action' => 'upload',
-                'method' => 'POST'
-            ],
-            'prueba' => [
-                'action' => 'prueba',
-                'method' => 'POST'
+            'getByPunto/:punto_id' => [
+                'action' => 'getByPunto',
+                'method' => 'GET'
             ]
         ]
     ]);
