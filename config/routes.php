@@ -103,7 +103,7 @@ Router::scope('/', function (RouteBuilder $routes) {
  * ```
  */
 
-Router::scope('/', function ($routes) {
+Router::scope('/api', function ($routes) {
     $routes->setExtensions(['json']);
     
     $routes->resources('Enlaces', [

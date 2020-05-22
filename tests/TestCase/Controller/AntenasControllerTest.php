@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use Cake\ORM\TableRegistry;
 use App\Controller\AntenasController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -31,26 +32,29 @@ class AntenasControllerTest extends TestCase
      * @return void
      */
     public function testIndex() {
-        $this->get('/antenas.json');
+        $this->get('/api/antenas.json');
         $this->assertResponseContains('"count": 7');
         
-        $this->get('/antenas.json?modelo_id=1');
+        $this->get('/api/antenas.json?punto_id=1');
         $this->assertResponseContains('"count": 2');
         
-        $this->get('/antenas.json?central_id=1');
+        $this->get('/api/antenas.json?enlace_id=2');
         $this->assertResponseContains('"count": 2');
         
-        $this->get('/reguladores.json?punto_id=1');
-        $this->assertResponseContains('"count": 3');
+        $this->get('/api/antenas.json?modelo_id=2');
+        $this->assertResponseContains('"count": 2');
         
-        $this->get('/reguladores.json?puerto_id=1');
+        $this->get('/api/antenas.json?puerto_id=1');
         $this->assertResponseContains('"count": 7');
         
-        $this->get('/reguladores.json?codigo=65');
-        $this->assertResponseContains('"count": 1');
+        $this->get('/api/antenas.json?ip=192.168.20.');
+        $this->assertResponseContains('"count": 4');
         
-        $this->get('/reguladores.json?ip=192.168.20.');
-        $this->assertResponseContains('"count": 3');
+        $this->get('/api/antenas.json?device_name=CRUCE_15');
+        $this->assertResponseContains('"count": 2');
+        
+        $this->get('/api/antenas.json?mode=ST');
+        $this->assertResponseContains('"count": 4');
     }
 
     /**
@@ -60,20 +64,21 @@ class AntenasControllerTest extends TestCase
      */
     public function testAdd() {
         $data = [
-            'modelo_id' => 2,
-            'central_id' => 3,
-            'punto_id' => 5,
+            'punto_id' => 2,
+            'enlace_id' => 2,
+            'modelo_id' => 3,
             'puerto_id' => 1,
-            'codigo' => '40',
-            'ip' => '192.168.10.154'
+            'ip' => '192.168.90.154',
+            'device_name' => 'CRUCE_34_24_ST',
+            'mode' => 'ST'
         ];
-        $this->post('/reguladores.json', $data);
+        $this->post('/api/antenas.json', $data);
         $this->assertResponseCode(200);
         
-        $regulador = TableRegistry::getTableLocator()->get('Reguladores');
-        $query = $regulador->find()->where(['ip' => $data['ip']]);
+        $antenas = TableRegistry::getTableLocator()->get('Antenas');
+        $query = $antenas->find()->where(['ip' => $data['ip']]);
         $this->assertEquals(1, $query->count());
         
-        $this->assertResponseContains('"message": "El regulador fue registrado correctamente"');
+        $this->assertResponseContains('"message": "La antena fue registrada correctamente"');
     }
 }

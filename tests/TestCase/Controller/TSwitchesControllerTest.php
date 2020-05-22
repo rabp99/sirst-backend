@@ -30,16 +30,16 @@ class TSwitchesControllerTest extends TestCase
      * @return void
      */
     public function testIndex() {
-        $this->get('/t_switches.json');
+        $this->get('/api/t_switches.json');
         $this->assertResponseContains('"count": 7');
         
-        $this->get('/t_switches.json?modelo_id=1');
+        $this->get('/api/t_switches.json?modelo_id=1');
         $this->assertResponseContains('"count": 4');
         
-        $this->get('/t_switches.json?punto_id=2');
+        $this->get('/api/t_switches.json?punto_id=2');
         $this->assertResponseContains('"count": 2');
         
-        $this->get('/t_switches.json?ip=10.3');
+        $this->get('/api/t_switches.json?ip=10.3');
         $this->assertResponseContains('"count": 2');
     }
 
@@ -54,7 +54,7 @@ class TSwitchesControllerTest extends TestCase
             'punto_id' => 2,
             'ip' => '192.168.20.21'
         ];
-        $this->post('/t_switches.json', $data);
+        $this->post('/api/t_switches.json', $data);
         $this->assertResponseCode(200);
         
         $tSwitches = TableRegistry::getTableLocator()->get('TSwitches');

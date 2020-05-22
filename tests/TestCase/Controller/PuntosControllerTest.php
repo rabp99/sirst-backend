@@ -32,19 +32,19 @@ class PuntosControllerTest extends TestCase
      * @return void
      */
     public function testIndex() {
-        $this->get('/puntos.json');
+        $this->get('/api/puntos.json');
         $this->assertResponseContains('"count": 5');
         
-        $this->get('/puntos.json?codigo=10');
+        $this->get('/api/puntos.json?codigo=10');
         $this->assertResponseContains('"count": 1');
         
-        $this->get('/puntos.json?descripcion=América');
+        $this->get('/api/puntos.json?descripcion=América');
         $this->assertResponseContains('"count": 2');
         
-        $this->get('/puntos.json?codigo=10&descripcion=América');
+        $this->get('/api/puntos.json?codigo=10&descripcion=América');
         $this->assertResponseContains('"count": 1');
         
-        $this->get('/puntos.json?codigo=10&descripcion=España');
+        $this->get('/api/puntos.json?codigo=10&descripcion=España');
         $this->assertResponseContains('"count": 0');
     }
     
@@ -60,7 +60,7 @@ class PuntosControllerTest extends TestCase
             'latitud' => '-78.84767800',
             'longitud' => '153.61320600'
         ];
-        $this->post('/puntos.json', $data);
+        $this->post('/api/puntos.json', $data);
         $this->assertResponseCode(200);
         
         $marcas = TableRegistry::getTableLocator()->get('Puntos');

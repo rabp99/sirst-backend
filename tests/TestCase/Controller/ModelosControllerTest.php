@@ -29,16 +29,16 @@ class ModelosControllerTest extends TestCase
      * @return void
      */
     public function testIndex() {
-        $this->get('/modelos.json');
+        $this->get('/api/modelos.json');
         $this->assertResponseContains('"count": 6');
         
-        $this->get('/modelos.json?marca_id=1');
+        $this->get('/api/modelos.json?marca_id=1');
         $this->assertResponseContains('"count": 3');
         
-        $this->get('/modelos.json?descripcion=Dell');
+        $this->get('/api/modelos.json?descripcion=Dell');
         $this->assertResponseContains('"count": 2');
         
-        $this->get('/modelos.json?observacion=dolor');
+        $this->get('/api/modelos.json?observacion=dolor');
         $this->assertResponseContains('"count": 6');
     }
 
@@ -53,7 +53,7 @@ class ModelosControllerTest extends TestCase
             'descripcion' => 'Modelo unico',
             'observacion' => 'Lorem ipsum dolor sit amet'
         ];
-        $this->post('/modelos.json', $data);
+        $this->post('/api/modelos.json', $data);
         $this->assertResponseCode(200);
         
         $modelos = TableRegistry::getTableLocator()->get('Modelos');

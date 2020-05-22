@@ -39,6 +39,9 @@ class Antena extends Entity
         'punto' => true,
         'enlace' => true,
         'modelo' => true,
-        'puerto' => true
+        'puerto' => true,
+        'punto_id' => true,
+        'enlace_id' => true,
+        'modelo_id' => true
     ];
 }

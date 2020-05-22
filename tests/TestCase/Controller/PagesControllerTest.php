@@ -34,9 +34,9 @@ class PagesControllerTest extends IntegrationTestCase
      */
     public function testMultipleGet()
     {
-        $this->get('/');
+        $this->get('/api/');
         $this->assertResponseOk();
-        $this->get('/');
+        $this->get('/api/');
         $this->assertResponseOk();
     }
 
@@ -47,7 +47,7 @@ class PagesControllerTest extends IntegrationTestCase
      */
     public function testDisplay()
     {
-        $this->get('/pages/home');
+        $this->get('/api/pages/home');
         $this->assertResponseOk();
         $this->assertResponseContains('CakePHP');
         $this->assertResponseContains('<html>');
@@ -61,7 +61,7 @@ class PagesControllerTest extends IntegrationTestCase
     public function testMissingTemplate()
     {
         Configure::write('debug', false);
-        $this->get('/pages/not_existing');
+        $this->get('/api/pages/not_existing');
 
         $this->assertResponseError();
         $this->assertResponseContains('Error');
@@ -75,7 +75,7 @@ class PagesControllerTest extends IntegrationTestCase
     public function testMissingTemplateInDebug()
     {
         Configure::write('debug', true);
-        $this->get('/pages/not_existing');
+        $this->get('/api/pages/not_existing');
 
         $this->assertResponseFailure();
         $this->assertResponseContains('Missing Template');
@@ -90,7 +90,7 @@ class PagesControllerTest extends IntegrationTestCase
      */
     public function testDirectoryTraversalProtection()
     {
-        $this->get('/pages/../Layout/ajax');
+        $this->get('/api/pages/../Layout/ajax');
         $this->assertResponseCode(403);
         $this->assertResponseContains('Forbidden');
     }

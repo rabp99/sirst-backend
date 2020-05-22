@@ -82,10 +82,11 @@ class EnlacesController extends AppController
                 $message = 'El enlace fue registrado correctamente';
             } else {
                 $message = 'El enlace no fue registrado correctamente';
+                $errors = $enlace->getErrors();
             }
         }
-        $this->set(compact('enlace', 'code', 'message'));
-        $this->set('_serialize', ['enlace', 'code', 'message']);
+        $this->set(compact('enlace', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['enlace', 'code', 'message', 'errors']);
     }
 
     /**

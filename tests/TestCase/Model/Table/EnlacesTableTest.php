@@ -23,8 +23,8 @@ class EnlacesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Enlaces',
-        'app.Antenas'
+        'app.Enlaces'/*,
+        'app.Antenas'*/
     ];
 
     /**
@@ -32,8 +32,7 @@ class EnlacesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Enlaces') ? [] : ['className' => EnlacesTable::class];
         $this->Enlaces = TableRegistry::getTableLocator()->get('Enlaces', $config);
@@ -44,21 +43,10 @@ class EnlacesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
-    {
+    public function tearDown() {
         unset($this->Enlaces);
 
         parent::tearDown();
-    }
-
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
@@ -66,8 +54,17 @@ class EnlacesTableTest extends TestCase
      *
      * @return void
      */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testValidationDefault() {
+        $enlace = $this->Enlaces->newEntity([
+            'ssid' => 'TM_10_20',
+            'channel_width' => '20MHZ'
+        ]);
+        $expected = [
+            'ssid' => [
+                '_isUnique' => 'El ssid tiene que ser único'
+            ]
+        ];
+        $this->Enlaces->save($enlace);
+        $this->assertSame($expected, $enlace->getErrors());
     }
 }

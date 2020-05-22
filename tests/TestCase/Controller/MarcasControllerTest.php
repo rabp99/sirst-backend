@@ -29,13 +29,13 @@ class MarcasControllerTest extends TestCase
      * @return void
      */
     public function testIndex() {
-        $this->get('/marcas.json');
+        $this->get('/api/marcas.json');
         $this->assertResponseContains('"count": 5');
         
-        $this->get('/marcas.json?descripcion=Epson');
+        $this->get('/api/marcas.json?descripcion=Epson');
         $this->assertResponseContains('"count": 2');
         
-        $this->get('/marcas.json?descripcion=HP');
+        $this->get('/api/marcas.json?descripcion=HP');
         $this->assertResponseContains('"count": 1');
     }
 
@@ -48,7 +48,7 @@ class MarcasControllerTest extends TestCase
         $data = [
             'descripcion' => 'Nueva Marca XX'
         ];
-        $this->post('/marcas.json', $data);
+        $this->post('/api/marcas.json', $data);
         $this->assertResponseCode(200);
         
         $marcas = TableRegistry::getTableLocator()->get('Marcas');

@@ -29,16 +29,16 @@ class EnlacesControllerTest extends TestCase
      * @return void
      */
     public function testIndex() {
-        $this->get('/enlaces.json');
+        $this->get('/api/enlaces.json');
         $this->assertResponseContains('"count": 6');
         
-        $this->get('/enlaces.json?ssid=11');
+        $this->get('/api/enlaces.json?ssid=11');
         $this->assertResponseContains('"count": 3');
         
-        $this->get('/enlaces.json?channel_width=40MHZ');
+        $this->get('/api/enlaces.json?channel_width=40MHZ');
         $this->assertResponseContains('"count": 3');
         
-        $this->get('/enlaces.json?ssid=11&channel_width=40MHZ');
+        $this->get('/api/enlaces.json?ssid=11&channel_width=40MHZ');
         $this->assertResponseContains('"count": 2');
     }
 
@@ -52,7 +52,7 @@ class EnlacesControllerTest extends TestCase
             'ssid' => 'TM_24_35',
             'channel_width' => '40MHZ '
         ];
-        $this->post('/enlaces.json', $data);
+        $this->post('/api/enlaces.json', $data);
         $this->assertResponseCode(200);
         
         $marcas = TableRegistry::getTableLocator()->get('Enlaces');

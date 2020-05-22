@@ -28,16 +28,16 @@ class CentralesControllerTest extends TestCase
      * @return void
      */
     public function testIndex() {
-        $this->get('/centrales.json');
+        $this->get('/api/centrales.json');
         $this->assertResponseContains('"count": 4');
         
-        $this->get('/centrales.json?descripcion=Cent');
+        $this->get('/api/centrales.json?descripcion=Cent');
         $this->assertResponseContains('"count": 4');
         
-        $this->get('/centrales.json?nro=2');
+        $this->get('/api/centrales.json?nro=2');
         $this->assertResponseContains('"count": 1');
         
-        $this->get('/centrales.json?descripcion=España&nro=4');
+        $this->get('/api/centrales.json?descripcion=España&nro=4');
         $this->assertResponseContains('"count": 0');
     }
 
@@ -51,7 +51,7 @@ class CentralesControllerTest extends TestCase
             'descripcion' => 'Central 5 Extra',
             'nro' => '5'
         ];
-        $this->post('/centrales.json', $dataTest1);
+        $this->post('/api/centrales.json', $dataTest1);
         $this->assertResponseCode(200);
         
         $centrales = TableRegistry::getTableLocator()->get('Centrales');
@@ -64,7 +64,7 @@ class CentralesControllerTest extends TestCase
             'descripcion' => 'Central 6 Extra',
             'nro' => '2'
         ];
-        $this->post('/centrales.json', $dataTest2);
+        $this->post('/api/centrales.json', $dataTest2);
         $this->assertResponseCode(200);
         
         $queryTest2 = $centrales->find()->where(['descripcion' => $dataTest2['descripcion']]);

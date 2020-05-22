@@ -32,25 +32,25 @@ class ReguladoresControllerTest extends TestCase
      * @return void
      */
     public function testIndex() {
-        $this->get('/reguladores.json');
+        $this->get('/api/reguladores.json');
         $this->assertResponseContains('"count": 7');
         
-        $this->get('/reguladores.json?modelo_id=1');
+        $this->get('/api/reguladores.json?modelo_id=1');
         $this->assertResponseContains('"count": 2');
         
-        $this->get('/reguladores.json?central_id=1');
+        $this->get('/api/reguladores.json?central_id=1');
         $this->assertResponseContains('"count": 2');
         
-        $this->get('/reguladores.json?punto_id=1');
+        $this->get('/api/reguladores.json?punto_id=1');
         $this->assertResponseContains('"count": 3');
         
-        $this->get('/reguladores.json?puerto_id=1');
+        $this->get('/api/reguladores.json?puerto_id=1');
         $this->assertResponseContains('"count": 7');
         
-        $this->get('/reguladores.json?codigo=65');
+        $this->get('/api/reguladores.json?codigo=65');
         $this->assertResponseContains('"count": 1');
         
-        $this->get('/reguladores.json?ip=192.168.20.');
+        $this->get('/api/reguladores.json?ip=192.168.20.');
         $this->assertResponseContains('"count": 3');
     }
 
@@ -68,7 +68,7 @@ class ReguladoresControllerTest extends TestCase
             'codigo' => '40',
             'ip' => '192.168.10.154'
         ];
-        $this->post('/reguladores.json', $data);
+        $this->post('/api/reguladores.json', $data);
         $this->assertResponseCode(200);
         
         $regulador = TableRegistry::getTableLocator()->get('Reguladores');

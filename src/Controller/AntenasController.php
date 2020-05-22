@@ -91,7 +91,7 @@ class AntenasController extends AppController
             'contain' => ['Puntos', 'Enlaces', 'Modelos', 'Puertos']
         ]);
 
-        $this->set('antena', $antena);
+        $this->set(compact('antena'));
     }
 
     /**
@@ -104,17 +104,15 @@ class AntenasController extends AppController
         if ($this->request->is('post')) {
             $antena = $this->Antenas->patchEntity($antena, $this->request->getData());
             if ($this->Antenas->save($antena)) {
-                $this->Flash->success(__('The antena has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $code = 200;
+                $message = 'La antena fue registrada correctamente';
+            } else {
+                $message = 'La antena no fue registrada correctamente';
+                $errors = $antena->getErrors();
             }
-            $this->Flash->error(__('The antena could not be saved. Please, try again.'));
         }
-        $puntos = $this->Antenas->Puntos->find('list', ['limit' => 200]);
-        $enlaces = $this->Antenas->Enlaces->find('list', ['limit' => 200]);
-        $modelos = $this->Antenas->Modelos->find('list', ['limit' => 200]);
-        $puertos = $this->Antenas->Puertos->find('list', ['limit' => 200]);
-        $this->set(compact('antena', 'puntos', 'enlaces', 'modelos', 'puertos'));
+        $this->set(compact('antena', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['antena', 'code', 'message', 'errors']);
     }
 
     /**
