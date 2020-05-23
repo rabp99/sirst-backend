@@ -34,7 +34,7 @@ class MarcasTable extends Table
         $this->setTable('marcas');
         $this->setDisplayField('descripcion');
         $this->setPrimaryKey('id');
-
+        
         $this->hasMany('Modelos')
             ->setForeignKey('marca_id');
     }
@@ -57,5 +57,18 @@ class MarcasTable extends Table
             ->notEmptyString('descripcion');
 
         return $validator;
+    }
+    
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->isUnique(['descripcion'], 'Ya existe una marca con la misma descripción'));
+
+        return $rules;
     }
 }

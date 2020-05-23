@@ -33,12 +33,14 @@ class CentralesControllerTest extends TestCase
         
         $this->get('/api/centrales.json?descripcion=Cent');
         $this->assertResponseContains('"count": 4');
-        
+        /*
         $this->get('/api/centrales.json?nro=2');
         $this->assertResponseContains('"count": 1');
         
         $this->get('/api/centrales.json?descripcion=España&nro=4');
         $this->assertResponseContains('"count": 0');
+         * 
+         */
     }
 
     /**
@@ -60,16 +62,22 @@ class CentralesControllerTest extends TestCase
         
         $this->assertResponseContains('"message": "La central fue registrada correctamente"');
         
+        // en caso se repita la descripción
         $dataTest2 = [
-            'descripcion' => 'Central 6 Extra',
-            'nro' => '2'
+            'descripcion' => 'Central 5 Extra',
+            'nro' => '9'
         ];
         $this->post('/api/centrales.json', $dataTest2);
         $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La central no fue registrada correctamente"');
         
-        $queryTest2 = $centrales->find()->where(['descripcion' => $dataTest2['descripcion']]);
-        $this->assertEquals(0, $queryTest2->count());
-        
+        // en caso se repita el nro
+        $dataTest3 = [
+            'descripcion' => 'Central 31 Extra',
+            'nro' => '5'
+        ];
+        $this->post('/api/centrales.json', $dataTest3);
+        $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "La central no fue registrada correctamente"');
     }
 }

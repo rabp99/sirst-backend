@@ -75,6 +75,7 @@ class ModelosTable extends Table
      */
     public function buildRules(RulesChecker $rules) {
         $rules->add($rules->existsIn(['marca_id'], 'Marcas'));
+        $rules->add($rules->isUnique(['descripcion'], 'Ya existe un modelo con la misma descripción'));
 
         return $rules;
     }

@@ -37,17 +37,22 @@ class MarcasTableTest extends TestCase
 
         parent::tearDown();
     }
-    
-    public function testFind() {
-        $query = $this->Marcas->find();
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
 
-        $result = $query->enableHydration(false)->toArray();
-
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules() {
+        $marca = $this->Marcas->newEntity([
+            'descripcion' => 'HP'
+        ]);
         $expected = [
-            ['id' => 1, 'descripcion' => 'Lorem ipsum dolor sit amet']
+            'descripcion' => [
+                '_isUnique' => 'Ya existe una marca con la misma descripción'
+            ]
         ];
-        
-        $this->assertEquals($expected, $result);
+        $this->Marcas->save($marca);
+        $this->assertSame($expected, $marca->getErrors());
     }
 }

@@ -32,7 +32,7 @@ class PuertosController extends AppController
         ];
         
         $query = $this->Puertos->find()
-            ->contain(['TSwitches']);
+            ->contain(['TSwitches'])->order(['Puertos.id']);;
         
         if ($tSwitchId) {
             $query->where(['Puertos.t_switch_id' => $tSwitchId]);

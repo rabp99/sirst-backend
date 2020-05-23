@@ -23,20 +23,20 @@ class ModelosController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $marca_id = $this->request->getQuery('marca_id');
+        $marcaDescripcion = $this->request->getQuery('marcaDescripcion');
         $descripcion = $this->request->getQuery('descripcion');
         $observacion = $this->request->getQuery('observacion');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $itemsPerPage = $this->request->getQuery('itemsPerPage');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
         $query = $this->Modelos->find()
-            ->contain(['Marcas']);
+            ->contain(['Marcas'])->order(['Modelos.id']);;
         
-        if ($marca_id) {
-            $query->where(['Modelos.marca_id' => $marca_id]);
+        if ($marcaDescripcion) {
+            $query->where(['Marcas.descripcion LIKE' => '%' . $marcaDescripcion . '%']);
         }
         
         if ($descripcion) {
@@ -71,7 +71,7 @@ class ModelosController extends AppController
             'contain' => ['Marcas']
         ]);
 
-        $this->set('modelo', $modelo);
+        $this->set(compact('modelo'));
     }
 
     /**
@@ -88,10 +88,11 @@ class ModelosController extends AppController
                 $message = 'El modelo fue registrado correctamente';
             } else {
                 $message = 'El modelo no fue registrado correctamente';
+                $errors = $modelo->getErrors();
             }
         }
-        $this->set(compact('modelo', 'code', 'message'));
-        $this->set('_serialize', ['modelo', 'code', 'message']);
+        $this->set(compact('modelo', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['modelo', 'code', 'message', 'errors']);
     }
 
     /**

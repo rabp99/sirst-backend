@@ -31,8 +31,7 @@ class CentralesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Centrales') ? [] : ['className' => CentralesTable::class];
         $this->Centrales = TableRegistry::getTableLocator()->get('Centrales', $config);
@@ -43,30 +42,42 @@ class CentralesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
-    {
+    public function tearDown() {
         unset($this->Centrales);
 
         parent::tearDown();
     }
 
     /**
-     * Test initialize method
+     * Test buildRules method
      *
      * @return void
      */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testBuildRules() {
+        // En caso se repita la descripción
+        $centralTest1 = $this->Centrales->newEntity([
+            'descripcion' => 'Central 1 CCHH',
+            'nro' => 6
+        ]);
+        $expectedTest1 = [
+            'descripcion' => [
+                '_isUnique' => 'Ya existe una central con la misma descripción'
+            ]
+        ];
+        $this->Centrales->save($centralTest1);
+        $this->assertSame($expectedTest1, $centralTest1->getErrors());
+        
+        // En caso se repita el nro
+        $centralTest2 = $this->Centrales->newEntity([
+            'descripcion' => 'Central 10 Algo',
+            'nro' => 3
+        ]);
+        $expectedTest2 = [
+            'nro' => [
+                '_isUnique' => 'Ya existe una central con el mismo número'
+            ]
+        ];
+        $this->Centrales->save($centralTest2);
+        $this->assertSame($expectedTest2, $centralTest2->getErrors());
     }
 }

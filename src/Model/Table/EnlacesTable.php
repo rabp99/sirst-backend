@@ -74,7 +74,7 @@ class EnlacesTable extends Table
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules) {
-        $rules->add($rules->isUnique(['ssid'], 'El ssid tiene que ser único'));
+        $rules->add($rules->isUnique(['ssid'], 'Ya existe un enlace con el mismo ssid'));
 
         return $rules;
     }

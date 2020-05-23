@@ -33,7 +33,7 @@ class TSwitchesController extends AppController
         ];
         
         $query = $this->TSwitches->find()
-            ->contain(['Modelos', 'Puntos']);
+            ->contain(['Modelos', 'Puntos'])->order(['TSwitches.id']);;
         
         if ($modelo_id) {
             $query->where(['TSwitches.modelo_id' => $modelo_id]);

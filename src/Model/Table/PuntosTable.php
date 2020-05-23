@@ -66,8 +66,7 @@ class PuntosTable extends Table
             ->scalar('codigo')
             ->maxLength('codigo', 4)
             ->requirePresence('codigo', 'create')
-            ->notEmptyString('codigo')
-            ->add('codigo', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('codigo');
 
         $validator
             ->scalar('descripcion')
@@ -97,8 +96,9 @@ class PuntosTable extends Table
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules) {
-        $rules->add($rules->isUnique(['codigo']));
-
+        $rules->add($rules->isUnique(['codigo'], 'Ya existe un punto con el mismo código'));
+        $rules->add($rules->isUnique(['descripcion'], 'Ya existe un punto con la misma descripción'));
+        
         return $rules;
     }
 }

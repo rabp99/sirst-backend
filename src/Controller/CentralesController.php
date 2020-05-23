@@ -24,23 +24,22 @@ class CentralesController extends AppController
      */
     public function index() {
         $descripcion = $this->request->getQuery('descripcion');
-        $nro = $this->request->getQuery('nro');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $itemsPerPage = $this->request->getQuery('itemsPerPage');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
-        $query = $this->Centrales->find();
+        $query = $this->Centrales->find()->order(['id']);;
         
         if ($descripcion) {
             $query->where(['Centrales.descripcion like' => '%' . $descripcion . '%']);
         }
-        
+        /*
         if ($nro) {
             $query->where(['Centrales.nro' => $nro]);
         }
-        
+        */
         $count = $query->count();
         $centrales = $this->paginate($query);
         $paginate = $this->request->getParam('paging')['Centrales'];
@@ -81,10 +80,11 @@ class CentralesController extends AppController
                 $message = 'La central fue registrada correctamente';
             } else {
                 $message = 'La central no fue registrada correctamente';
+                $errors = $central->getErrors();
             }
         }
-        $this->set(compact('central', 'code', 'message'));
-        $this->set('_serialize', ['central', 'code', 'message']);
+        $this->set(compact('central', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['central', 'code', 'message', 'errors']);
     }
 
     /**

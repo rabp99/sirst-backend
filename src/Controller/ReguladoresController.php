@@ -36,7 +36,7 @@ class ReguladoresController extends AppController
         ];
         
         $query = $this->Reguladores->find()
-            ->contain(['Modelos', 'Centrales', 'Puntos', 'Puertos']);
+            ->contain(['Modelos', 'Centrales', 'Puntos', 'Puertos'])->order(['Reguladores.id']);;
         
         if ($modeloId) {
             $query->where(['Reguladores.modelo_id' => $modeloId]);

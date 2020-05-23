@@ -24,13 +24,13 @@ class MarcasController extends AppController
      */
     public function index() {
         $descripcion = $this->request->getQuery('descripcion');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $itemsPerPage = $this->request->getQuery('itemsPerPage');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
-        $query = $this->Marcas->find();
+        $query = $this->Marcas->find()->order(['Marcas.id']);
         
         if ($descripcion) {
             $query->where(['Marcas.descripcion LIKE' => '%' . $descripcion . '%']);
@@ -78,10 +78,11 @@ class MarcasController extends AppController
                 $message = 'La marca fue registrada correctamente';
             } else {
                 $message = 'La marca no fue registrada correctamente';
+                $errors = $marca->getErrors();
             }
         }
-        $this->set(compact('marca', 'code', 'message'));
-        $this->set('_serialize', ['marca', 'code', 'message']);
+        $this->set(compact('marca', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['marca', 'code', 'message', 'errors']);
     }
 
     /**

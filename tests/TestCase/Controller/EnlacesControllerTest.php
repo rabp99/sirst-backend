@@ -55,10 +55,16 @@ class EnlacesControllerTest extends TestCase
         $this->post('/api/enlaces.json', $data);
         $this->assertResponseCode(200);
         
-        $marcas = TableRegistry::getTableLocator()->get('Enlaces');
-        $query = $marcas->find()->where(['ssid' => $data['ssid']]);
+        $enlaces = TableRegistry::getTableLocator()->get('Enlaces');
+        $query = $enlaces->find()->where(['ssid' => $data['ssid']]);
         $this->assertEquals(1, $query->count());
         
         $this->assertResponseContains('"message": "El enlace fue registrado correctamente"');
+        
+        // En caso se duplique el ssid
+        $this->post('/api/enlaces.json', $data);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El enlace no fue registrado correctamente"');
+        
     }
 }

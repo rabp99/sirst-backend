@@ -37,7 +37,7 @@ class AntenasController extends AppController
         ];
         
         $query = $this->Antenas->find()
-            ->contain(['Puntos', 'Enlaces', 'Modelos', 'Puertos']);
+            ->contain(['Puntos', 'Enlaces', 'Modelos', 'Puertos'])->order(['Antenas.id']);;
         
         if ($puntoId) {
             $query->where(['Antenas.punto_id' => $puntoId]);

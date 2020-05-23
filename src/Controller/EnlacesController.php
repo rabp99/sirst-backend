@@ -24,21 +24,21 @@ class EnlacesController extends AppController
      */
     public function index() {
         $ssid = $this->request->getQuery('ssid');
-        $channel_width = $this->request->getQuery('channel_width');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $channelWidth = $this->request->getQuery('channel_width');
+        $itemsPerPage = $this->request->getQuery('itemsPerPage');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
-        $query = $this->Enlaces->find();
+        $query = $this->Enlaces->find()->order(['Enlaces.id']);;
         
         if ($ssid) {
             $query->where(['Enlaces.ssid like' => '%' . $ssid . '%']);
         }
         
-        if ($channel_width) {
-            $query->where(['Enlaces.channel_width' => $channel_width]);
+        if ($channelWidth) {
+            $query->where(['Enlaces.channel_width' => $channelWidth]);
         }
         
         $count = $query->count();

@@ -14,7 +14,7 @@ class CrucesController extends AppController
 {
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Auth->allow();
     }
     
     /**
@@ -33,7 +33,7 @@ class CrucesController extends AppController
         ];
         
         $query = $this->Cruces->find()
-            ->contain(['Reguladores']);
+            ->contain(['Reguladores'])->order(['Cruces.id']);;
         
         if ($reguladorId) {
             $query->where(['Cruces.regulador_id' => $reguladorId]);
@@ -44,7 +44,7 @@ class CrucesController extends AppController
         }
         
         if ($descripcion) {
-            $query->where(['Cruces.descripcion' => $descripcion]);
+            $query->where(['Cruces.descripcion LIKE' => '%' . $descripcion . '%']);
         }
         
         $count = $query->count();
@@ -71,7 +71,7 @@ class CrucesController extends AppController
             'contain' => ['Puntos', 'Reguladores']
         ]);
 
-        $this->set('cruce', $cruce);
+        $this->set(compact('cruce'));
     }
 
     /**
@@ -84,15 +84,15 @@ class CrucesController extends AppController
         if ($this->request->is('post')) {
             $cruce = $this->Cruces->patchEntity($cruce, $this->request->getData());
             if ($this->Cruces->save($cruce)) {
-                $this->Flash->success(__('The cruce has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $code = 200;
+                $message = 'El cruce fue registrado correctamente';
+            } else {
+                $message = 'El cruce no fue registrado correctamente';
+                $errors = $cruce->getErrors();
             }
-            $this->Flash->error(__('The cruce could not be saved. Please, try again.'));
         }
-        $puntos = $this->Cruces->Puntos->find('list', ['limit' => 200]);
-        $reguladores = $this->Cruces->Reguladores->find('list', ['limit' => 200]);
-        $this->set(compact('cruce', 'puntos', 'reguladores'));
+        $this->set(compact('cruce', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['cruce', 'code', 'message', 'errors']);
     }
 
     /**

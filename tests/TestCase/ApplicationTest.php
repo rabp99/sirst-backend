@@ -70,6 +70,7 @@ class ApplicationTest extends IntegrationTestCase
      *
      * @return void
      */
+    /*
     public function testMiddleware()
     {
         $app = new Application(dirname(dirname(__DIR__)) . '/config');
@@ -81,4 +82,5 @@ class ApplicationTest extends IntegrationTestCase
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->get(2));
     }
+     */
 }

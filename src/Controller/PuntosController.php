@@ -25,13 +25,13 @@ class PuntosController extends AppController
     public function index() {
         $codigo = $this->request->getQuery('codigo');
         $descripcion = $this->request->getQuery('descripcion');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $itemsPerPage = $this->request->getQuery('itemsPerPage');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
-        $query = $this->Puntos->find();
+        $query = $this->Puntos->find()->order(['Puntos.id']);;
         
         if ($codigo) {
             $query->where(['Puntos.codigo' => $codigo]);
@@ -82,10 +82,11 @@ class PuntosController extends AppController
                 $message = 'El punto fue registrado correctamente';
             } else {
                 $message = 'El punto no fue registrado correctamente';
+                $errors = $punto->getErrors();
             }
         }
-        $this->set(compact('punto', 'code', 'message'));
-        $this->set('_serialize', ['punto', 'code', 'message']);
+        $this->set(compact('punto', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['punto', 'code', 'message', 'errors']);
     }
 
     /**

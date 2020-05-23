@@ -56,5 +56,10 @@ class MarcasControllerTest extends TestCase
         $this->assertEquals(1, $query->count());
         
         $this->assertResponseContains('"message": "La marca fue registrada correctamente"');
+                
+        // En caso se duplique la descripcion
+        $this->post('/api/marcas.json', $data);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La marca no fue registrada correctamente"');
     }
 }

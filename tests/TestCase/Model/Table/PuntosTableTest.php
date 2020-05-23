@@ -35,8 +35,7 @@ class PuntosTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Puntos') ? [] : ['className' => PuntosTable::class];
         $this->Puntos = TableRegistry::getTableLocator()->get('Puntos', $config);
@@ -47,40 +46,46 @@ class PuntosTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
-    {
+    public function tearDown() {
         unset($this->Puntos);
 
         parent::tearDown();
     }
 
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
+    /**1
      * Test buildRules method
      *
      * @return void
      */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testBuildRules() {
+        // en caso el código este repetido
+        $puntoTest1 = $this->Puntos->newEntity([
+            'codigo' => '10',
+            'descripcion' => 'dsadsa',
+            'latitud' => '-78.84712100',
+            'longitud' => '153.61575600'
+        ]);
+        $expectedTest1 = [
+            'codigo' => [
+                '_isUnique' => 'Ya existe un punto con el mismo código'
+            ]
+        ];
+        $this->Puntos->save($puntoTest1);
+        $this->assertSame($expectedTest1, $puntoTest1->getErrors());
+        
+        // en caso la descripción este repetida
+        $puntoTest2 = $this->Puntos->newEntity([
+            'codigo' => '50',
+            'descripcion' => 'Av. América Sur UPAO',
+            'latitud' => '-78.84712100',
+            'longitud' => '153.61575600'
+        ]);
+        $expectedTest2 = [
+            'descripcion' => [
+                '_isUnique' => 'Ya existe un punto con la misma descripción'
+            ]
+        ];
+        $this->Puntos->save($puntoTest2);
+        $this->assertSame($expectedTest2, $puntoTest2->getErrors());
     }
 }

@@ -61,9 +61,22 @@ class CentralesTable extends Table
             ->scalar('nro')
             ->maxLength('nro', 1)
             ->requirePresence('nro', 'create')
-            ->notEmptyString('nro')
-            ->add('nro', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('nro');
 
         return $validator;
+    }
+       
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->isUnique(['descripcion'], 'Ya existe una central con la misma descripción'));
+        $rules->add($rules->isUnique(['nro'], 'Ya existe una central con el mismo número'));
+
+        return $rules;
     }
 }

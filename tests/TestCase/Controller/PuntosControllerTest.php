@@ -54,19 +54,41 @@ class PuntosControllerTest extends TestCase
      * @return void
      */
     public function testAdd() {
-        $data = [
+        $dataTest1 = [
             'codigo' => '35',
             'descripcion' => 'Av. 29 de Diciembre',
             'latitud' => '-78.84767800',
             'longitud' => '153.61320600'
         ];
-        $this->post('/api/puntos.json', $data);
+        $this->post('/api/puntos.json', $dataTest1);
         $this->assertResponseCode(200);
         
         $marcas = TableRegistry::getTableLocator()->get('Puntos');
-        $query = $marcas->find()->where(['codigo' => $data['codigo']]);
+        $query = $marcas->find()->where(['codigo' => $dataTest1['codigo']]);
         $this->assertEquals(1, $query->count());
         
         $this->assertResponseContains('"message": "El punto fue registrado correctamente"');
+        
+        // En caso se ingrese un codigo repetido
+        $dataTest2 = [
+            'codigo' => '35',
+            'descripcion' => 'dasdsa',
+            'latitud' => '-78.84767200',
+            'longitud' => '153.61321200'
+        ];
+        $this->post('/api/puntos.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El punto no fue registrado correctamente"');
+        
+        // En caso se ingrese una descripción repetida
+        $dataTest3 = [
+            'codigo' => '35',
+            'descripcion' => 'Av. 29 de Diciembre',
+            'latitud' => '-78.84767200',
+            'longitud' => '153.61321200'
+        ];
+        $this->post('/api/puntos.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El punto no fue registrado correctamente"');
     }
 }

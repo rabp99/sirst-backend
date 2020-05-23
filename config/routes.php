@@ -128,6 +128,10 @@ Router::scope('/api', function ($routes) {
             'getList' => [
                 'action' => 'getList',
                 'method' => 'GET'
+            ],
+            'getByNro/:nro' => [
+                'action' => 'getByNro',
+                'method' => 'GET'
             ]
         ]
     ]);
