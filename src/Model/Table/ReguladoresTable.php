@@ -95,6 +95,8 @@ class ReguladoresTable extends Table
         $rules->add($rules->existsIn(['central_id'], 'Centrales'));
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['puerto_id'], 'Puertos'));
+        $rules->add($rules->isUnique(['codigo'], 'Ya existe un regulador con el mismo código'));
+        $rules->add($rules->isUnique(['ip'], 'Ya existe un regulador con la misma ip'));
 
         return $rules;
     }

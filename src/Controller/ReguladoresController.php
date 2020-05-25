@@ -23,39 +23,34 @@ class ReguladoresController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $modeloId = $this->request->getQuery('modelo_id');
-        $centralId = $this->request->getQuery('central_id');
-        $puntoId = $this->request->getQuery('punto_id');
-        $puertoId = $this->request->getQuery('puerto_id');
+        $modeloDescripcion = $this->request->getQuery('modeloDescripcion');
+        $centralNro = $this->request->getQuery('centralNro');
+        $puntoDescripcion = $this->request->getQuery('puntoDescripcion');
         $codigo = $this->request->getQuery('codigo');
         $ip = $this->request->getQuery('ip');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $itemsPerPage = $this->request->getQuery('itemsPerPage');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
         $query = $this->Reguladores->find()
             ->contain(['Modelos', 'Centrales', 'Puntos', 'Puertos'])->order(['Reguladores.id']);;
         
-        if ($modeloId) {
-            $query->where(['Reguladores.modelo_id' => $modeloId]);
+        if ($modeloDescripcion) {
+            $query->where(['Modelos.descripcion LIKE' => '%' . $modeloDescripcion . '%']);
         }
         
-        if ($centralId) {
-            $query->where(['Reguladores.central_id' => $centralId]);
+        if ($centralNro) {
+            $query->where(['Centrales.nro' => $centralNro]);
         }
         
-        if ($puntoId) {
-            $query->where(['Reguladores.punto_id' => $puntoId]);
-        }
-        
-        if ($puertoId) {
-            $query->where(['Reguladores.puerto_id' => $puertoId]);
+        if ($puntoDescripcion) {
+            $query->where(['Puntos.descripcion LIKE' => '%' . $puntoDescripcion . '%']);
         }
         
         if ($codigo) {
-            $query->where(['Reguladores.codigo' => $codigo]);
+            $query->where(['Reguladores.codigo LIKE' => '%' . $codigo . '%']);
         }
         
         if ($ip) {
@@ -103,10 +98,11 @@ class ReguladoresController extends AppController
                 $message = 'El regulador fue registrado correctamente';
             } else {
                 $message = 'El regulador no fue registrado correctamente';
+                $errors = $regulador->getErrors();
             }
         }
-        $this->set(compact('regulador', 'code', 'message'));
-        $this->set('_serialize', ['regulador', 'code', 'message']);
+        $this->set(compact('regulador', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['regulador', 'code', 'message', 'errors']);
     }
 
     /**
