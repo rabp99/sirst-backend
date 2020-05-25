@@ -33,8 +33,7 @@ class TSwitchesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('TSwitches') ? [] : ['className' => TSwitchesTable::class];
         $this->TSwitches = TableRegistry::getTableLocator()->get('TSwitches', $config);
@@ -45,40 +44,17 @@ class TSwitchesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
-    {
+    public function tearDown() {
         unset($this->TSwitches);
 
         parent::tearDown();
     }
-
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
+    
     /**
      * Test buildRules method
      *
      * @return void
      */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testBuildRules() {
     }
 }

@@ -59,8 +59,7 @@ class TSwitchesTable extends Table
         $validator
             ->scalar('ip')
             ->maxLength('ip', 15)
-            ->allowEmptyString('ip')
-            ->add('ip', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->allowEmptyString('ip');
 
         return $validator;
     }
@@ -73,7 +72,8 @@ class TSwitchesTable extends Table
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules) {
-        $rules->add($rules->isUnique(['ip']));
+        
+        // $rules->add($rules->isUnique(['ip'])); Implementar unique sólo en caso tenga algo escrito, porque se permite null
         $rules->add($rules->existsIn(['modelo_id'], 'Modelos'));
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
 

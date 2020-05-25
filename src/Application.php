@@ -48,7 +48,7 @@ class Application extends BaseApplication
         if (Configure::read('debug')) {
             $this->addPlugin(\DebugKit\Plugin::class);
         }
-
+        $this->addPlugin('Cors', ['bootstrap' => true, 'routes' => false]);
         // Load more plugins here
     }
 
@@ -76,15 +76,6 @@ class Application extends BaseApplication
             // creating the middleware instance specify the cache config name by
             // using it's second constructor argument:
             // `new RoutingMiddleware($this, '_cake_routes_')`
-            ->add(function($request, $response, $next) {
-                return $next($request, $response)
-                    ->withHeader('Access-Control-Allow-Origin', '*')
-                    ->withHeader('Access-Control-Allow-Methods', '*')
-                    ->withHeader('Access-Control-Allow-Credentials', 'true')
-                    ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With')
-                    ->withHeader('Access-Control-Allow-Headers', 'Content-Type')
-                    ->withHeader('Access-Control-Allow-Type', 'application/json');
-                })
             ->add(new RoutingMiddleware($this));
 
         return $middlewareQueue;

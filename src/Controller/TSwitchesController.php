@@ -23,24 +23,27 @@ class TSwitchesController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $modelo_id = $this->request->getQuery('modelo_id');
-        $punto_id = $this->request->getQuery('punto_id');
+        $modeloDescripcion = $this->request->getQuery('modeloDescripcion');
+        $puntoText = $this->request->getQuery('puntoText');
         $ip = $this->request->getQuery('ip');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $itemsPerPage = $this->request->getQuery('itemsPerPage');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
         $query = $this->TSwitches->find()
             ->contain(['Modelos', 'Puntos'])->order(['TSwitches.id']);;
         
-        if ($modelo_id) {
-            $query->where(['TSwitches.modelo_id' => $modelo_id]);
+        if ($modeloDescripcion) {
+            $query->where(['Modelos.descripcion LIKE' => '%' . $modeloDescripcion . '%']);
         }
         
-        if ($punto_id) {
-            $query->where(['TSwitches.punto_id' => $punto_id]);
+        if ($puntoText) {
+            $query->where(['OR' =>  [
+                'Puntos.descripcion LIKE' => '%' . $puntoText . '%',
+                'Puntos.codigo LIKE' => '%' . $puntoText . '%'
+            ]]);
         }
         
         if ($ip) {
@@ -88,10 +91,11 @@ class TSwitchesController extends AppController
                 $message = 'El switch fue registrado correctamente';
             } else {
                 $message = 'El switch no fue registrado correctamente';
+                $errors = $modelo->getErrors();
             }
         }
-        $this->set(compact('tSwitch', 'code', 'message'));
-        $this->set('_serialize', ['tSwitch', 'code', 'message']);
+        $this->set(compact('tSwitch', 'code', 'message', 'errors'));
+        $this->set('_serialize', ['tSwitch', 'code', 'message', 'errors']);
     }
 
     /**

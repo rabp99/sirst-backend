@@ -33,11 +33,14 @@ class TSwitchesControllerTest extends TestCase
         $this->get('/api/t_switches.json');
         $this->assertResponseContains('"count": 7');
         
-        $this->get('/api/t_switches.json?modelo_id=1');
+        $this->get('/api/t_switches.json?modeloDescripcion=Hp%20p');
         $this->assertResponseContains('"count": 4');
         
-        $this->get('/api/t_switches.json?punto_id=2');
-        $this->assertResponseContains('"count": 2');
+        $this->get('/api/t_switches.json?puntoText=América');
+        $this->assertResponseContains('"count": 3');
+        
+        $this->get('/api/t_switches.json?puntoText=4');
+        $this->assertResponseContains('"count": 3');
         
         $this->get('/api/t_switches.json?ip=10.3');
         $this->assertResponseContains('"count": 2');
