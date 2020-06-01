@@ -98,6 +98,8 @@ class AntenasTable extends Table
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['enlace_id'], 'Enlaces'));
         $rules->add($rules->existsIn(['modelo_id'], 'Modelos'));
+        $rules->add($rules->isUnique(['ip'], 'Ya existe una antena con la misma ip'));
+        $rules->add($rules->isUnique(['device_name'], 'Ya existe una antena con el mismo device name'));
 
         return $rules;
     }

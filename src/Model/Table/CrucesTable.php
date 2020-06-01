@@ -61,8 +61,7 @@ class CrucesTable extends Table
             ->scalar('codigo')
             ->maxLength('codigo', 4)
             ->requirePresence('codigo', 'create')
-            ->notEmptyString('codigo')
-            ->add('codigo', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('codigo');
 
         $validator
             ->scalar('descripcion')
@@ -81,9 +80,10 @@ class CrucesTable extends Table
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules) {
-        $rules->add($rules->isUnique(['codigo']));
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['regulador_id'], 'Reguladores'));
+        $rules->add($rules->isUnique(['codigo'], 'Ya existe un cruce con el mismo código'));
+        $rules->add($rules->isUnique(['descripcion'], 'Ya existe un cruce con la misma descripción'));
 
         return $rules;
     }

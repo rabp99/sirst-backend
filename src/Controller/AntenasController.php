@@ -23,36 +23,31 @@ class AntenasController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $puntoId = $this->request->getQuery('punto_id');
-        $enlaceId = $this->request->getQuery('enlace_id');
-        $modeloId = $this->request->getQuery('modelo_id');
-        $puertoId = $this->request->getQuery('puerto_id');
+        $puntoDescripicion = $this->request->getQuery('puntoDescripcion');
+        $enlaceSsid = $this->request->getQuery('enlaceSsid');
+        $modeloDescripcion = $this->request->getQuery('modeloDescripcion');
         $ip = $this->request->getQuery('ip');
         $deviceName = $this->request->getQuery('device_name');
         $mode = $this->request->getQuery('mode');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $itemsPerPage = $this->request->getQuery('itemsPerPage');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
         $query = $this->Antenas->find()
             ->contain(['Puntos', 'Enlaces', 'Modelos', 'Puertos'])->order(['Antenas.id']);;
         
-        if ($puntoId) {
-            $query->where(['Antenas.punto_id' => $puntoId]);
+        if ($puntoDescripicion) {
+            $query->where(['Puntos.descripcion LIKE' => '%' . $puntoDescripicion . '%']);
         }
         
-        if ($enlaceId) {
-            $query->where(['Antenas.enlace_id' => $enlaceId]);
+        if ($enlaceSsid) {
+            $query->where(['Enlaces.ssid LIKE' => '%' . $enlaceSsid . '%']);
         }
         
-        if ($modeloId) {
-            $query->where(['Antenas.modelo_id' => $modeloId]);
-        }
-        
-        if ($puertoId) {
-            $query->where(['Antenas.puerto_id' => $puertoId]);
+        if ($modeloDescripcion) {
+            $query->where(['Modelos.descripcion LIKE' => '%' . $modeloDescripcion . '%']);
         }
         
         if ($ip) {

@@ -33,8 +33,7 @@ class CrucesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Cruces') ? [] : ['className' => CrucesTable::class];
         $this->Cruces = TableRegistry::getTableLocator()->get('Cruces', $config);
@@ -45,31 +44,10 @@ class CrucesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
-    {
+    public function tearDown() {
         unset($this->Cruces);
 
         parent::tearDown();
-    }
-
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
@@ -77,8 +55,35 @@ class CrucesTableTest extends TestCase
      *
      * @return void
      */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testBuildRules() {
+        // En caso se repita el código
+        $cruceTest1 = $this->Cruces->newEntity([
+            'punto_id' => 2,
+            'regulador_id' => 4,
+            'codigo' => '45',
+            'descripcion' => 'Av. De nada'
+        ]);
+        $expectedTest1 = [
+            'codigo' => [
+                '_isUnique' => 'Ya existe un cruce con el mismo código'
+            ]
+        ];
+        $this->Cruces->save($cruceTest1);
+        $this->assertSame($expectedTest1, $cruceTest1->getErrors());
+        
+        // En caso se repita la descripción
+        $cruceTest2 = $this->Cruces->newEntity([
+            'punto_id' => 2,
+            'regulador_id' => 4,
+            'codigo' => '413',
+            'descripcion' => 'Av. Vera Enriquez'
+        ]);
+        $expectedTest2 = [
+            'descripcion' => [
+                '_isUnique' => 'Ya existe un cruce con la misma descripción'
+            ]
+        ];
+        $this->Cruces->save($cruceTest2);
+        $this->assertSame($expectedTest2, $cruceTest2->getErrors());
     }
 }

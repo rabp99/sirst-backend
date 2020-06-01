@@ -33,7 +33,7 @@ class CrucesControllerTest extends TestCase
         $this->get('/api/cruces.json');
         $this->assertResponseContains('"count": 8');
         
-        $this->get('/api/cruces.json?regulador_id=2');
+        $this->get('/api/cruces.json?reguladorCodigo=65');
         $this->assertResponseContains('"count": 3');
         
         $this->get('/api/cruces.json?codigo=78');
@@ -49,19 +49,40 @@ class CrucesControllerTest extends TestCase
      * @return void
      */
     public function testAdd() {
-        $data = [
+        $dataTest1 = [
             'punto_id' => 1,
             'regulador_id' => 4,
             'codigo' => '98',
             'descripcion' => 'Av. América Este'
         ];
-        $this->post('/api/cruces.json', $data);
+        $this->post('/api/cruces.json', $dataTest1);
         $this->assertResponseCode(200);
         
         $cruces = TableRegistry::getTableLocator()->get('Cruces');
-        $query = $cruces->find()->where(['codigo' => $data['codigo']]);
+        $query = $cruces->find()->where(['codigo' => $dataTest1['codigo']]);
         $this->assertEquals(1, $query->count());
-        
         $this->assertResponseContains('"message": "El cruce fue registrado correctamente"');
+        
+        // En caso se duplique el código
+        $dataTest2 = [
+            'punto_id' => 1,
+            'regulador_id' => 4,
+            'codigo' => '78',
+            'descripcion' => 'Av. Algo'
+        ];
+        $this->post('/api/cruces.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El cruce no fue registrado correctamente"');
+        
+        // En caso se duplique el código
+        $dataTest3 = [
+            'punto_id' => 1,
+            'regulador_id' => 4,
+            'codigo' => '421',
+            'descripcion' => 'Ca. San Martín'
+        ];
+        $this->post('/api/cruces.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El cruce no fue registrado correctamente"');
     }
 }

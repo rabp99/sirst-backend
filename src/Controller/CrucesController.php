@@ -23,24 +23,24 @@ class CrucesController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index() {
-        $reguladorId = $this->request->getQuery('regulador_id');
+        $reguladorCodigo = $this->request->getQuery('reguladorCodigo');
         $codigo = $this->request->getQuery('codigo');
         $descripcion = $this->request->getQuery('descripcion');
-        $items_per_page = $this->request->getQuery('items_per_page');
+        $itemsPerPage = $this->request->getQuery('items_per_page');
         
         $this->paginate = [
-            'limit' => $items_per_page
+            'limit' => $itemsPerPage
         ];
         
         $query = $this->Cruces->find()
             ->contain(['Reguladores'])->order(['Cruces.id']);;
         
-        if ($reguladorId) {
-            $query->where(['Cruces.regulador_id' => $reguladorId]);
+        if ($reguladorCodigo) {
+            $query->where(['Reguladores.codigo LIKE' => '%' . $reguladorCodigo . '%']);
         }
         
         if ($codigo) {
-            $query->where(['Cruces.codigo' => $codigo]);
+            $query->where(['Cruces.codigo LIKE' => '%' . $codigo . '%']);
         }
         
         if ($descripcion) {
