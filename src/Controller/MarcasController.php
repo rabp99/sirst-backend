@@ -31,6 +31,7 @@ class MarcasController extends AppController
         ];
         
         $query = $this->Marcas->find()->order(['Marcas.id']);
+        $query->where(['Marcas.estado_id' => 1]);
         
         if ($descripcion) {
             $query->where(['Marcas.descripcion LIKE' => '%' . $descripcion . '%']);

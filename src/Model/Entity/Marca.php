@@ -24,6 +24,7 @@ class Marca extends Entity
      */
     protected $_accessible = [
         'descripcion' => true,
-        'modelos' => true
+        'modelos' => true,
+        'estado_id' => true
     ];
 }

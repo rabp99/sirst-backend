@@ -24,7 +24,8 @@ class CrucesSeed extends AbstractSeed
             $data[] = [
                 'regulador_id' => $i + 1,
                 'codigo' => $faker->unique()->numberBetween(1000, 9999),
-                'descripcion' => $faker->text(60)
+                'descripcion' => $faker->text(60),
+                'estado_id' => 1
             ];
         }
         

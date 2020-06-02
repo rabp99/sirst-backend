@@ -33,7 +33,8 @@ class ModelosController extends AppController
         ];
         
         $query = $this->Modelos->find()
-            ->contain(['Marcas'])->order(['Modelos.id']);;
+            ->contain(['Marcas'])->order(['Modelos.id']);
+        $query->where(['Modelos.estado_id' => 1]);
         
         if ($marcaDescripcion) {
             $query->where(['Marcas.descripcion LIKE' => '%' . $marcaDescripcion . '%']);

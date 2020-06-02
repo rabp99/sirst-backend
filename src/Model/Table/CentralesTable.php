@@ -38,6 +38,10 @@ class CentralesTable extends Table
         $this->hasMany("Cruces")
             ->setForeignKey("central_id")
             ->setJoinType("INNER");
+                
+        $this->belongsTo('Estados')
+            ->setForeignKey('estado_id')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -74,6 +78,7 @@ class CentralesTable extends Table
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->existsIn(['estado_id'], 'Estados'));
         $rules->add($rules->isUnique(['descripcion'], 'Ya existe una central con la misma descripción'));
         $rules->add($rules->isUnique(['nro'], 'Ya existe una central con el mismo número'));
 

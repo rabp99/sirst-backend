@@ -38,6 +38,10 @@ class EnlacesTable extends Table
 
         $this->hasMany('Antenas')
             ->setForeignKey('enlace_id');
+                
+        $this->belongsTo('Estados')
+            ->setForeignKey('estado_id')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -74,8 +78,23 @@ class EnlacesTable extends Table
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules) {
-        $rules->add($rules->isUnique(['ssid'], 'Ya existe un enlace con el mismo ssid'));
-
+        $rules->add($rules->existsIn(['estado_id'], 'Estados'));
+        // $rules->add($rules->isUnique(['ssid'], 'Ya existe un enlace con el mismo ssid'));
+        $rules->add(
+            function ($entity, $options) {
+                $count = $this->find()->where(['ssid' => $entity->ssid, 'estado_id' => 1])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'ssidUnique',
+            [
+                'errorField' => 'ssid',
+                'message' => 'Ya existe un enlace activo con el mismo ssid.'
+            ]
+        );
         return $rules;
     }
 }

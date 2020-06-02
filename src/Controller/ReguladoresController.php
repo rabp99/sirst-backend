@@ -35,7 +35,8 @@ class ReguladoresController extends AppController
         ];
         
         $query = $this->Reguladores->find()
-            ->contain(['Modelos', 'Centrales', 'Puntos', 'Puertos'])->order(['Reguladores.id']);;
+            ->contain(['Modelos', 'Centrales', 'Puntos', 'Puertos'])->order(['Reguladores.id']);
+        $query->where(['Reguladores.estado_id' => 1]);
         
         if ($modeloDescripcion) {
             $query->where(['Modelos.descripcion LIKE' => '%' . $modeloDescripcion . '%']);

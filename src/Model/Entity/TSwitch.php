@@ -31,5 +31,6 @@ class TSwitch extends Entity
         'punto' => true,
         'modelo_id' => true,
         'punto_id' => true,
+        'estado_id' => true
     ];
 }

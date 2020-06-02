@@ -2,9 +2,9 @@
 use Migrations\AbstractSeed;
 
 /**
- * Database4 seed.
+ * Database6 seed.
  */
-class Database5Seed extends AbstractSeed
+class Database7Seed extends AbstractSeed
 {
     /**
      * Run Method.
@@ -17,6 +17,6 @@ class Database5Seed extends AbstractSeed
      * @return void
      */
     public function run() {
-        $this->call('PuertosSeed');
+        $this->call('CrucesSeed');
     }
 }

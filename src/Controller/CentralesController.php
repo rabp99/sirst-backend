@@ -30,7 +30,8 @@ class CentralesController extends AppController
             'limit' => $itemsPerPage
         ];
         
-        $query = $this->Centrales->find()->order(['Centrales.id']);;
+        $query = $this->Centrales->find()->order(['Centrales.id']);
+        $query->where(['Centrales.estado_id' => 1]);
         
         if ($descripcion) {
             $query->where(['Centrales.descripcion like' => '%' . $descripcion . '%']);

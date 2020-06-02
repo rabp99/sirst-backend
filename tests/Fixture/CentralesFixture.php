@@ -13,19 +13,23 @@ class CentralesFixture extends TestFixture
     public $records = [
         [
             'descripcion' => 'Central 1 CCHH',
-            'nro' => '1'
+            'nro' => '1',
+            'estado_id' => 1
         ],
         [
             'descripcion' => 'Central 2 España',
-            'nro' => '2'
+            'nro' => '2',
+            'estado_id' => 1
         ],
         [
             'descripcion' => 'Central 3 América',
-            'nro' => '3'
+            'nro' => '3',
+            'estado_id' => 1
         ],
         [
             'descripcion' => 'Central 4 Periferia',
-            'nro' => '4'
+            'nro' => '4',
+            'estado_id' => 1
         ]
     ];
 }

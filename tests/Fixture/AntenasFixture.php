@@ -18,7 +18,8 @@ class AntenasFixture extends TestFixture
             'puerto_id' => 1,
             'ip' => '192.168.20.45',
             'device_name' => 'CRUCE_15_56_ST',
-            'mode' => 'ST'
+            'mode' => 'ST',
+            'estado_id' => 1
         ],
         [
             'punto_id' => 2,
@@ -27,7 +28,8 @@ class AntenasFixture extends TestFixture
             'puerto_id' => 1,
             'ip' => '192.168.20.67',
             'device_name' => 'CRUCE_15_30_AP',
-            'mode' => 'ST'
+            'mode' => 'ST',
+            'estado_id' => 1
         ],
         [
             'punto_id' => 3,
@@ -36,7 +38,8 @@ class AntenasFixture extends TestFixture
             'puerto_id' => 1,
             'ip' => '192.168.30.48',
             'device_name' => 'CRUCE_45_15_ST',
-            'mode' => 'ST'
+            'mode' => 'ST',
+            'estado_id' => 1
         ],
         [
             'punto_id' => 2,
@@ -45,7 +48,8 @@ class AntenasFixture extends TestFixture
             'puerto_id' => 1,
             'ip' => '192.168.60.24',
             'device_name' => 'CRUCE_58_15_ST',
-            'mode' => 'AP'
+            'mode' => 'AP',
+            'estado_id' => 1
         ],
         [
             'punto_id' => 3,
@@ -54,7 +58,8 @@ class AntenasFixture extends TestFixture
             'puerto_id' => 1,
             'ip' => '192.168.90.24',
             'device_name' => 'CRUCE_5_15_ST',
-            'mode' => 'ST'
+            'mode' => 'ST',
+            'estado_id' => 1
         ],
         [
             'punto_id' => 2,
@@ -63,7 +68,8 @@ class AntenasFixture extends TestFixture
             'puerto_id' => 1,
             'ip' => '192.168.20.32',
             'device_name' => 'CRUCE_35_18_AP',
-            'mode' => 'AP'
+            'mode' => 'AP',
+            'estado_id' => 1
         ],
         [
             'punto_id' => 1,
@@ -72,7 +78,8 @@ class AntenasFixture extends TestFixture
             'puerto_id' => 1,
             'ip' => '192.168.20.41',
             'device_name' => 'CRUCE_10_41_ST',
-            'mode' => 'AP'
+            'mode' => 'AP',
+            'estado_id' => 1
         ]
     ];
 }

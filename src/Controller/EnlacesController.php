@@ -31,7 +31,8 @@ class EnlacesController extends AppController
             'limit' => $itemsPerPage
         ];
         
-        $query = $this->Enlaces->find()->order(['Enlaces.id']);;
+        $query = $this->Enlaces->find()->order(['Enlaces.id']);
+        $query->where(['Enlaces.estado_id' => 1]);
         
         if ($ssid) {
             $query->where(['Enlaces.ssid like' => '%' . $ssid . '%']);

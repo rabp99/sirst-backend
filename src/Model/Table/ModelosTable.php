@@ -38,6 +38,10 @@ class ModelosTable extends Table
         $this->belongsTo('Marcas')
             ->setForeignKey('marca_id')
             ->setJoinType('INNER');
+                
+        $this->belongsTo('Estados')
+            ->setForeignKey('estado_id')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -75,6 +79,7 @@ class ModelosTable extends Table
      */
     public function buildRules(RulesChecker $rules) {
         $rules->add($rules->existsIn(['marca_id'], 'Marcas'));
+        $rules->add($rules->existsIn(['estado_id'], 'Estados'));
         $rules->add($rules->isUnique(['descripcion'], 'Ya existe un modelo con la misma descripción'));
 
         return $rules;

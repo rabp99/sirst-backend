@@ -37,6 +37,10 @@ class MarcasTable extends Table
         
         $this->hasMany('Modelos')
             ->setForeignKey('marca_id');
+        
+        $this->belongsTo('Estados')
+            ->setForeignKey('estado_id')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -67,6 +71,7 @@ class MarcasTable extends Table
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->existsIn(['estado_id'], 'Estados'));
         $rules->add($rules->isUnique(['descripcion'], 'Ya existe una marca con la misma descripción'));
 
         return $rules;

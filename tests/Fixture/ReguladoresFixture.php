@@ -17,7 +17,8 @@ class ReguladoresFixture extends TestFixture
             'punto_id' => 1,
             'puerto_id' => 1,
             'codigo' => '20',
-            'ip' => '192.168.10.25'
+            'ip' => '192.168.10.25',
+            'estado_id' => 1
         ],
         [
             'modelo_id' => 2,
@@ -25,7 +26,8 @@ class ReguladoresFixture extends TestFixture
             'punto_id' => 5,
             'puerto_id' => 1,
             'codigo' => '65',
-            'ip' => '192.168.20.21'
+            'ip' => '192.168.20.21',
+            'estado_id' => 1
         ],
         [
             'modelo_id' => 1,
@@ -33,7 +35,8 @@ class ReguladoresFixture extends TestFixture
             'punto_id' => 1,
             'puerto_id' => 1,
             'codigo' => '62',
-            'ip' => '192.168.10.65'
+            'ip' => '192.168.10.65',
+            'estado_id' => 1
         ],
         [
             'modelo_id' => 6,
@@ -41,7 +44,8 @@ class ReguladoresFixture extends TestFixture
             'punto_id' => 5,
             'puerto_id' => 1,
             'codigo' => '12',
-            'ip' => '192.168.10.53'
+            'ip' => '192.168.10.53',
+            'estado_id' => 1
         ],
         [
             'modelo_id' => 4,
@@ -49,7 +53,8 @@ class ReguladoresFixture extends TestFixture
             'punto_id' => 4,
             'puerto_id' => 1,
             'codigo' => '5',
-            'ip' => '192.168.20.67'
+            'ip' => '192.168.20.67',
+            'estado_id' => 1
         ],
         [
             'modelo_id' => 4,
@@ -57,7 +62,8 @@ class ReguladoresFixture extends TestFixture
             'punto_id' => 1,
             'puerto_id' => 1,
             'codigo' => '10',
-            'ip' => '192.168.10.78'
+            'ip' => '192.168.10.78',
+            'estado_id' => 1
         ],
         [
             'modelo_id' => 5,
@@ -65,7 +71,8 @@ class ReguladoresFixture extends TestFixture
             'punto_id' => 4,
             'puerto_id' => 1,
             'codigo' => '57',
-            'ip' => '192.168.20.65'
+            'ip' => '192.168.20.65',
+            'estado_id' => 1
         ],
     ];
 }

@@ -14,32 +14,38 @@ class ModelosFixture extends TestFixture
         [
             'marca_id' => 1,
             'descripcion' => 'HP plus',
-            'observacion' => 'Lorem ipsum dolor sit amet'
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 1
         ],
         [
             'marca_id' => 2,
             'descripcion' => 'HP media',
-            'observacion' => 'Lorem ipsum dolor sit amet'
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 1
         ],
         [
             'marca_id' => 1,
             'descripcion' => 'HP vizen',
-            'observacion' => 'Lorem ipsum dolor sit amet'
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 1
         ],
         [
             'marca_id' => 3,
             'descripcion' => 'super Dell mega',
-            'observacion' => 'Lorem ipsum dolor sit amet'
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 1
         ],
         [
             'marca_id' => 1,
             'descripcion' => 'Dell ultra',
-            'observacion' => 'Lorem ipsum dolor sit amet'
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 1
         ],
         [
             'marca_id' => 2,
             'descripcion' => 'Lenovo resize',
-            'observacion' => 'Lorem ipsum dolor sit amet'
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 1
         ]
     ];
 }

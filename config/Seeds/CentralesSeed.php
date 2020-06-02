@@ -23,7 +23,8 @@ class CentralesSeed extends AbstractSeed
         for ($i = 0; $i < 4; $i++) {
             $data[] = [
                 'descripcion' => $faker->text(60),
-                'nro' => $i + 1
+                'nro' => $i + 1,
+                'estado_id' => 1
             ];
         }
         

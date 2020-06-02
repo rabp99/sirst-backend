@@ -28,7 +28,8 @@ class AntenasSeed extends AbstractSeed
                 'puerto_id' => $faker->numberBetween(1, 300),
                 'ip' => $faker->ipv4,
                 'device_name' => $faker->text(30),
-                'mode' => $faker->randomElement($array = ['ST', 'AP', 'ST WDS', 'AP WDS'])
+                'mode' => $faker->randomElement($array = ['ST', 'AP', 'ST WDS', 'AP WDS']),
+                'estado_id' => 1
             ];
         }
         

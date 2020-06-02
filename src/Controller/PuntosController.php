@@ -31,7 +31,8 @@ class PuntosController extends AppController
             'limit' => $itemsPerPage
         ];
         
-        $query = $this->Puntos->find()->order(['Puntos.id']);;
+        $query = $this->Puntos->find()->order(['Puntos.id']);
+        $query->where(['Puntos.estado_id' => 1]);
         
         if ($codigo) {
             $query->where(['Puntos.codigo' => $codigo]);

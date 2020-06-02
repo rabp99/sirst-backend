@@ -32,6 +32,7 @@ class Cruce extends Entity
         'codigo' => true,
         'descripcion' => true,
         'punto' => true,
-        'regulador' => true
+        'regulador' => true,
+        'estado_id' => true
     ];
 }

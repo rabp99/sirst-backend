@@ -55,6 +55,10 @@ class ReguladoresTable extends Table
         $this->belongsTo('Puertos')
             ->setForeignKey('puerto_id')
             ->setJoinType('INNER');
+                
+        $this->belongsTo('Estados')
+            ->setForeignKey('estado_id')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -95,6 +99,7 @@ class ReguladoresTable extends Table
         $rules->add($rules->existsIn(['central_id'], 'Centrales'));
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['puerto_id'], 'Puertos'));
+        $rules->add($rules->existsIn(['estado_id'], 'Estados'));
         $rules->add($rules->isUnique(['codigo'], 'Ya existe un regulador con el mismo código'));
         $rules->add($rules->isUnique(['ip'], 'Ya existe un regulador con la misma ip'));
 

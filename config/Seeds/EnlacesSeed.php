@@ -23,7 +23,8 @@ class EnlacesSeed extends AbstractSeed
         for ($i = 0; $i < 100; $i++) {
             $data[] = [
                 'ssid' => $faker->unique()->text(10),
-                'channel_width' => $faker->randomElement($array = ['10MHZ', '20MHZ', '40MHZ', '20/40MHZ'])
+                'channel_width' => $faker->randomElement($array = ['10MHZ', '20MHZ', '40MHZ', '20/40MHZ']),
+                'estado_id' => 1
             ];
         }
         

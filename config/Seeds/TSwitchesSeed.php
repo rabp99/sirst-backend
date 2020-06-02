@@ -24,7 +24,8 @@ class TSwitchesSeed extends AbstractSeed
             $data[] = [
                 'modelo_id' => $faker->numberBetween(1, 100),
                 'punto_id' => $i + 1,
-                'ip' => $faker->ipv4
+                'ip' => $faker->ipv4,
+                'estado_id' => 1
             ];
         }
         

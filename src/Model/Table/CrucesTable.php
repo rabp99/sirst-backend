@@ -44,6 +44,10 @@ class CrucesTable extends Table
             ->setForeignKey("regulador_id")
             ->setJoinType("INNER")
             ->setProperty('regulador');
+                
+        $this->belongsTo('Estados')
+            ->setForeignKey('estado_id')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -82,6 +86,7 @@ class CrucesTable extends Table
     public function buildRules(RulesChecker $rules) {
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['regulador_id'], 'Reguladores'));
+        $rules->add($rules->existsIn(['estado_id'], 'Estados'));
         $rules->add($rules->isUnique(['codigo'], 'Ya existe un cruce con el mismo código'));
         $rules->add($rules->isUnique(['descripcion'], 'Ya existe un cruce con la misma descripción'));
 

@@ -33,7 +33,8 @@ class CrucesController extends AppController
         ];
         
         $query = $this->Cruces->find()
-            ->contain(['Reguladores'])->order(['Cruces.id']);;
+            ->contain(['Reguladores'])->order(['Cruces.id']);
+        $query->where(['Cruces.estado_id' => 1]);
         
         if ($reguladorCodigo) {
             $query->where(['Reguladores.codigo LIKE' => '%' . $reguladorCodigo . '%']);

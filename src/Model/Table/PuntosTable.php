@@ -49,6 +49,10 @@ class PuntosTable extends Table
         
         $this->hasMany('TSwitches')
             ->setForeignKey('punto_id');
+                
+        $this->belongsTo('Estados')
+            ->setForeignKey('estado_id')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -96,6 +100,7 @@ class PuntosTable extends Table
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->existsIn(['estado_id'], 'Estados'));
         $rules->add($rules->isUnique(['codigo'], 'Ya existe un punto con el mismo código'));
         $rules->add($rules->isUnique(['descripcion'], 'Ya existe un punto con la misma descripción'));
         

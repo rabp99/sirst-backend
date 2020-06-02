@@ -4,20 +4,22 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Punto Entity
+ * Estado Entity
  *
  * @property int $id
- * @property string $codigo
- * @property string|null $descripcion
- * @property string $latitud
- * @property string $longitud
+ * @property string $descripcion
  *
  * @property \App\Model\Entity\Antena[] $antenas
+ * @property \App\Model\Entity\Central[] $centrales
  * @property \App\Model\Entity\Cruce[] $cruces
- * @property \App\Model\Entity\Reguladore[] $reguladores
+ * @property \App\Model\Entity\Enlace[] $enlaces
+ * @property \App\Model\Entity\Marca[] $marcas
+ * @property \App\Model\Entity\Modelo[] $modelos
+ * @property \App\Model\Entity\Punto[] $puntos
+ * @property \App\Model\Entity\regulador[] $reguladores
  * @property \App\Model\Entity\TSwitch[] $t_switches
  */
-class Punto extends Entity
+class Estado extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -29,14 +31,15 @@ class Punto extends Entity
      * @var array
      */
     protected $_accessible = [
-        'codigo' => true,
         'descripcion' => true,
-        'latitud' => true,
-        'longitud' => true,
         'antenas' => true,
+        'centrales' => true,
         'cruces' => true,
+        'enlaces' => true,
+        'marcas' => true,
+        'modelos' => true,
+        'puntos' => true,
         'reguladores' => true,
-        't_switches' => true,
-        'estado_id' => true
+        't_switches' => true
     ];
 }

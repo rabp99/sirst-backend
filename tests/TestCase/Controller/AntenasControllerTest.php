@@ -23,7 +23,8 @@ class AntenasControllerTest extends TestCase
         'app.Puntos',
         'app.Enlaces',
         'app.Modelos',
-        'app.Puertos'
+        'app.Puertos',
+        'app.Estados'
     ];
 
     /**
@@ -67,7 +68,8 @@ class AntenasControllerTest extends TestCase
             'puerto_id' => 1,
             'ip' => '192.168.90.154',
             'device_name' => 'CRUCE_34_24_ST',
-            'mode' => 'ST'
+            'mode' => 'ST',
+            'estado_id' => 1
         ];
         $this->post('/api/antenas.json', $dataTest1);
         $this->assertResponseCode(200);
@@ -86,7 +88,8 @@ class AntenasControllerTest extends TestCase
             'puerto_id' => 1,
             'ip' => '192.168.90.154',
             'device_name' => 'CRUCE_132_232_AP',
-            'mode' => 'AP'
+            'mode' => 'AP',
+            'estado_id' => 1
         ];
         $this->post('/api/antenas.json', $dataTest2);
         $this->assertResponseCode(200);
@@ -100,7 +103,8 @@ class AntenasControllerTest extends TestCase
             'puerto_id' => 1,
             'ip' => '192.168.60.214',
             'device_name' => 'CRUCE_34_24_ST',
-            'mode' => 'AP'
+            'mode' => 'AP',
+            'estado_id' => 1
         ];
         $this->post('/api/antenas.json', $dataTest3);
         $this->assertResponseCode(200);

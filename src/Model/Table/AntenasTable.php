@@ -53,6 +53,10 @@ class AntenasTable extends Table
         $this->belongsTo('Puertos')
             ->setForeignKey('puerto_id')
             ->setJoinType('INNER');
+        
+        $this->belongsTo('Estados')
+            ->setForeignKey('estado_id')
+            ->setJoinType('INNER');
     }
 
     /**
@@ -98,7 +102,26 @@ class AntenasTable extends Table
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['enlace_id'], 'Enlaces'));
         $rules->add($rules->existsIn(['modelo_id'], 'Modelos'));
-        $rules->add($rules->isUnique(['ip'], 'Ya existe una antena con la misma ip'));
+        $rules->add($rules->existsIn(['estado_id'], 'Estados'));
+        // $rules->add($rules->isUnique(['ip'], 'Ya existe una antena con la misma ip'));
+        $rules->add(
+            function ($entity, $options) {
+                if ($entity->ip == null) {
+                    return true;
+                }
+                $count = $this->find()->where(['ip' => $entity->ip])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'ipUnique',
+            [
+                'errorField' => 'ip',
+                'message' => 'El ip está repetido.'
+            ]
+        );
         $rules->add($rules->isUnique(['device_name'], 'Ya existe una antena con el mismo device name'));
 
         return $rules;

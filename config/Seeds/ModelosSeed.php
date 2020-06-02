@@ -24,7 +24,8 @@ class ModelosSeed extends AbstractSeed
             $data[] = [
                 'marca_id' => $faker->numberBetween(1, 100),
                 'descripcion' => $faker->text(60),
-                'observacion' => $faker->text(60)
+                'observacion' => $faker->text(60),
+                'estado_id' => 1
             ];
         }
         

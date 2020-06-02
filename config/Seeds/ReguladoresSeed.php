@@ -28,6 +28,7 @@ class ReguladoresSeed extends AbstractSeed
                 'puerto_id' => $faker->numberBetween(1, 300),
                 'codigo' => $faker->unique()->randomNumber(2),
                 'ip' => $faker->ipv4,
+                'estado_id' => 1
             ];
         }
         

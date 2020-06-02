@@ -26,6 +26,7 @@ class Enlace extends Entity
     protected $_accessible = [
         'ssid' => true,
         'channel_width' => true,
-        'antenas' => true
+        'antenas' => true,
+        'estado_id' => true
     ];
 }

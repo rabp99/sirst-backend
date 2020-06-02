@@ -12,19 +12,24 @@ class MarcasFixture extends TestFixture
     
     public $records = [
         [
-            'descripcion' => 'Epson'
+            'descripcion' => 'Epson',
+            'estado_id' => 1
         ],
         [
-            'descripcion' => 'Nuevo Epson'
+            'descripcion' => 'Nuevo Epson',
+            'estado_id' => 1
         ],
         [
-            'descripcion' => 'HP'
+            'descripcion' => 'HP',
+            'estado_id' => 1
         ],
         [
-            'descripcion' => 'Nuevo HAP'
+            'descripcion' => 'Nuevo HAP',
+            'estado_id' => 1
         ],
         [
-            'descripcion' => 'Dell'
+            'descripcion' => 'Dell',
+            'estado_id' => 1
         ]
     ];
 }

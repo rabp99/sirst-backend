@@ -2,7 +2,7 @@
 use Migrations\AbstractSeed;
 
 /**
- * Database2 seed.
+ * Database1 seed.
  */
 class Database2Seed extends AbstractSeed
 {
@@ -17,6 +17,9 @@ class Database2Seed extends AbstractSeed
      * @return void
      */
     public function run() {
-        $this->call('ModelosSeed');
+        $this->call('EnlacesSeed');
+        $this->call('PuntosSeed');
+        $this->call('MarcasSeed');
+        $this->call('CentralesSeed');
     }
 }

@@ -32,8 +32,10 @@ class TSwitchesController extends AppController
             'limit' => $itemsPerPage
         ];
         
+        
         $query = $this->TSwitches->find()
             ->contain(['Modelos', 'Puntos'])->order(['TSwitches.id']);;
+        $query->where(['TSwitches.estado_id' => 1]);
         
         if ($modeloDescripcion) {
             $query->where(['Modelos.descripcion LIKE' => '%' . $modeloDescripcion . '%']);

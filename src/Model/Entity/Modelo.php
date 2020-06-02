@@ -28,6 +28,7 @@ class Modelo extends Entity
         'descripcion' => true,
         'observacion' => true,
         'marca' => true,
-        'marca_id' => true
+        'marca_id' => true,
+        'estado_id' => true
    ];
 }

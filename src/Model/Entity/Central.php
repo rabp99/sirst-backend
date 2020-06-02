@@ -23,6 +23,7 @@ class Central extends Entity
      */
     protected $_accessible = [
         'descripcion' => true,
-        'nro' => true
+        'nro' => true,
+        'estado_id' => true
     ];
 }

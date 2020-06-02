@@ -2,9 +2,9 @@
 use Migrations\AbstractSeed;
 
 /**
- * Marcas seed.
+ * Estados seed.
  */
-class MarcasSeed extends AbstractSeed
+class EstadosSeed extends AbstractSeed
 {
     /**
      * Run Method.
@@ -18,16 +18,16 @@ class MarcasSeed extends AbstractSeed
      */
     public function run() {
         $faker = Faker\Factory::create();
-        $data = [];
+        $data = [
+            [
+                'descripcion' => 'Activo'
+            ],
+            [
+                'descripcion' => 'Deshabilitado'
+            ],
+        ];
         
-        for ($i = 0; $i < 100; $i++) {
-            $data[] = [
-                'descripcion' => $faker->text(60),
-                'estado_id' => 1
-            ];
-        }
-        
-        $table = $this->table('marcas');
+        $table = $this->table('estados');
         $table->insert($data)->save();
     }
 }

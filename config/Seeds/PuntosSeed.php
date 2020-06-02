@@ -25,7 +25,8 @@ class PuntosSeed extends AbstractSeed
                 'codigo' => $faker->unique()->randomNumber(4),
                 'descripcion' => $faker->text(60),
                 'latitud' => $faker->latitude,
-                'longitud' => $faker->longitude
+                'longitud' => $faker->longitude,
+                'estado_id' => 1
             ];
         }
         
