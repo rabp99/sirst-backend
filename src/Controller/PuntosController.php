@@ -79,15 +79,14 @@ class PuntosController extends AppController
         if ($this->request->is('post')) {
             $punto = $this->Puntos->patchEntity($punto, $this->request->getData());
             if ($this->Puntos->save($punto)) {
-                $code = 200;
                 $message = 'El punto fue registrado correctamente';
             } else {
                 $message = 'El punto no fue registrado correctamente';
                 $errors = $punto->getErrors();
             }
         }
-        $this->set(compact('punto', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['punto', 'code', 'message', 'errors']);
+        $this->set(compact('punto', 'message', 'errors'));
+        $this->set('_serialize', ['punto', 'message', 'errors']);
     }
 
     /**

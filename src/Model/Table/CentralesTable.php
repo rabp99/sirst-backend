@@ -79,9 +79,38 @@ class CentralesTable extends Table
      */
     public function buildRules(RulesChecker $rules) {
         $rules->add($rules->existsIn(['estado_id'], 'Estados'));
-        $rules->add($rules->isUnique(['descripcion'], 'Ya existe una central con la misma descripción'));
-        $rules->add($rules->isUnique(['nro'], 'Ya existe una central con el mismo número'));
-
+        // $rules->add($rules->isUnique(['descripcion'], 'Ya existe una central con la misma descripción'));
+        $rules->add(
+            function ($entity, $options) {
+                $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'descripcionUnique',
+            [
+                'errorField' => 'descripcion',
+                'message' => 'Ya existe una central con la misma descripción'
+            ]
+        );
+        // $rules->add($rules->isUnique(['nro'], 'Ya existe una central con el mismo número'));
+        $rules->add(
+            function ($entity, $options) {
+                $count = $this->find()->where(['nro' => $entity->nro, 'estado_id' => 1])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'nroUnique',
+            [
+                'errorField' => 'nro',
+                'message' => 'Ya existe una central con el mismo número'
+            ]
+        );
         return $rules;
     }
 }

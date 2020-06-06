@@ -30,6 +30,10 @@ class MarcasFixture extends TestFixture
         [
             'descripcion' => 'Dell',
             'estado_id' => 1
+        ],
+        [
+            'descripcion' => 'Apple',
+            'estado_id' => 2
         ]
     ];
 }

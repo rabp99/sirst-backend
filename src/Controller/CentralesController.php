@@ -77,15 +77,14 @@ class CentralesController extends AppController
         if ($this->request->is('post')) {
             $central = $this->Centrales->patchEntity($central, $this->request->getData());
             if ($this->Centrales->save($central)) {
-                $code = 200;
                 $message = 'La central fue registrada correctamente';
             } else {
                 $message = 'La central no fue registrada correctamente';
                 $errors = $central->getErrors();
             }
         }
-        $this->set(compact('central', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['central', 'code', 'message', 'errors']);
+        $this->set(compact('central', 'message', 'errors'));
+        $this->set('_serialize', ['central', 'message', 'errors']);
     }
 
     /**

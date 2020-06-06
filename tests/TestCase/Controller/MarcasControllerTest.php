@@ -19,6 +19,7 @@ class MarcasControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Marcas',
         'app.Modelos'
     ];
@@ -45,21 +46,40 @@ class MarcasControllerTest extends TestCase
      * @return void
      */
     public function testAdd() {
-        $data = [
-            'descripcion' => 'Nueva Marca XX'
+        $dataTest1 = [
+            'descripcion' => 'Nueva Marca XX',
+            'estado_id' => 1
         ];
-        $this->post('/api/marcas.json', $data);
+        $this->post('/api/marcas.json', $dataTest1);
         $this->assertResponseCode(200);
         
         $marcas = TableRegistry::getTableLocator()->get('Marcas');
-        $query = $marcas->find()->where(['descripcion' => $data['descripcion']]);
-        $this->assertEquals(1, $query->count());
+        $queryTest1 = $marcas->find()->where(['descripcion' => $dataTest1['descripcion']]);
+        $this->assertEquals(1, $queryTest1->count());
         
         $this->assertResponseContains('"message": "La marca fue registrada correctamente"');
-                
+
         // En caso se duplique la descripcion
-        $this->post('/api/marcas.json', $data);
+        $this->post('/api/marcas.json', $dataTest1);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "La marca no fue registrada correctamente"');
+        
+        // En caso se desee agregar una marca con descripcion duplicada pero desactivado
+        $dataTest2 = [
+            'descripcion' => 'Apple',
+            'estado_id' => 1
+        ];
+        $this->post('/api/marcas.json', $dataTest2);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $marcas->find()->where(['descripcion' => $dataTest2['descripcion'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "La marca fue registrada correctamente"');
+        
+        // En caso se desee agregar una marca con descripcion activo y desactivado
+        $this->post('/api/marcas.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La marca no fue registrada correctamente"');
+        
     }
 }

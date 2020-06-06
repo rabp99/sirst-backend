@@ -100,15 +100,14 @@ class AntenasController extends AppController
         if ($this->request->is('post')) {
             $antena = $this->Antenas->patchEntity($antena, $this->request->getData());
             if ($this->Antenas->save($antena)) {
-                $code = 200;
                 $message = 'La antena fue registrada correctamente';
             } else {
                 $message = 'La antena no fue registrada correctamente';
                 $errors = $antena->getErrors();
             }
         }
-        $this->set(compact('antena', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['antena', 'code', 'message', 'errors']);
+        $this->set(compact('antena', 'message', 'errors'));
+        $this->set('_serialize', ['antena', 'message', 'errors']);
     }
 
     /**

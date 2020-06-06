@@ -45,6 +45,13 @@ class PuntosFixture extends TestFixture
             'latitud' => '-78.84723000',
             'longitud' => '153.61835600',
             'estado_id' => 1
+        ],
+        [
+            'codigo' => '41',
+            'descripcion' => 'Av. España 4',
+            'latitud' => '-78.14723000',
+            'longitud' => '153.61235600',
+            'estado_id' => 2
         ]
     ];
 }

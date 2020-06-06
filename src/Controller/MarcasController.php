@@ -75,15 +75,14 @@ class MarcasController extends AppController
         if ($this->request->is('post')) {
             $marca = $this->Marcas->patchEntity($marca, $this->request->getData());
             if ($this->Marcas->save($marca)) {
-                $code = 200;
                 $message = 'La marca fue registrada correctamente';
             } else {
                 $message = 'La marca no fue registrada correctamente';
                 $errors = $marca->getErrors();
             }
         }
-        $this->set(compact('marca', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['marca', 'code', 'message', 'errors']);
+        $this->set(compact('marca', 'message', 'errors'));
+        $this->set('_serialize', ['marca', 'message', 'errors']);
     }
 
     /**

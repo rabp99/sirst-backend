@@ -84,7 +84,5 @@ class EnlacesControllerTest extends TestCase
         $this->post('/api/enlaces.json', $dataTest2);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El enlace no fue registrado correctamente"');
-        
-        
     }
 }

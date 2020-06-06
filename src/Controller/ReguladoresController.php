@@ -95,15 +95,14 @@ class ReguladoresController extends AppController
         if ($this->request->is('post')) {
             $regulador = $this->Reguladores->patchEntity($regulador, $this->request->getData());
             if ($this->Reguladores->save($regulador)) {
-                $code = 200;
                 $message = 'El regulador fue registrado correctamente';
             } else {
                 $message = 'El regulador no fue registrado correctamente';
                 $errors = $regulador->getErrors();
             }
         }
-        $this->set(compact('regulador', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['regulador', 'code', 'message', 'errors']);
+        $this->set(compact('regulador', 'message', 'errors'));
+        $this->set('_serialize', ['regulador', 'message', 'errors']);
     }
 
     /**

@@ -79,15 +79,14 @@ class EnlacesController extends AppController
         if ($this->request->is('post')) {
             $enlace = $this->Enlaces->patchEntity($enlace, $this->request->getData());
             if ($this->Enlaces->save($enlace)) {
-                $code = 200;
                 $message = 'El enlace fue registrado correctamente';
             } else {
                 $message = 'El enlace no fue registrado correctamente';
                 $errors = $enlace->getErrors();
             }
         }
-        $this->set(compact('enlace', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['enlace', 'code', 'message', 'errors']);
+        $this->set(compact('enlace', 'message', 'errors'));
+        $this->set('_serialize', ['enlace', 'message', 'errors']);
     }
 
     /**

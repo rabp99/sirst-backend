@@ -85,15 +85,14 @@ class CrucesController extends AppController
         if ($this->request->is('post')) {
             $cruce = $this->Cruces->patchEntity($cruce, $this->request->getData());
             if ($this->Cruces->save($cruce)) {
-                $code = 200;
                 $message = 'El cruce fue registrado correctamente';
             } else {
                 $message = 'El cruce no fue registrado correctamente';
                 $errors = $cruce->getErrors();
             }
         }
-        $this->set(compact('cruce', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['cruce', 'code', 'message', 'errors']);
+        $this->set(compact('cruce', 'message', 'errors'));
+        $this->set('_serialize', ['cruce', 'message', 'errors']);
     }
 
     /**

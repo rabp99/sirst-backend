@@ -85,15 +85,14 @@ class ModelosController extends AppController
         if ($this->request->is('post')) {
             $modelo = $this->Modelos->patchEntity($modelo, $this->request->getData());
             if ($this->Modelos->save($modelo)) {
-                $code = 200;
                 $message = 'El modelo fue registrado correctamente';
             } else {
                 $message = 'El modelo no fue registrado correctamente';
                 $errors = $modelo->getErrors();
             }
         }
-        $this->set(compact('modelo', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['modelo', 'code', 'message', 'errors']);
+        $this->set(compact('modelo', 'message', 'errors'));
+        $this->set('_serialize', ['modelo', 'message', 'errors']);
     }
 
     /**

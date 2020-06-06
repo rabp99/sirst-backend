@@ -92,7 +92,7 @@ class EnlacesTable extends Table
             'ssidUnique',
             [
                 'errorField' => 'ssid',
-                'message' => 'Ya existe un enlace activo con el mismo ssid.'
+                'message' => 'Ya existe un enlace activo con el mismo ssid'
             ]
         );
         return $rules;

@@ -19,6 +19,7 @@ class PuntosControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Puntos',
         'app.Antenas',
         'app.Cruces',
@@ -58,14 +59,15 @@ class PuntosControllerTest extends TestCase
             'codigo' => '35',
             'descripcion' => 'Av. 29 de Diciembre',
             'latitud' => '-78.84767800',
-            'longitud' => '153.61320600'
+            'longitud' => '153.61320600',
+            'estado_id' => 1
         ];
         $this->post('/api/puntos.json', $dataTest1);
         $this->assertResponseCode(200);
         
-        $marcas = TableRegistry::getTableLocator()->get('Puntos');
-        $query = $marcas->find()->where(['codigo' => $dataTest1['codigo']]);
-        $this->assertEquals(1, $query->count());
+        $puntos = TableRegistry::getTableLocator()->get('Puntos');
+        $queryTest1 = $puntos->find()->where(['codigo' => $dataTest1['codigo']]);
+        $this->assertEquals(1, $queryTest1->count());
         
         $this->assertResponseContains('"message": "El punto fue registrado correctamente"');
         
@@ -74,7 +76,8 @@ class PuntosControllerTest extends TestCase
             'codigo' => '35',
             'descripcion' => 'dasdsa',
             'latitud' => '-78.84767200',
-            'longitud' => '153.61321200'
+            'longitud' => '153.61321200',
+            'estado_id' => 1
         ];
         $this->post('/api/puntos.json', $dataTest2);
         $this->assertResponseCode(200);
@@ -85,9 +88,50 @@ class PuntosControllerTest extends TestCase
             'codigo' => '35',
             'descripcion' => 'Av. 29 de Diciembre',
             'latitud' => '-78.84767200',
-            'longitud' => '153.61321200'
+            'longitud' => '153.61321200',
+            'estado_id' => 1
         ];
         $this->post('/api/puntos.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El punto no fue registrado correctamente"');
+        
+        // En caso se desee agregar un punto con codigo desactivado
+        $dataTest4 = [
+            'codigo' => '41',
+            'descripcion' => 'w321321dasdsa',
+            'latitud' => '-78.84767200',
+            'longitud' => '153.61321200',
+            'estado_id' => 1
+        ];
+        $this->post('/api/puntos.json', $dataTest4);
+        $this->assertResponseCode(200);
+        
+        $queryTest4 = $puntos->find()->where(['codigo' => $dataTest4['codigo'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest4->count());
+        $this->assertResponseContains('"message": "El punto fue registrado correctamente"');
+                
+        // En caso se desee agregar un punto con descripcion desactivada
+        $dataTest5 = [
+            'codigo' => '87',
+            'descripcion' => 'Av. España 4',
+            'latitud' => '-78.84135200',
+            'longitud' => '153.61221200',
+            'estado_id' => 1
+        ];
+        $this->post('/api/puntos.json', $dataTest5);
+        $this->assertResponseCode(200);
+        
+        $queryTest5 = $puntos->find()->where(['codigo' => $dataTest5['codigo'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest5->count());
+        $this->assertResponseContains('"message": "El punto fue registrado correctamente"');
+        
+        // En caso se desee agregar un punto con codigo activo y desactivado
+        $this->post('/api/puntos.json', $dataTest4);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El punto no fue registrado correctamente"');
+        
+        // En caso se desee agregar un punto con descripcion activo y desactivado
+        $this->post('/api/puntos.json', $dataTest5);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El punto no fue registrado correctamente"');
     }

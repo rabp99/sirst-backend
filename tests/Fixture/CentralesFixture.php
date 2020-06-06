@@ -30,6 +30,11 @@ class CentralesFixture extends TestFixture
             'descripcion' => 'Central 4 Periferia',
             'nro' => '4',
             'estado_id' => 1
+        ],
+        [
+            'descripcion' => 'Central 5',
+            'nro' => '5',
+            'estado_id' => 2
         ]
     ];
 }

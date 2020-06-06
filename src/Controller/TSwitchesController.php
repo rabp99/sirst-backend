@@ -89,15 +89,14 @@ class TSwitchesController extends AppController
         if ($this->request->is('post')) {
             $tSwitch = $this->TSwitches->patchEntity($tSwitch, $this->request->getData());
             if ($this->TSwitches->save($tSwitch)) {
-                $code = 200;
                 $message = 'El switch fue registrado correctamente';
             } else {
                 $message = 'El switch no fue registrado correctamente';
                 $errors = $modelo->getErrors();
             }
         }
-        $this->set(compact('tSwitch', 'code', 'message', 'errors'));
-        $this->set('_serialize', ['tSwitch', 'code', 'message', 'errors']);
+        $this->set(compact('tSwitch', 'message', 'errors'));
+        $this->set('_serialize', ['tSwitch', 'message', 'errors']);
     }
 
     /**
