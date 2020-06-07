@@ -81,8 +81,7 @@ class ReguladoresTable extends Table
         $validator
             ->scalar('ip')
             ->maxLength('ip', 15)
-            ->requirePresence('ip', 'create')
-            ->notEmptyString('ip');
+            ->allowEmptyString('ip');
 
         return $validator;
     }
@@ -100,9 +99,42 @@ class ReguladoresTable extends Table
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['puerto_id'], 'Puertos'));
         $rules->add($rules->existsIn(['estado_id'], 'Estados'));
-        $rules->add($rules->isUnique(['codigo'], 'Ya existe un regulador con el mismo código'));
-        $rules->add($rules->isUnique(['ip'], 'Ya existe un regulador con la misma ip'));
-
+        // $rules->add($rules->isUnique(['codigo'], 'Ya existe un regulador con el mismo código'));
+        $rules->add(
+            function ($entity, $options) {
+                $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'codigoUnique',
+            [
+                'errorField' => 'codigo',
+                'message' => 'Ya existe un regulador con el mismo código'
+            ]
+        );
+        // $rules->add($rules->isUnique(['ip'], 'Ya existe un regulador con la misma ip'));
+        $rules->add(
+            function ($entity, $options) {
+                if ($entity->ip == null) {
+                    return true;
+                }
+                $count = $this->find()->where(['ip' => $entity->ip, 'estado_id' => 1])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'ipUnique',
+            [
+                'errorField' => 'ip',
+                'message' => 'Ya existe un regulador con la misma ip'
+            ]
+        );
+        
         return $rules;
     }
 }

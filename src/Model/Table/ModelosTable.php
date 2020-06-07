@@ -80,8 +80,22 @@ class ModelosTable extends Table
     public function buildRules(RulesChecker $rules) {
         $rules->add($rules->existsIn(['marca_id'], 'Marcas'));
         $rules->add($rules->existsIn(['estado_id'], 'Estados'));
-        $rules->add($rules->isUnique(['descripcion'], 'Ya existe un modelo con la misma descripción'));
-
+        // $rules->add($rules->isUnique(['descripcion'], 'Ya existe un modelo con la misma descripción'));
+        $rules->add(
+            function ($entity, $options) {
+                $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'descripcionUnique',
+            [
+                'errorField' => 'descripcion',
+                'message' => 'Ya existe un modelo con la misma descripción'
+            ]
+        );
         return $rules;
     }
 }

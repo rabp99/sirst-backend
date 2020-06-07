@@ -19,6 +19,7 @@ class TSwitchesControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.TSwitches',
         'app.Modelos',
         'app.Puntos'
@@ -31,7 +32,7 @@ class TSwitchesControllerTest extends TestCase
      */
     public function testIndex() {
         $this->get('/api/t_switches.json');
-        $this->assertResponseContains('"count": 7');
+        $this->assertResponseContains('"count": 8');
         
         $this->get('/api/t_switches.json?modeloDescripcion=Hp%20p');
         $this->assertResponseContains('"count": 4');
@@ -40,7 +41,7 @@ class TSwitchesControllerTest extends TestCase
         $this->assertResponseContains('"count": 3');
         
         $this->get('/api/t_switches.json?puntoText=4');
-        $this->assertResponseContains('"count": 3');
+        $this->assertResponseContains('"count": 4');
         
         $this->get('/api/t_switches.json?ip=10.3');
         $this->assertResponseContains('"count": 2');
@@ -52,18 +53,57 @@ class TSwitchesControllerTest extends TestCase
      * @return void
      */
     public function testAdd() {
-        $data = [
+        $dataTest1 = [
             'modelo_id' => 3,
             'punto_id' => 2,
-            'ip' => '192.168.20.21'
+            'ip' => '192.168.20.21',
+            'estado_id' => 1
         ];
-        $this->post('/api/t_switches.json', $data);
+        $this->post('/api/t_switches.json', $dataTest1);
         $this->assertResponseCode(200);
         
         $tSwitches = TableRegistry::getTableLocator()->get('TSwitches');
-        $query = $tSwitches->find()->where(['ip' => $data['ip']]);
-        $this->assertEquals(1, $query->count());
+        $queryTest1 = $tSwitches->find()->where(['ip' => $dataTest1['ip']]);
+        $this->assertEquals(1, $queryTest1->count());
         
+        $this->assertResponseContains('"message": "El switch fue registrado correctamente"');
+
+        // En caso se duplique la ip
+        $this->post('/api/t_switches.json', $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El switch no fue registrado correctamente"');
+        
+        // En caso se desee agregar un switch con ip duplicada pero desactivado
+        $dataTest2 = [
+            'modelo_id' => 4,
+            'punto_id' => 1,
+            'ip' => '192.168.10.120',
+            'estado_id' => 1
+        ];
+        $this->post('/api/t_switches.json', $dataTest2);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $tSwitches->find()->where(['ip' => $dataTest2['ip'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "El switch fue registrado correctamente"');
+        
+        // En caso se desee agregar un switch con ip activo y desactivado
+        $this->post('/api/t_switches.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El switch no fue registrado correctamente"');
+        
+        // En caso se desee agregar un switch con ip null
+        $dataTest3 = [
+            'modelo_id' => 3,
+            'punto_id' => 3,
+            'ip' => null,
+            'estado_id' => 1
+        ];
+        $this->post('/api/t_switches.json', $dataTest3);
+        $this->assertResponseCode(200);
+        
+        $queryTest3 = $tSwitches->find()->where(['ip IS NULL', 'estado_id' => 1]);
+        $this->assertEquals(2, $queryTest3->count());
         $this->assertResponseContains('"message": "El switch fue registrado correctamente"');
     }
 }

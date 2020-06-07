@@ -46,6 +46,12 @@ class ModelosFixture extends TestFixture
             'descripcion' => 'Lenovo resize',
             'observacion' => 'Lorem ipsum dolor sit amet',
             'estado_id' => 1
+        ],
+        [
+            'marca_id' => 3,
+            'descripcion' => 'Apple X',
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 2
         ]
     ];
 }

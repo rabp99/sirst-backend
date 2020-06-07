@@ -52,6 +52,18 @@ class TSwitchesFixture extends TestFixture
             'punto_id' => 4,
             'ip' => '192.168.10.68',
             'estado_id' => 1
+        ],
+        [
+            'modelo_id' => 2,
+            'punto_id' => 2,
+            'ip' => '192.168.10.120',
+            'estado_id' => 2
+        ],
+        [
+            'modelo_id' => 3,
+            'punto_id' => 4,
+            'ip' => null,
+            'estado_id' => 1
         ]
     ];
 }

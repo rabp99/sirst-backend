@@ -92,7 +92,7 @@ class TSwitchesController extends AppController
                 $message = 'El switch fue registrado correctamente';
             } else {
                 $message = 'El switch no fue registrado correctamente';
-                $errors = $modelo->getErrors();
+                $errors = $tSwitch->getErrors();
             }
         }
         $this->set(compact('tSwitch', 'message', 'errors'));

@@ -19,6 +19,7 @@ class ModelosControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Modelos',
         'app.Marcas'
     ];
@@ -48,22 +49,42 @@ class ModelosControllerTest extends TestCase
      * @return void
      */
     public function testAdd() {
-        $data = [
+        $dataTest1 = [
             'marca_id' => 3,
             'descripcion' => 'Modelo unico',
-            'observacion' => 'Lorem ipsum dolor sit amet'
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 1
         ];
-        $this->post('/api/modelos.json', $data);
+        $this->post('/api/modelos.json', $dataTest1);
         $this->assertResponseCode(200);
         
         $modelos = TableRegistry::getTableLocator()->get('Modelos');
-        $query = $modelos->find()->where(['descripcion' => $data['descripcion']]);
-        $this->assertEquals(1, $query->count());
+        $queryTest1 = $modelos->find()->where(['descripcion' => $dataTest1['descripcion']]);
+        $this->assertEquals(1, $queryTest1->count());
         
         $this->assertResponseContains('"message": "El modelo fue registrado correctamente"');
         
         // En caso se duplique la descripcion
-        $this->post('/api/modelos.json', $data);
+        $this->post('/api/modelos.json', $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El modelo no fue registrado correctamente"');
+        
+        // En caso se desee agregar un modelo con descripcion duplicada pero desactivado
+        $dataTest2 = [
+            'marca_id' => 2,
+            'descripcion' => 'Apple X',
+            'observacion' => 'Lorem ipsum dolor sit amet',
+            'estado_id' => 1
+        ];
+        $this->post('/api/modelos.json', $dataTest2);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $modelos->find()->where(['descripcion' => $dataTest2['descripcion'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "El modelo fue registrado correctamente"');
+        
+        // En caso se desee agregar un modelo con descripcion activo y desactivado
+        $this->post('/api/modelos.json', $dataTest2);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El modelo no fue registrado correctamente"');
     }

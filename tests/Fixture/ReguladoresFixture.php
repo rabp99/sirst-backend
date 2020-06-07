@@ -74,5 +74,23 @@ class ReguladoresFixture extends TestFixture
             'ip' => '192.168.20.65',
             'estado_id' => 1
         ],
+        [
+            'modelo_id' => 6,
+            'central_id' => 1,
+            'punto_id' => 4,
+            'puerto_id' => 2,
+            'codigo' => '74',
+            'ip' => '192.168.20.14',
+            'estado_id' => 2
+        ],
+        [
+            'modelo_id' => 4,
+            'central_id' => 2,
+            'punto_id' => 3,
+            'puerto_id' => 1,
+            'codigo' => '78',
+            'ip' => null,
+            'estado_id' => 1
+        ]
     ];
 }

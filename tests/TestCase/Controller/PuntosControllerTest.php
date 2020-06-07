@@ -121,7 +121,7 @@ class PuntosControllerTest extends TestCase
         $this->post('/api/puntos.json', $dataTest5);
         $this->assertResponseCode(200);
         
-        $queryTest5 = $puntos->find()->where(['codigo' => $dataTest5['codigo'], 'estado_id' => 1]);
+        $queryTest5 = $puntos->find()->where(['descripcion' => $dataTest5['descripcion'], 'estado_id' => 1]);
         $this->assertEquals(1, $queryTest5->count());
         $this->assertResponseContains('"message": "El punto fue registrado correctamente"');
         
