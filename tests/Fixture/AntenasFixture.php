@@ -80,6 +80,16 @@ class AntenasFixture extends TestFixture
             'device_name' => 'CRUCE_10_41_ST',
             'mode' => 'AP',
             'estado_id' => 1
+        ],
+        [
+            'punto_id' => 3,
+            'enlace_id' => 2,
+            'modelo_id' => 3,
+            'puerto_id' => 1,
+            'ip' => '192.168.30.57',
+            'device_name' => 'CRUCE_10_95_AP',
+            'mode' => 'ST',
+            'estado_id' => 2
         ]
     ];
 }

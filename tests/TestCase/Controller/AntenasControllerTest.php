@@ -19,12 +19,12 @@ class AntenasControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Antenas',
         'app.Puntos',
         'app.Enlaces',
         'app.Modelos',
-        'app.Puertos',
-        'app.Estados'
+        'app.Puertos'
     ];
 
     /**
@@ -80,33 +80,31 @@ class AntenasControllerTest extends TestCase
         
         $this->assertResponseContains('"message": "La antena fue registrada correctamente"');
         
-        // En caso se duplique la ip
+        // En caso se duplique el device_name
+        $this->post('/api/antenas.json', $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La antena no fue registrada correctamente"');
+        
+        // En caso se desee agregar una antena con device_name duplicada pero desactivado
         $dataTest2 = [
             'punto_id' => 2,
             'enlace_id' => 1,
             'modelo_id' => 2,
             'puerto_id' => 1,
-            'ip' => '192.168.90.154',
-            'device_name' => 'CRUCE_132_232_AP',
+            'ip' => '192.168.60.214',
+            'device_name' => 'CRUCE_10_95_AP',
             'mode' => 'AP',
             'estado_id' => 1
         ];
         $this->post('/api/antenas.json', $dataTest2);
         $this->assertResponseCode(200);
-        $this->assertResponseContains('"message": "La antena no fue registrada correctamente"');
-               
-        // En caso se duplique el device_name
-        $dataTest3 = [
-            'punto_id' => 2,
-            'enlace_id' => 1,
-            'modelo_id' => 2,
-            'puerto_id' => 1,
-            'ip' => '192.168.60.214',
-            'device_name' => 'CRUCE_34_24_ST',
-            'mode' => 'AP',
-            'estado_id' => 1
-        ];
-        $this->post('/api/antenas.json', $dataTest3);
+        
+        $queryTest2 = $antenas->find()->where(['device_name' => $dataTest2['device_name'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "La antena fue registrada correctamente"');
+        
+        // En caso se desee agregar una antena con device_name activo y desactivado
+        $this->post('/api/antenas.json', $dataTest2);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "La antena no fue registrada correctamente"');
     }

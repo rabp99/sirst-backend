@@ -103,27 +103,22 @@ class AntenasTable extends Table
         $rules->add($rules->existsIn(['enlace_id'], 'Enlaces'));
         $rules->add($rules->existsIn(['modelo_id'], 'Modelos'));
         $rules->add($rules->existsIn(['estado_id'], 'Estados'));
-        // $rules->add($rules->isUnique(['ip'], 'Ya existe una antena con la misma ip'));
+        // $rules->add($rules->isUnique(['device_name'], 'Ya existe una antena con el mismo device name'));
         $rules->add(
             function ($entity, $options) {
-                if ($entity->ip == null) {
-                    return true;
-                }
-                $count = $this->find()->where(['ip' => $entity->ip])->count();
+                $count = $this->find()->where(['device_name' => $entity->device_name, 'estado_id' => 1])->count();
                 if ($count == 0) {
                     return true;
                 } else {
                     return false;
                 }
             },
-            'ipUnique',
+            'deviceNameUnique',
             [
-                'errorField' => 'ip',
-                'message' => 'El ip está repetido.'
+                'errorField' => 'device_name',
+                'message' => 'Ya existe una antena con el mismo device name'
             ]
         );
-        $rules->add($rules->isUnique(['device_name'], 'Ya existe una antena con el mismo device name'));
-
         return $rules;
     }
 }
