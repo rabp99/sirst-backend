@@ -23,6 +23,7 @@ class EnlacesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Enlaces',
         'app.Antenas'
     ];
@@ -57,11 +58,12 @@ class EnlacesTableTest extends TestCase
     public function testBuildRules() {
         $enlace = $this->Enlaces->newEntity([
             'ssid' => 'TM_10_20',
-            'channel_width' => '20MHZ'
+            'channel_width' => '20MHZ',
+            'estado_id' => 1
         ]);
         $expected = [
             'ssid' => [
-                '_isUnique' => 'Ya existe un enlace con el mismo ssid'
+                'ssidUnique' => 'Ya existe un enlace activo con el mismo ssid'
             ]
         ];
         $this->Enlaces->save($enlace);

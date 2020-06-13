@@ -87,9 +87,39 @@ class CrucesTable extends Table
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['regulador_id'], 'Reguladores'));
         $rules->add($rules->existsIn(['estado_id'], 'Estados'));
-        $rules->add($rules->isUnique(['codigo'], 'Ya existe un cruce con el mismo código'));
-        $rules->add($rules->isUnique(['descripcion'], 'Ya existe un cruce con la misma descripción'));
-
+        // $rules->add($rules->isUnique(['codigo'], 'Ya existe un cruce con el mismo código'));
+        $rules->add(
+            function ($entity, $options) {
+                $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'codigoUnique',
+            [
+                'errorField' => 'codigo',
+                'message' => 'Ya existe un cruce activo con el mismo código'
+            ]
+        );
+        // $rules->add($rules->isUnique(['descripcion'], 'Ya existe un cruce con la misma descripción'));
+        $rules->add(
+            function ($entity, $options) {
+                $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                if ($count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            'descripcionUnique',
+            [
+                'errorField' => 'descripcion',
+                'message' => 'Ya existe un cruce activo con la misma descripción'
+            ]
+        );
+            
         return $rules;
     }
 }

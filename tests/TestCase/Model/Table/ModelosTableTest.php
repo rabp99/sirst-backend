@@ -23,6 +23,7 @@ class ModelosTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Modelos',
         'app.Marcas'
     ];
@@ -59,11 +60,12 @@ class ModelosTableTest extends TestCase
         $modelo = $this->Modelos->newEntity([
             'marca_id' => 2,
             'descripcion' => 'HP vizen',
-            'observacion' => 'dadadd dasd '
+            'observacion' => 'dadadd dasd',
+            'estado_id' => 1
         ]);
         $expected = [
             'descripcion' => [
-                '_isUnique' => 'Ya existe un modelo con la misma descripción'
+                'descripcionUnique' => 'Ya existe un modelo activo con la misma descripción'
             ]
         ];
         $this->Modelos->save($modelo);

@@ -101,13 +101,14 @@ class AntenasController extends AppController
             $antena = $this->Antenas->patchEntity($antena, $this->request->getData());
             if ($this->Antenas->save($antena)) {
                 $message = 'La antena fue registrada correctamente';
+                $advertencia = $this->Antenas->ifIpExists($antena);
             } else {
                 $message = 'La antena no fue registrada correctamente';
                 $errors = $antena->getErrors();
             }
         }
-        $this->set(compact('antena', 'message', 'errors'));
-        $this->set('_serialize', ['antena', 'message', 'errors']);
+        $this->set(compact('antena', 'message', 'errors', 'advertencia'));
+        $this->set('_serialize', ['antena', 'message', 'errors', 'advertencia']);
     }
 
     /**
@@ -118,23 +119,19 @@ class AntenasController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $antena = $this->Antenas->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $antena = $this->Antenas->get($id);
+        if ($this->request->is('put')) {
             $antena = $this->Antenas->patchEntity($antena, $this->request->getData());
             if ($this->Antenas->save($antena)) {
-                $this->Flash->success(__('The antena has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'La antena fue modificada correctamente';
+                $advertencia = $this->Antenas->ifIpExists($antena);
+            } else {
+                $message = 'La antena no fue modificada correctamente';
+                $errors = $antena->getErrors();
             }
-            $this->Flash->error(__('The antena could not be saved. Please, try again.'));
         }
-        $puntos = $this->Antenas->Puntos->find('list', ['limit' => 200]);
-        $enlaces = $this->Antenas->Enlaces->find('list', ['limit' => 200]);
-        $modelos = $this->Antenas->Modelos->find('list', ['limit' => 200]);
-        $puertos = $this->Antenas->Puertos->find('list', ['limit' => 200]);
-        $this->set(compact('antena', 'puntos', 'enlaces', 'modelos', 'puertos'));
+        $this->set(compact('antena', 'message', 'errors', 'advertencia'));
+        $this->set('_serialize', ['antena', 'message', 'errors', 'advertencia']);
     }
 
     /**

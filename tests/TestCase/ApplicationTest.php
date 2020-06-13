@@ -33,8 +33,7 @@ class ApplicationTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testBootstrap()
-    {
+    public function testBootstrap() {
         $app = new Application(dirname(dirname(__DIR__)) . '/config');
         $app->bootstrap();
         $plugins = $app->getPlugins();

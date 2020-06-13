@@ -92,7 +92,7 @@ class CentralesTable extends Table
             'descripcionUnique',
             [
                 'errorField' => 'descripcion',
-                'message' => 'Ya existe una central con la misma descripción'
+                'message' => 'Ya existe una central activa con la misma descripción'
             ]
         );
         // $rules->add($rules->isUnique(['nro'], 'Ya existe una central con el mismo número'));
@@ -108,7 +108,7 @@ class CentralesTable extends Table
             'nroUnique',
             [
                 'errorField' => 'nro',
-                'message' => 'Ya existe una central con el mismo número'
+                'message' => 'Ya existe una central activa con el mismo número'
             ]
         );
         return $rules;

@@ -66,6 +66,13 @@ class CrucesFixture extends TestFixture
             'codigo' => '14',
             'descripcion' => 'Ca. San Martín',
             'estado_id' => 1
+        ],
+        [
+            'punto_id' => 2,
+            'regulador_id' => 4,
+            'codigo' => '69',
+            'descripcion' => 'Ca. Orbegoso',
+            'estado_id' => 2
         ]
     ];
 }

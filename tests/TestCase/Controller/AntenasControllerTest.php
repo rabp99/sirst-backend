@@ -79,6 +79,7 @@ class AntenasControllerTest extends TestCase
         $this->assertEquals(1, $query->count());
         
         $this->assertResponseContains('"message": "La antena fue registrada correctamente"');
+        $this->assertResponseContains('"advertencia": null');
         
         // En caso se duplique el device_name
         $this->post('/api/antenas.json', $dataTest1);
@@ -102,10 +103,49 @@ class AntenasControllerTest extends TestCase
         $queryTest2 = $antenas->find()->where(['device_name' => $dataTest2['device_name'], 'estado_id' => 1]);
         $this->assertEquals(1, $queryTest2->count());
         $this->assertResponseContains('"message": "La antena fue registrada correctamente"');
+        $this->assertResponseContains('"advertencia": null');
         
         // En caso se desee agregar una antena con device_name activo y desactivado
         $this->post('/api/antenas.json', $dataTest2);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "La antena no fue registrada correctamente"');
+        
+        // En caso se agregue una antena con ip repetida
+        $dataTest3 = [
+            'punto_id' => 3,
+            'enlace_id' => 2,
+            'modelo_id' => 4,
+            'puerto_id' => 1,
+            'ip' => '192.168.90.24',
+            'device_name' => 'CRUCE_19_95_ST',
+            'mode' => 'AP',
+            'estado_id' => 1
+        ];
+        $this->post('/api/antenas.json', $dataTest3);
+        $this->assertResponseCode(200);
+        
+        $queryTest3 = $antenas->find()->where(['device_name' => $dataTest3['device_name'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest3->count());
+        $this->assertResponseContains('"message": "La antena fue registrada correctamente"');
+        $this->assertResponseContains('"advertencia": "Existen 2 antenas activas con la misma ip"');
+        
+        // En caso se agregue una antena con ip repetida pero desactivada
+        $dataTest4 = [
+            'punto_id' => 2,
+            'enlace_id' => 1,
+            'modelo_id' => 3,
+            'puerto_id' => 1,
+            'ip' => '192.168.30.57',
+            'device_name' => 'CRUCE_12_63_ST',
+            'mode' => 'AP',
+            'estado_id' => 1
+        ];
+        $this->post('/api/antenas.json', $dataTest4);
+        $this->assertResponseCode(200);
+        
+        $queryTest4 = $antenas->find()->where(['device_name' => $dataTest4['device_name'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest4->count());
+        $this->assertResponseContains('"message": "La antena fue registrada correctamente"');
+        $this->assertResponseContains('"advertencia": null');
     }
 }

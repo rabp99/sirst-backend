@@ -15,7 +15,10 @@ class MarcasTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = ['app.Marcas'];
+    public $fixtures = [
+        'app.Estados',
+        'app.Marcas'
+    ];
     
     /**
      * setUp method
@@ -45,11 +48,12 @@ class MarcasTableTest extends TestCase
      */
     public function testBuildRules() {
         $marca = $this->Marcas->newEntity([
-            'descripcion' => 'HP'
+            'descripcion' => 'HP',
+            'estado_id' => 1
         ]);
         $expected = [
             'descripcion' => [
-                '_isUnique' => 'Ya existe una marca con la misma descripción'
+                'descripcionUnique' => 'Ya existe una marca activa con la misma descripción'
             ]
         ];
         $this->Marcas->save($marca);

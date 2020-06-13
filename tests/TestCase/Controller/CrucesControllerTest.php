@@ -19,6 +19,7 @@ class CrucesControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Cruces',
         'app.Puntos',
         'app.Reguladores'
@@ -53,7 +54,8 @@ class CrucesControllerTest extends TestCase
             'punto_id' => 1,
             'regulador_id' => 4,
             'codigo' => '98',
-            'descripcion' => 'Av. América Este'
+            'descripcion' => 'Av. América Este',
+            'estado_id' => 1
         ];
         $this->post('/api/cruces.json', $dataTest1);
         $this->assertResponseCode(200);
@@ -68,20 +70,62 @@ class CrucesControllerTest extends TestCase
             'punto_id' => 1,
             'regulador_id' => 4,
             'codigo' => '78',
-            'descripcion' => 'Av. Algo'
+            'descripcion' => 'Av. Algo',
+            'estado_id' => 1
         ];
         $this->post('/api/cruces.json', $dataTest2);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El cruce no fue registrado correctamente"');
         
-        // En caso se duplique el código
+        // En caso se duplique la descripcion
         $dataTest3 = [
             'punto_id' => 1,
             'regulador_id' => 4,
             'codigo' => '421',
-            'descripcion' => 'Ca. San Martín'
+            'descripcion' => 'Ca. San Martín',
+            'estado_id' => 1
         ];
         $this->post('/api/cruces.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El cruce no fue registrado correctamente"');
+        
+        // En caso se desee agregar un cruce con codigo desactivado
+        $dataTest4 = [
+            'punto_id' => 2,
+            'regulador_id' => 4,
+            'codigo' => '69',
+            'descripcion' => 'Ca.',
+            'estado_id' => 1
+        ];
+        $this->post('/api/cruces.json', $dataTest4);
+        $this->assertResponseCode(200);
+        
+        $queryTest4 = $cruces->find()->where(['codigo' => $dataTest4['codigo'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest4->count());
+        $this->assertResponseContains('"message": "El cruce fue registrado correctamente"');
+                
+        // En caso se desee agregar un punto con descripcion desactivada
+        $dataTest5 = [
+            'punto_id' => 2,
+            'regulador_id' => 4,
+            'codigo' => '100',
+            'descripcion' => 'Ca. Orbegoso',
+            'estado_id' => 1
+        ];
+        $this->post('/api/cruces.json', $dataTest5);
+        $this->assertResponseCode(200);
+        
+        $queryTest5 = $cruces->find()->where(['descripcion' => $dataTest5['descripcion'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest5->count());
+        $this->assertResponseContains('"message": "El cruce fue registrado correctamente"');
+        
+        // En caso se desee agregar un cruce con codigo activo y desactivado
+        $this->post('/api/cruces.json', $dataTest4);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El cruce no fue registrado correctamente"');
+        
+        // En caso se desee agregar un cruce con descripcion activo y desactivado
+        $this->post('/api/cruces.json', $dataTest5);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El cruce no fue registrado correctamente"');
     }

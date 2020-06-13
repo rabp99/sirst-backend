@@ -90,24 +90,23 @@ class CentralesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Central id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $centrale = $this->Centrales->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $centrale = $this->Centrales->patchEntity($centrale, $this->request->getData());
-            if ($this->Centrales->save($centrale)) {
-                $this->Flash->success(__('The centrale has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+        $central = $this->Centrales->get($id);
+        if ($this->request->is('put')) {
+            $central = $this->Centrales->patchEntity($central, $this->request->getData());
+            if ($this->Centrales->save($central)) {
+                $message = 'La central fue modificada correctamente';
+            } else {
+                $message = 'La central no fue modificada correctamente';
+                $errors = $central->getErrors();
             }
-            $this->Flash->error(__('The centrale could not be saved. Please, try again.'));
         }
-        $this->set(compact('centrale'));
+        $this->set(compact('central', 'message', 'errors'));
+        $this->set('_serialize', ['central', 'message', 'errors']);
     }
 
     /**

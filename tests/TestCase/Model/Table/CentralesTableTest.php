@@ -23,6 +23,7 @@ class CentralesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Centrales'
     ];
 
@@ -57,11 +58,12 @@ class CentralesTableTest extends TestCase
         // En caso se repita la descripción
         $centralTest1 = $this->Centrales->newEntity([
             'descripcion' => 'Central 1 CCHH',
-            'nro' => 6
+            'nro' => 6,
+            'estado_id' => 1
         ]);
         $expectedTest1 = [
             'descripcion' => [
-                '_isUnique' => 'Ya existe una central con la misma descripción'
+                'descripcionUnique' => 'Ya existe una central activa con la misma descripción'
             ]
         ];
         $this->Centrales->save($centralTest1);
@@ -70,11 +72,12 @@ class CentralesTableTest extends TestCase
         // En caso se repita el nro
         $centralTest2 = $this->Centrales->newEntity([
             'descripcion' => 'Central 10 Algo',
-            'nro' => 3
+            'nro' => 3,
+            'estado_id' => 1
         ]);
         $expectedTest2 = [
             'nro' => [
-                '_isUnique' => 'Ya existe una central con el mismo número'
+                'nroUnique' => 'Ya existe una central activa con el mismo número'
             ]
         ];
         $this->Centrales->save($centralTest2);

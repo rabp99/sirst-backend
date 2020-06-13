@@ -97,19 +97,18 @@ class PuntosController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $punto = $this->Puntos->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $punto = $this->Puntos->get($id);
+        if ($this->request->is('put')) {
             $punto = $this->Puntos->patchEntity($punto, $this->request->getData());
             if ($this->Puntos->save($punto)) {
-                $this->Flash->success(__('The punto has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'El punto fue modificado correctamente';
+            } else {
+                $message = 'El punto no fue modificado correctamente';
+                $errors = $punto->getErrors();
             }
-            $this->Flash->error(__('The punto could not be saved. Please, try again.'));
         }
-        $this->set(compact('punto'));
+        $this->set(compact('punto', 'message', 'errors'));
+        $this->set('_serialize', ['punto', 'message', 'errors']);
     }
     
     /**

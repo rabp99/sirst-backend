@@ -23,6 +23,7 @@ class PuntosTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Puntos',
         'app.Antenas',
         'app.Cruces',
@@ -63,11 +64,12 @@ class PuntosTableTest extends TestCase
             'codigo' => '10',
             'descripcion' => 'dsadsa',
             'latitud' => '-78.84712100',
-            'longitud' => '153.61575600'
+            'longitud' => '153.61575600',
+            'estado_id' => 1
         ]);
         $expectedTest1 = [
             'codigo' => [
-                '_isUnique' => 'Ya existe un punto con el mismo código'
+                'codigoUnique' => 'Ya existe un punto activo con el mismo código'
             ]
         ];
         $this->Puntos->save($puntoTest1);
@@ -78,11 +80,12 @@ class PuntosTableTest extends TestCase
             'codigo' => '50',
             'descripcion' => 'Av. América Sur UPAO',
             'latitud' => '-78.84712100',
-            'longitud' => '153.61575600'
+            'longitud' => '153.61575600',
+            'estado_id' => 1
         ]);
         $expectedTest2 = [
             'descripcion' => [
-                '_isUnique' => 'Ya existe un punto con la misma descripción'
+                'descripcionUnique' => 'Ya existe un punto activo con la misma descripción'
             ]
         ];
         $this->Puntos->save($puntoTest2);

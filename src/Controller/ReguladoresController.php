@@ -113,23 +113,18 @@ class ReguladoresController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $reguladore = $this->Reguladores->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $reguladore = $this->Reguladores->patchEntity($reguladore, $this->request->getData());
-            if ($this->Reguladores->save($reguladore)) {
-                $this->Flash->success(__('The reguladore has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+        $regulador = $this->Reguladores->get($id);
+        if ($this->request->is('put')) {
+            $regulador = $this->Reguladores->patchEntity($regulador, $this->request->getData());
+            if ($this->Reguladores->save($regulador)) {
+                $message = 'El regulador fue modificado correctamente';
+            } else {
+                $message = 'El regulador no fue modificado correctamente';
+                $errors = $regulador->getErrors();
             }
-            $this->Flash->error(__('The reguladore could not be saved. Please, try again.'));
         }
-        $modelos = $this->Reguladores->Modelos->find('list', ['limit' => 200]);
-        $centrales = $this->Reguladores->Centrales->find('list', ['limit' => 200]);
-        $puntos = $this->Reguladores->Puntos->find('list', ['limit' => 200]);
-        $puertos = $this->Reguladores->Puertos->find('list', ['limit' => 200]);
-        $this->set(compact('reguladore', 'modelos', 'centrales', 'puntos', 'puertos'));
+        $this->set(compact('regulador', 'message', 'errors'));
+        $this->set('_serialize', ['regulador', 'message', 'errors']);
     }
 
     /**

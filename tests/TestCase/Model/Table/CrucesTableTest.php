@@ -23,6 +23,7 @@ class CrucesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Cruces',
         'app.Puntos',
         'app.Reguladores'
@@ -61,11 +62,12 @@ class CrucesTableTest extends TestCase
             'punto_id' => 2,
             'regulador_id' => 4,
             'codigo' => '45',
-            'descripcion' => 'Av. De nada'
+            'descripcion' => 'Av. De nada',
+            'estado_id' => 1
         ]);
         $expectedTest1 = [
             'codigo' => [
-                '_isUnique' => 'Ya existe un cruce con el mismo código'
+                'codigoUnique' => 'Ya existe un cruce activo con el mismo código'
             ]
         ];
         $this->Cruces->save($cruceTest1);
@@ -76,11 +78,12 @@ class CrucesTableTest extends TestCase
             'punto_id' => 2,
             'regulador_id' => 4,
             'codigo' => '413',
-            'descripcion' => 'Av. Vera Enriquez'
+            'descripcion' => 'Av. Vera Enriquez',
+            'estado_id' => 1
         ]);
         $expectedTest2 = [
             'descripcion' => [
-                '_isUnique' => 'Ya existe un cruce con la misma descripción'
+                'descripcionUnique' => 'Ya existe un cruce activo con la misma descripción'
             ]
         ];
         $this->Cruces->save($cruceTest2);

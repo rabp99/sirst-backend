@@ -93,19 +93,18 @@ class MarcasController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $marca = $this->Marcas->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $marca = $this->Marcas->get($id);
+        if ($this->request->is('put')) {
             $marca = $this->Marcas->patchEntity($marca, $this->request->getData());
             if ($this->Marcas->save($marca)) {
-                $this->Flash->success(__('The marca has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'La marca fue modificada correctamente';
+            } else {
+                $message = 'La marca no fue modificada correctamente';
+                $errors = $marca->getErrors();
             }
-            $this->Flash->error(__('The marca could not be saved. Please, try again.'));
         }
-        $this->set(compact('marca'));
+        $this->set(compact('marca', 'message', 'errors'));
+        $this->set('_serialize', ['marca', 'message', 'errors']);
     }
 
     /**

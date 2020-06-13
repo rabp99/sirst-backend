@@ -95,7 +95,7 @@ class TSwitchesTable extends Table
             'ipUnique',
             [
                 'errorField' => 'ip',
-                'message' => 'Ya existe un switch con la misma ip'
+                'message' => 'Ya existe un switch activo con la misma ip'
             ]
         );
         return $rules;

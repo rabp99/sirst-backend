@@ -103,20 +103,18 @@ class ModelosController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $modelo = $this->Modelos->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $modelo = $this->Modelos->get($id);
+        if ($this->request->is('put')) {
             $modelo = $this->Modelos->patchEntity($modelo, $this->request->getData());
             if ($this->Modelos->save($modelo)) {
-                $this->Flash->success(__('The modelo has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'El modelo fue modificado correctamente';
+            } else {
+                $message = 'El modelo no fue modificado correctamente';
+                $errors = $modelo->getErrors();
             }
-            $this->Flash->error(__('The modelo could not be saved. Please, try again.'));
         }
-        $marcas = $this->Modelos->Marcas->find('list', ['limit' => 200]);
-        $this->set(compact('modelo', 'marcas'));
+        $this->set(compact('modelo', 'message', 'errors'));
+        $this->set('_serialize', ['modelo', 'message', 'errors']);
     }
 
     /**

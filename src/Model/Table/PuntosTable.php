@@ -115,7 +115,7 @@ class PuntosTable extends Table
             'codigoUnique',
             [
                 'errorField' => 'codigo',
-                'message' => 'Ya existe un punto con el mismo código'
+                'message' => 'Ya existe un punto activo con el mismo código'
             ]
         );
         // $rules->add($rules->isUnique(['descripcion'], 'Ya existe un punto con la misma descripción'));
@@ -131,7 +131,7 @@ class PuntosTable extends Table
             'descripcionUnique',
             [
                 'errorField' => 'descripcion',
-                'message' => 'Ya existe un punto con la misma descripción'
+                'message' => 'Ya existe un punto activo con la misma descripción'
             ]
         );
         

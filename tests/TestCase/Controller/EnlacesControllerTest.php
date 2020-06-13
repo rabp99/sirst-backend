@@ -85,4 +85,52 @@ class EnlacesControllerTest extends TestCase
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El enlace no fue registrado correctamente"');
     }
+    
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit() {
+        $dataTest1 = [
+            'ssid' => 'TM_205_457',
+            'channel_width' => '40MHZ',
+            'estado_id' => 1
+        ];
+        $this->put("/api/enlaces/1.json", $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El enlace fue modificado correctamente"');
+        
+        $enlaces = TableRegistry::getTableLocator()->get('Enlaces');
+        $queryTest1 = $enlaces->find()->where(['id' => 1, 'ssid' => $dataTest1['ssid']]);
+        $this->assertEquals(1, $queryTest1->count());
+        
+        // En caso se desee modificar un enlace a un enlace con ssid duplicado
+        $dataTest2 = [
+            'ssid' => 'TM_12_11',
+            'channel_width' => '40MHZ',
+            'estado_id' => 1
+        ];
+        $this->put('/api/enlaces/1.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El enlace no fue modificado correctamente"');
+                
+        // En caso se desee modificar un enlace a un enlace con ssid desactivado
+        $dataTest3 = [
+            'ssid' => 'TM_14_94',
+            'channel_width' => '40MHZ',
+            'estado_id' => 1
+        ];
+        $this->put('/api/enlaces/1.json', $dataTest3);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $enlaces->find()->where(['ssid' => $dataTest2['ssid'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "El enlace fue modificado correctamente"');
+
+        // En caso se desee modificar un enlace a un enlace con ssid activo y desactivado
+        $this->put('/api/enlaces/2.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El enlace no fue modificado correctamente"');
+    }
 }

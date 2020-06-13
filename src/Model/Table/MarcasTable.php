@@ -85,7 +85,7 @@ class MarcasTable extends Table
             'descripcionUnique',
             [
                 'errorField' => 'descripcion',
-                'message' => 'Ya existe una marca con la misma descripción'
+                'message' => 'Ya existe una marca activa con la misma descripción'
             ]
         );
         return $rules;

@@ -23,6 +23,7 @@ class ReguladoresTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Reguladores',
         'app.Modelos',
         'app.Centrales',
@@ -65,11 +66,12 @@ class ReguladoresTableTest extends TestCase
             'punto_id' => 5,
             'puerto_id' => 1,
             'codigo' => '20',
-            'ip' => '192.168.90.32'
+            'ip' => '192.168.90.32',
+            'estado_id' => 1
         ]);
         $expectedTest1 = [
             'codigo' => [
-                '_isUnique' => 'Ya existe un regulador con el mismo código'
+                'codigoUnique' => 'Ya existe un regulador activo con el mismo código'
             ]
         ];
         $this->Reguladores->save($reguladorTest1);
@@ -82,11 +84,12 @@ class ReguladoresTableTest extends TestCase
             'punto_id' => 5,
             'puerto_id' => 1,
             'codigo' => '67',
-            'ip' => '192.168.20.21'
+            'ip' => '192.168.20.21',
+            'estado_id' => 1
         ]);
         $expectedTest2 = [
             'ip' => [
-                '_isUnique' => 'Ya existe un regulador con la misma ip'
+                'ipUnique' => 'Ya existe un regulador activo con la misma ip'
             ]
         ];
         $this->Reguladores->save($reguladorTest2);

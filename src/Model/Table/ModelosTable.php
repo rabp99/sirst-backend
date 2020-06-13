@@ -83,7 +83,7 @@ class ModelosTable extends Table
         // $rules->add($rules->isUnique(['descripcion'], 'Ya existe un modelo con la misma descripción'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['ip' => $entity->ip, 'estado_id' => 1])->count();
+                $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
                 if ($count == 0) {
                     return true;
                 } else {
@@ -93,7 +93,7 @@ class ModelosTable extends Table
             'descripcionUnique',
             [
                 'errorField' => 'descripcion',
-                'message' => 'Ya existe un modelo con la misma descripción'
+                'message' => 'Ya existe un modelo activo con la misma descripción'
             ]
         );
         return $rules;

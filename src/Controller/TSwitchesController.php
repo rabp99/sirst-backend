@@ -107,21 +107,18 @@ class TSwitchesController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $tSwitch = $this->TSwitches->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $tSwitch = $this->TSwitches->get($id);
+        if ($this->request->is('put')) {
             $tSwitch = $this->TSwitches->patchEntity($tSwitch, $this->request->getData());
             if ($this->TSwitches->save($tSwitch)) {
-                $this->Flash->success(__('The t switch has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'El switch fue modificado correctamente';
+            } else {
+                $message = 'El switch no fue modificado correctamente';
+                $errors = $tSwitch->getErrors();
             }
-            $this->Flash->error(__('The t switch could not be saved. Please, try again.'));
         }
-        $modelos = $this->TSwitches->Modelos->find('list', ['limit' => 200]);
-        $puntos = $this->TSwitches->Puntos->find('list', ['limit' => 200]);
-        $this->set(compact('tSwitch', 'modelos', 'puntos'));
+        $this->set(compact('tSwitch', 'message', 'errors'));
+        $this->set('_serialize', ['tSwitch', 'message', 'errors']);
     }
 
     /**

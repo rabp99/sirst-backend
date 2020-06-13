@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\Model\Entity\Antena;
 
 /**
  * Antenas Model
@@ -116,9 +117,17 @@ class AntenasTable extends Table
             'deviceNameUnique',
             [
                 'errorField' => 'device_name',
-                'message' => 'Ya existe una antena con el mismo device name'
+                'message' => 'Ya existe una antena activa con el mismo device name'
             ]
         );
         return $rules;
+    }
+    
+    public function ifIpExists(Antena $antena) {
+        $count = $this->find()->where(['ip' => $antena->ip, 'estado_id' => 1])->count();
+        if ($count > 1) {
+            return "Existen $count antenas activas con la misma ip";
+        }
+        return null;
     }
 }

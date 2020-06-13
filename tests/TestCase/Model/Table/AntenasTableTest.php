@@ -23,6 +23,7 @@ class AntenasTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.Antenas',
         'app.Puntos',
         'app.Enlaces',
@@ -58,40 +59,43 @@ class AntenasTableTest extends TestCase
      * @return void
      */
     public function testBuildRules() {
-        // En caso se repita la ip
-        $antenaTest1 = $this->Antenas->newEntity([
-            'punto_id' => 2,
-            'enlace_id' => 1,
-            'modelo_id' => 3,
-            'puerto_id' => 1,
-            'ip' => '192.168.20.45',
-            'device_name' => 'CRUCE_387_24_ST',
-            'mode' => 'ST'
-        ]);
-        $expectedTest1 = [
-            'ip' => [
-                '_isUnique' => 'Ya existe una antena con la misma ip'
-            ]
-        ];
-        $this->Antenas->save($antenaTest1);
-        $this->assertSame($expectedTest1, $antenaTest1->getErrors());
-        
         // En caso se repita el device name
-        $antenaTest2 = $this->Antenas->newEntity([
+        $antenaTest1 = $this->Antenas->newEntity([
             'punto_id' => 1,
             'enlace_id' => 1,
             'modelo_id' => 3,
             'puerto_id' => 1,
             'ip' => '192.168.20.15',
             'device_name' => 'CRUCE_15_30_AP',
-            'mode' => 'AP'
+            'mode' => 'AP',
+            'estado_id' => 1
         ]);
-        $expectedTest2 = [
+        $expectedTest1 = [
             'device_name' => [
-                '_isUnique' => 'Ya existe una antena con el mismo device name'
+                'deviceNameUnique' => 'Ya existe una antena activa con el mismo device name'
             ]
         ];
-        $this->Antenas->save($antenaTest2);
-        $this->assertSame($expectedTest2, $antenaTest2->getErrors());
+        $this->Antenas->save($antenaTest1);
+        $this->assertSame($expectedTest1, $antenaTest1->getErrors());
+    }
+    
+    /**
+     * Test ifIpExists method
+     *
+     * @return void
+     */
+    public function testIfIpExists() {
+        $antenaTest1 = $this->Antenas->newEntity([
+            'punto_id' => 1,
+            'enlace_id' => 1,
+            'modelo_id' => 3,
+            'puerto_id' => 1,
+            'ip' => '192.168.20.45',
+            'device_name' => 'CRUCE_AX',
+            'mode' => 'AP',
+            'estado_id' => 1
+        ]);
+        $this->Antenas->save($antenaTest1);
+        $this->assertEquals("Existen 2 antenas activas con la misma ip", $this->Antenas->ifIpExists($antenaTest1));
     }
 }

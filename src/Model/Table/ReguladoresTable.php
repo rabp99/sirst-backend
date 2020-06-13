@@ -112,7 +112,7 @@ class ReguladoresTable extends Table
             'codigoUnique',
             [
                 'errorField' => 'codigo',
-                'message' => 'Ya existe un regulador con el mismo código'
+                'message' => 'Ya existe un regulador activo con el mismo código'
             ]
         );
         // $rules->add($rules->isUnique(['ip'], 'Ya existe un regulador con la misma ip'));
@@ -131,7 +131,7 @@ class ReguladoresTable extends Table
             'ipUnique',
             [
                 'errorField' => 'ip',
-                'message' => 'Ya existe un regulador con la misma ip'
+                'message' => 'Ya existe un regulador activo con la misma ip'
             ]
         );
         

@@ -103,21 +103,18 @@ class CrucesController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $cruce = $this->Cruces->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $cruce = $this->Cruces->get($id);
+        if ($this->request->is('put')) {
             $cruce = $this->Cruces->patchEntity($cruce, $this->request->getData());
             if ($this->Cruces->save($cruce)) {
-                $this->Flash->success(__('The cruce has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'El cruce fue modificado correctamente';
+            } else {
+                $message = 'El cruce no fue modificado correctamente';
+                $errors = $cruce->getErrors();
             }
-            $this->Flash->error(__('The cruce could not be saved. Please, try again.'));
         }
-        $puntos = $this->Cruces->Puntos->find('list', ['limit' => 200]);
-        $reguladores = $this->Cruces->Reguladores->find('list', ['limit' => 200]);
-        $this->set(compact('cruce', 'puntos', 'reguladores'));
+        $this->set(compact('cruce', 'message', 'errors'));
+        $this->set('_serialize', ['cruce', 'message', 'errors']);
     }
 
     /**

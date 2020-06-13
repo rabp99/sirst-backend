@@ -97,19 +97,18 @@ class EnlacesController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null) {
-        $enlace = $this->Enlaces->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $enlace = $this->Enlaces->get($id);
+        if ($this->request->is('put')) {
             $enlace = $this->Enlaces->patchEntity($enlace, $this->request->getData());
             if ($this->Enlaces->save($enlace)) {
-                $this->Flash->success(__('The enlace has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $message = 'El enlace fue modificado correctamente';
+            } else {
+                $message = 'El enlace no fue modificado correctamente';
+                $errors = $enlace->getErrors();
             }
-            $this->Flash->error(__('The enlace could not be saved. Please, try again.'));
         }
-        $this->set(compact('enlace'));
+        $this->set(compact('enlace', 'message', 'errors'));
+        $this->set('_serialize', ['enlace', 'message', 'errors']);
     }
 
     /**

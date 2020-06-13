@@ -23,6 +23,7 @@ class TSwitchesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.Estados',
         'app.TSwitches',
         'app.Modelos',
         'app.Puntos'
@@ -56,5 +57,18 @@ class TSwitchesTableTest extends TestCase
      * @return void
      */
     public function testBuildRules() {
+        $tSwitch = $this->TSwitches->newEntity([
+            'modelo_id' => 3,
+            'punto_id' => 2,
+            'ip' => '192.168.10.15',
+            'estado_id' => 1
+        ]);
+        $expected = [
+            'ip' => [
+                'ipUnique' => 'Ya existe un switch activo con la misma ip'
+            ]
+        ];
+        $this->TSwitches->save($tSwitch);
+        $this->assertSame($expected, $tSwitch->getErrors());
     }
 }
