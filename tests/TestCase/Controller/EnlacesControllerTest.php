@@ -93,7 +93,7 @@ class EnlacesControllerTest extends TestCase
      */
     public function testEdit() {
         $dataTest1 = [
-            'ssid' => 'TM_205_457',
+            'ssid' => 'TM_10_20',
             'channel_width' => '40MHZ',
             'estado_id' => 1
         ];

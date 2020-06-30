@@ -135,4 +135,85 @@ class PuntosControllerTest extends TestCase
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El punto no fue registrado correctamente"');
     }
+    
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit() {
+        $dataTest1 = [
+            'codigo' => '10',
+            'descripcion' => 'Av. Juan Pablo II UNT',
+            'latitud' => '-78.84727100',
+            'longitud' => '153.61805600',
+            'estado_id' => 1
+        ];
+        $this->put("/api/puntos/1.json", $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El punto fue modificado correctamente"');
+        
+        $puntos = TableRegistry::getTableLocator()->get('Puntos');
+        $queryTest1 = $puntos->find()->where(['id' => 1, 'codigo' => $dataTest1['codigo']]);
+        $this->assertEquals(1, $queryTest1->count());
+        
+        // En caso se desee modificar un punto a un punto con codigo duplicado
+        $dataTest2 = [
+            'codigo' => '48',
+            'descripcion' => 'Av. Vera Enriquez',
+            'latitud' => '-78.81521100',
+            'longitud' => '151.61252600',
+            'estado_id' => 1
+        ];
+        $this->put('/api/puntos/1.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El punto no fue modificado correctamente"');
+                
+        // En caso se desee modificar un punto a un punto con descripcion duplicada
+        $dataTest3 = [
+            'codigo' => '47',
+            'descripcion' => 'Av. América Norte',
+            'latitud' => '-78.81521240',
+            'longitud' => '151.64752600',
+            'estado_id' => 1
+        ];
+        $this->put('/api/puntos/1.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El punto no fue modificado correctamente"');
+        
+        // En caso se desee modificar un punto a un punto con codigo desactivado
+        $dataTest4 = [
+            'codigo' => '41',
+            'descripcion' => 'Av. Algo Algo',
+            'latitud' => '-78.81521240',
+            'longitud' => '151.64752600',
+            'estado_id' => 1
+        ];
+        $this->put('/api/puntos/1.json', $dataTest4);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $puntos->find()->where(['codigo' => $dataTest4['codigo'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "El punto fue modificado correctamente"');
+        
+        // En caso se desee modificar un punto a un punto con descripcion desactivado
+        $dataTest5 = [
+            'codigo' => '64',
+            'descripcion' => 'Av. España 4',
+            'latitud' => '-78.81521240',
+            'longitud' => '151.64752600',
+            'estado_id' => 1
+        ];
+        $this->put('/api/puntos/1.json', $dataTest5);
+        $this->assertResponseCode(200);
+        
+        $queryTest3 = $puntos->find()->where(['descripcion' => $dataTest5['descripcion'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest3->count());
+        $this->assertResponseContains('"message": "El punto fue modificado correctamente"');
+        
+        // En caso se desee modificar un punto a un punto con codigo, descripcion activo y desactivado
+        $this->put('/api/puntos/2.json', $dataTest5);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El punto no fue modificado correctamente"');
+    }
 }

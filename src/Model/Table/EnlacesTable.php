@@ -82,7 +82,11 @@ class EnlacesTable extends Table
         // $rules->add($rules->isUnique(['ssid'], 'Ya existe un enlace con el mismo ssid'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['ssid' => $entity->ssid, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['ssid' => $entity->ssid, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['ssid' => $entity->ssid, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
                 if ($count == 0) {
                     return true;
                 } else {

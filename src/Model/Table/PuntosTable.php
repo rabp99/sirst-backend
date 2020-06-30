@@ -105,7 +105,11 @@ class PuntosTable extends Table
         // $rules->add($rules->isUnique(['codigo'], 'Ya existe un punto con el mismo código'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
                 if ($count == 0) {
                     return true;
                 } else {
@@ -121,7 +125,11 @@ class PuntosTable extends Table
         // $rules->add($rules->isUnique(['descripcion'], 'Ya existe un punto con la misma descripción'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
                 if ($count == 0) {
                     return true;
                 } else {
