@@ -82,7 +82,12 @@ class CentralesTable extends Table
         // $rules->add($rules->isUnique(['descripcion'], 'Ya existe una central con la misma descripción'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
+                
                 if ($count == 0) {
                     return true;
                 } else {
@@ -98,7 +103,12 @@ class CentralesTable extends Table
         // $rules->add($rules->isUnique(['nro'], 'Ya existe una central con el mismo número'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['nro' => $entity->nro, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['nro' => $entity->nro, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['nro' => $entity->nro, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
+                
                 if ($count == 0) {
                     return true;
                 } else {

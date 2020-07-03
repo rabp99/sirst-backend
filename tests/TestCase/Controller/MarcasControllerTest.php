@@ -82,4 +82,49 @@ class MarcasControllerTest extends TestCase
         $this->assertResponseContains('"message": "La marca no fue registrada correctamente"');
         
     }
+    
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit() {
+        $dataTest1 = [
+            'descripcion' => 'Nueva Marca ZZZ',
+            'estado_id' => 1
+        ];
+        $this->put("/api/marcas/1.json", $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La marca fue modificada correctamente"');
+        
+        $marcas = TableRegistry::getTableLocator()->get('Marcas');
+        $queryTest1 = $marcas->find()->where(['descripcion' => $dataTest1['descripcion']]);
+        $this->assertEquals(1, $queryTest1->count());
+        
+        // En caso se desee modificar una marca a una marca con descripcion duplicado
+        $dataTest2 = [
+            'descripcion' => 'HP',
+            'estado_id' => 1
+        ];
+        $this->put('/api/marcas/1.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La marca no fue modificada correctamente"');
+        
+        // En caso se desee modificar una marca a una marca con descripcion desactivado
+        $dataTest3 = [
+            'descripcion' => 'Apple',
+            'estado_id' => 1
+        ];
+        $this->put('/api/marcas/1.json', $dataTest3);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $marcas->find()->where(['descripcion' => $dataTest3['descripcion'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "La marca fue modificada correctamente"');
+        
+        // En caso se desee modificar una marca a una marca con descripcion activo y desactivado
+        $this->put('/api/marcas/2.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La marca no fue modificada correctamente"');
+    }
 }

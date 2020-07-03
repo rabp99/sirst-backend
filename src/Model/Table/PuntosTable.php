@@ -110,6 +110,7 @@ class PuntosTable extends Table
                 } else {
                     $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1, 'id !=' => $entity->id])->count();
                 }
+                
                 if ($count == 0) {
                     return true;
                 } else {

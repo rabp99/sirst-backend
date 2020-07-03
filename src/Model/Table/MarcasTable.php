@@ -75,7 +75,12 @@ class MarcasTable extends Table
         // $rules->add($rules->isUnique(['descripcion'], 'Ya existe una marca con la misma descripción'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['descripcion' => $entity->descripcion, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
+                
                 if ($count == 0) {
                     return true;
                 } else {

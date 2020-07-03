@@ -112,4 +112,75 @@ class CentralesControllerTest extends TestCase
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "La central no fue registrada correctamente"');
     }
+    
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit() {
+        $dataTest1 = [
+            'descripcion' => 'Central 1 CCHH',
+            'nro' => '6',
+            'estado_id' => 1
+        ];
+        $this->put("/api/centrales/1.json", $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La central fue modificada correctamente"');
+        
+        $centrales = TableRegistry::getTableLocator()->get('Centrales');
+        $queryTest1 = $centrales->find()->where(['descripcion' => $dataTest1['descripcion']]);
+        $this->assertEquals(1, $queryTest1->count());
+        
+        // En caso se desee modificar una central a una central con descripcion duplicado
+        $dataTest2 = [
+            'descripcion' => 'Central 2 España',
+            'nro' => '7',
+            'estado_id' => 1
+        ];
+        $this->put('/api/centrales/1.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La central no fue modificada correctamente"');
+        
+        // En caso se desee modificar una central a una central con nro duplicado
+        $dataTest3 = [
+            'descripcion' => 'Central 2312',
+            'nro' => '2',
+            'estado_id' => 1
+        ];
+        $this->put('/api/centrales/1.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La central no fue modificada correctamente"');
+        
+        // En caso se desee modificar una central a una central con descripcion desactivado
+        $dataTest4 = [
+            'descripcion' => 'Central 5',
+            'nro' => '8',
+            'estado_id' => 1
+        ];
+        $this->put('/api/centrales/1.json', $dataTest4);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $centrales->find()->where(['descripcion' => $dataTest4['descripcion'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "La central fue modificada correctamente"');
+        
+        // En caso se desee modificar una central a una central con nro desactivado
+        $dataTest5 = [
+            'descripcion' => 'Central jhk',
+            'nro' => '5',
+            'estado_id' => 1
+        ];
+        $this->put('/api/centrales/1.json', $dataTest5);
+        $this->assertResponseCode(200);
+        
+        $queryTest3 = $centrales->find()->where(['descripcion' => $dataTest5['descripcion'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest3->count());
+        $this->assertResponseContains('"message": "La central fue modificada correctamente"');
+        
+        // En caso se desee modificar una central a una central con descripcion, nro activo y desactivado
+        $this->put('/api/centrales/2.json', $dataTest5);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La central no fue modificada correctamente"');
+    }
 }
