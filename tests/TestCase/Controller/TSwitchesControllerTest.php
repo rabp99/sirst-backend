@@ -106,4 +106,55 @@ class TSwitchesControllerTest extends TestCase
         $this->assertEquals(2, $queryTest3->count());
         $this->assertResponseContains('"message": "El switch fue registrado correctamente"');
     }
+    
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit() {
+        $dataTest1 = [
+            'modelo_id' => 4,
+            'punto_id' => 1,
+            'ip' => '192.168.10.15',
+            'estado_id' => 1
+        ];
+        $this->put("/api/t_switches/1.json", $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El switch fue modificado correctamente"');
+        
+        $switches = TableRegistry::getTableLocator()->get('TSwitches');
+        $queryTest1 = $switches->find()->where(['ip' => $dataTest1['ip']]);
+        $this->assertEquals(1, $queryTest1->count());
+        
+        // En caso se desee modificar un switch a un switch con ip duplicada
+        $dataTest2 = [
+            'modelo_id' => 4,
+            'punto_id' => 1,
+            'ip' => '192.168.10.20',
+            'estado_id' => 1
+        ];
+        $this->put('/api/t_switches/1.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El switch no fue modificado correctamente"');
+        
+        // En caso se desee modificar un switch a una switch con ip desactivado
+        $dataTest3 = [
+            'modelo_id' => 4,
+            'punto_id' => 1,
+            'ip' => '192.168.10.120',
+            'estado_id' => 1
+        ];
+        $this->put('/api/t_switches/1.json', $dataTest3);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $switches->find()->where(['ip' => $dataTest3['ip'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "El switch fue modificado correctamente"');
+        
+        // En caso se desee modificar un switch a un switch con ip activo y desactivado
+        $this->put('/api/t_switches/2.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El switch no fue modificado correctamente"');
+    }
 }

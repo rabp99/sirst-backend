@@ -120,7 +120,7 @@ class ModelosControllerTest extends TestCase
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El modelo no fue modificado correctamente"');
         
-        // En caso se desee modificar una central a una central con descripcion desactivado
+        // En caso se desee modificar un modelo a un modelo con descripcion desactivado
         $dataTest3 = [
             'marca_id' => 4,
             'descripcion' => 'Apple X',

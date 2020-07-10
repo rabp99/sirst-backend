@@ -79,13 +79,17 @@ class TSwitchesTable extends Table
         $rules->add($rules->existsIn(['modelo_id'], 'Modelos'));
         $rules->add($rules->existsIn(['punto_id'], 'Puntos'));
         $rules->add($rules->existsIn(['estado_id'], 'Estados'));
-        // $rules->add($rules->isUnique(['ip']));
         $rules->add(
             function ($entity, $options) {
                 if ($entity->ip == null) {
                     return true;
                 }
-                $count = $this->find()->where(['ip' => $entity->ip, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['ip' => $entity->ip, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['ip' => $entity->ip, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
+                
                 if ($count == 0) {
                     return true;
                 } else {
