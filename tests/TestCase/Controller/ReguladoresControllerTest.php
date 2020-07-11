@@ -166,4 +166,112 @@ class ReguladoresControllerTest extends TestCase
         $this->assertEquals(2, $queryTest6->count());
         $this->assertResponseContains('"message": "El regulador fue registrado correctamente"');
     }
+    
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit() {
+        $dataTest1 = [
+            'modelo_id' => 5,
+            'central_id' => 1,
+            'punto_id' => 2,
+            'puerto_id' => 1,
+            'codigo' => '20',
+            'ip' => '192.168.20.25',
+            'estado_id' => 1
+        ];
+        $this->put("/api/reguladores/1.json", $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El regulador fue modificado correctamente"');
+        
+        $reguladores = TableRegistry::getTableLocator()->get('Reguladores');
+        $queryTest1 = $reguladores->find()->where(['ip' => $dataTest1['ip']]);
+        $this->assertEquals(1, $queryTest1->count());
+        
+        // En caso se desee modificar un regulador a un regulador con codigo duplicada
+        $dataTest2 = [
+            'modelo_id' => 5,
+            'central_id' => 1,
+            'punto_id' => 2,
+            'puerto_id' => 1,
+            'codigo' => '10',
+            'ip' => '192.168.10.25',
+            'estado_id' => 1
+        ];
+        $this->put('/api/reguladores/1.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El regulador no fue modificado correctamente"');
+        
+        // En caso se desee modificar un regulador a un regulador con ip duplicada
+        $dataTest3 = [
+            'modelo_id' => 5,
+            'central_id' => 1,
+            'punto_id' => 2,
+            'puerto_id' => 1,
+            'codigo' => '10',
+            'ip' => '192.168.10.78',
+            'estado_id' => 1
+        ];
+        $this->put('/api/reguladores/1.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El regulador no fue modificado correctamente"');
+        
+        // En caso se desee modificar un regulador a una regulador con código desactivado
+        $dataTest4 = [
+            'modelo_id' => 5,
+            'central_id' => 1,
+            'punto_id' => 2,
+            'puerto_id' => 1,
+            'codigo' => '74',
+            'ip' => '192.168.10.25',
+            'estado_id' => 1
+        ];
+        $this->put('/api/reguladores/1.json', $dataTest4);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $reguladores->find()->where(['ip' => $dataTest4['ip'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "El regulador fue modificado correctamente"');
+        
+        // En caso se desee modificar un regulador a una regulador con ip desactivado
+        $dataTest5 = [
+            'modelo_id' => 5,
+            'central_id' => 1,
+            'punto_id' => 2,
+            'puerto_id' => 1,
+            'codigo' => '74',
+            'ip' => '192.168.20.14',
+            'estado_id' => 1
+        ];
+        $this->put('/api/reguladores/1.json', $dataTest5);
+        $this->assertResponseCode(200);
+        
+        $queryTest3 = $reguladores->find()->where(['ip' => $dataTest5['ip'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest3->count());
+        $this->assertResponseContains('"message": "El regulador fue modificado correctamente"');
+        
+        // En caso se desee modificar un regulador a un regulador con código, ip activo y desactivado
+        $this->put('/api/reguladores/2.json', $dataTest5);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "El regulador no fue modificado correctamente"');
+        
+        // En caso se desee modificar un regulador con ip null
+        $dataTest6 = [
+            'modelo_id' => 5,
+            'central_id' => 1,
+            'punto_id' => 2,
+            'puerto_id' => 1,
+            'codigo' => '74',
+            'ip' => null,
+            'estado_id' => 1
+        ];
+        $this->put('/api/reguladores/1.json', $dataTest6);
+        $this->assertResponseCode(200);
+        
+        $queryTest6 = $reguladores->find()->where(['ip IS NULL', 'estado_id' => 1]);
+        $this->assertEquals(2, $queryTest6->count());
+        $this->assertResponseContains('"message": "El regulador fue modificado correctamente"');
+    }
 }

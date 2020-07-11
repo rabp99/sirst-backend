@@ -102,7 +102,12 @@ class ReguladoresTable extends Table
         // $rules->add($rules->isUnique(['codigo'], 'Ya existe un regulador con el mismo código'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['codigo' => $entity->codigo, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
+                
                 if ($count == 0) {
                     return true;
                 } else {
@@ -121,7 +126,13 @@ class ReguladoresTable extends Table
                 if ($entity->ip == null) {
                     return true;
                 }
-                $count = $this->find()->where(['ip' => $entity->ip, 'estado_id' => 1])->count();
+                
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['ip' => $entity->ip, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['ip' => $entity->ip, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
+                
                 if ($count == 0) {
                     return true;
                 } else {
