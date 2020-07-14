@@ -156,5 +156,19 @@ class TSwitchesControllerTest extends TestCase
         $this->put('/api/t_switches/2.json', $dataTest3);
         $this->assertResponseCode(200);
         $this->assertResponseContains('"message": "El switch no fue modificado correctamente"');
+        
+        // En caso se desee modificar un switch con ip null
+        $dataTest4 = [
+            'modelo_id' => 4,
+            'punto_id' => 1,
+            'ip' => null,
+            'estado_id' => 1
+        ];
+        $this->put('/api/t_switches/1.json', $dataTest4);
+        $this->assertResponseCode(200);
+        
+        $queryTest3 = $switches->find()->where(['ip IS NULL', 'estado_id' => 1]);
+        $this->assertEquals(2, $queryTest3->count());
+        $this->assertResponseContains('"message": "El switch fue modificado correctamente"');
     }
 }

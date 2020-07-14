@@ -104,10 +104,14 @@ class AntenasTable extends Table
         $rules->add($rules->existsIn(['enlace_id'], 'Enlaces'));
         $rules->add($rules->existsIn(['modelo_id'], 'Modelos'));
         $rules->add($rules->existsIn(['estado_id'], 'Estados'));
-        // $rules->add($rules->isUnique(['device_name'], 'Ya existe una antena con el mismo device name'));
         $rules->add(
             function ($entity, $options) {
-                $count = $this->find()->where(['device_name' => $entity->device_name, 'estado_id' => 1])->count();
+                if ($entity->id == null) {
+                    $count = $this->find()->where(['device_name' => $entity->device_name, 'estado_id' => 1])->count();
+                } else {
+                    $count = $this->find()->where(['device_name' => $entity->device_name, 'estado_id' => 1, 'id !=' => $entity->id])->count();
+                }
+                
                 if ($count == 0) {
                     return true;
                 } else {

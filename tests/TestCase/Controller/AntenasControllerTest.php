@@ -148,4 +148,67 @@ class AntenasControllerTest extends TestCase
         $this->assertResponseContains('"message": "La antena fue registrada correctamente"');
         $this->assertResponseContains('"advertencia": null');
     }
+    
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit() {
+        $dataTest1 = [
+            'punto_id' => 2,
+            'enlace_id' => 3,
+            'modelo_id' => 4,
+            'puerto_id' => 1,
+            'ip' => '192.168.20.45',
+            'device_name' => 'CRUCE_15_56_ST',
+            'mode' => 'AP',
+            'estado_id' => 1
+        ];
+        $this->put("/api/antenas/1.json", $dataTest1);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La antena fue modificada correctamente"');
+        
+        $antenas = TableRegistry::getTableLocator()->get('Antenas');
+        $queryTest1 = $antenas->find()->where(['device_name' => $dataTest1['device_name']]);
+        $this->assertEquals(1, $queryTest1->count());
+        
+        // En caso se desee modificar una antena a una antena con device_name duplicado
+        $dataTest2 = [
+            'punto_id' => 2,
+            'enlace_id' => 3,
+            'modelo_id' => 4,
+            'puerto_id' => 1,
+            'ip' => '192.168.20.45',
+            'device_name' => 'CRUCE_15_30_AP',
+            'mode' => 'AP',
+            'estado_id' => 1
+        ];
+        $this->put('/api/antenas/1.json', $dataTest2);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La antena no fue modificada correctamente"');
+        
+        // En caso se desee modificar una antena a una antena con device_name desactivado
+        $dataTest3 = [
+            'punto_id' => 2,
+            'enlace_id' => 3,
+            'modelo_id' => 4,
+            'puerto_id' => 1,
+            'ip' => '192.168.20.45',
+            'device_name' => 'CRUCE_10_95_AP',
+            'mode' => 'AP',
+            'estado_id' => 1
+        ];
+        $this->put('/api/antenas/1.json', $dataTest3);
+        $this->assertResponseCode(200);
+        
+        $queryTest2 = $antenas->find()->where(['ip' => $dataTest3['ip'], 'estado_id' => 1]);
+        $this->assertEquals(1, $queryTest2->count());
+        $this->assertResponseContains('"message": "La antena fue modificada correctamente"');
+        
+        // En caso se desee modificar una antena a una antena con device_name activo y desactivado
+        $this->put('/api/antenas/2.json', $dataTest3);
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('"message": "La antena no fue modificada correctamente"');
+    }
 }
