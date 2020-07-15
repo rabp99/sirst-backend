@@ -111,6 +111,14 @@ Router::scope('/api', function ($routes) {
             'getPuntos/:id' => [
                 'action' => 'getPuntos',
                 'method' => 'GET'
+            ],
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
             ]
         ]
     ]);
@@ -119,10 +127,29 @@ Router::scope('/api', function ($routes) {
             'getAssociated/:id' => [
                 'action' => 'getAssociated',
                 'method' => 'GET'
+            ],
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
             ]
         ]
     ]);
-    $routes->resources('Marcas');
+    $routes->resources('Marcas', [
+        'map' => [
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
+            ]
+        ]
+    ]);
     $routes->resources('Centrales', [
         'map' => [
             'getList' => [
@@ -132,10 +159,29 @@ Router::scope('/api', function ($routes) {
             'getByNro/:nro' => [
                 'action' => 'getByNro',
                 'method' => 'GET'
+            ],
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
             ]
         ]
     ]);
-    $routes->resources('Modelos');
+    $routes->resources('Modelos', [
+        'map' => [
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
+            ]
+        ]
+    ]);
     $routes->resources('TSwitches', [
         'map' => [
             'getByMarca/:id_marca' => [
@@ -145,6 +191,14 @@ Router::scope('/api', function ($routes) {
             'getByPunto/:id_punto' => [
                 'action' => 'getByPunto',
                 'method' => 'GET'
+            ],
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
             ]
         ]
     ]);
@@ -161,6 +215,14 @@ Router::scope('/api', function ($routes) {
             'getByMarca/:id_marca' => [
                 'action' => 'getByMarca',
                 'method' => 'GET'
+            ],
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
             ]
         ]
     ]);
@@ -173,6 +235,14 @@ Router::scope('/api', function ($routes) {
             'getByEnlace/:enlace_id' => [
                 'action' => 'getByEnlace',
                 'method' => 'GET'
+            ],
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
             ]
         ]
     ]);
@@ -189,6 +259,14 @@ Router::scope('/api', function ($routes) {
             'getByPunto/:punto_id' => [
                 'action' => 'getByPunto',
                 'method' => 'GET'
+            ],
+            'enable/:id' => [
+                'action' => 'enable',
+                'method' => 'POST'
+            ],
+            'disable/:id' => [
+                'action' => 'disable',
+                'method' => 'POST'
             ]
         ]
     ]);

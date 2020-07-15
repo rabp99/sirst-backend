@@ -110,38 +110,44 @@ class MarcasController extends AppController
     /**
      * Enable method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Marca id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function enable($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $centrale = $this->Centrales->get($id);
-        if ($this->Centrales->delete($centrale)) {
-            $this->Flash->success(__('The centrale has been deleted.'));
+        $this->request->allowMethod(['post']);
+        $marca = $this->Marcas->get($id);
+        $marca->estado_id = 1;
+        if ($this->Marcas->save($marca)) {
+            $message = 'La marca fue habilitada correctamente';
         } else {
-            $this->Flash->error(__('The centrale could not be deleted. Please, try again.'));
+            $message = 'La marca no fue habilitada correctamente';
+            $errors = $marca->getErrors();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $this->set(compact('marca', 'message', 'errors'));
+        $this->set('_serialize', ['marca', 'message', 'errors']);
     }
     
     /**
      * Disable method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Marca id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function disable($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $centrale = $this->Centrales->get($id);
-        if ($this->Centrales->delete($centrale)) {
-            $this->Flash->success(__('The centrale has been deleted.'));
+        $this->request->allowMethod(['post']);
+        $marca = $this->Marcas->get($id);
+        $marca->estado_id = 2;
+        if ($this->Marcas->save($marca)) {
+            $message = 'La marca fue habilitada correctamente';
         } else {
-            $this->Flash->error(__('The centrale could not be deleted. Please, try again.'));
+            $message = 'La marca no fue habilitada correctamente';
+            $errors = $marca->getErrors();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $this->set(compact('marca', 'message', 'errors'));
+        $this->set('_serialize', ['marca', 'message', 'errors']);
     }
 }

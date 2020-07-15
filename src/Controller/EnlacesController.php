@@ -114,38 +114,44 @@ class EnlacesController extends AppController
     /**
      * Enable method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Enlace id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function enable($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $centrale = $this->Centrales->get($id);
-        if ($this->Centrales->delete($centrale)) {
-            $this->Flash->success(__('The centrale has been deleted.'));
+        $this->request->allowMethod(['post']);
+        $enlace = $this->Enlaces->get($id);
+        $enlace->estado_id = 1;
+        if ($this->Enlaces->save($enlace)) {
+            $message = 'El enlace fue habilitado correctamente';
         } else {
-            $this->Flash->error(__('The centrale could not be deleted. Please, try again.'));
+            $message = 'El enlace no fue habilitado correctamente';
+            $errors = $enlace->getErrors();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $this->set(compact('enlace', 'message', 'errors'));
+        $this->set('_serialize', ['enlace', 'message', 'errors']);
     }
     
     /**
      * Disable method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Enlace id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function disable($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $centrale = $this->Centrales->get($id);
-        if ($this->Centrales->delete($centrale)) {
-            $this->Flash->success(__('The centrale has been deleted.'));
+        $this->request->allowMethod(['post']);
+        $enlace = $this->Enlaces->get($id);
+        $enlace->estado_id = 2;
+        if ($this->Enlaces->save($enlace)) {
+            $message = 'El enlace fue deshabilitado correctamente';
         } else {
-            $this->Flash->error(__('The centrale could not be deleted. Please, try again.'));
+            $message = 'El enlace no fue deshabilitado correctamente';
+            $errors = $enlace->getErrors();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $this->set(compact('enlace', 'message', 'errors'));
+        $this->set('_serialize', ['enlace', 'message', 'errors']);
     }
 }
