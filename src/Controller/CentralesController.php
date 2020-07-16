@@ -109,41 +109,48 @@ class CentralesController extends AppController
         $this->set('_serialize', ['central', 'message', 'errors']);
     }
 
+
     /**
      * Enable method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Central id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function enable($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $centrale = $this->Centrales->get($id);
-        if ($this->Centrales->delete($centrale)) {
-            $this->Flash->success(__('The centrale has been deleted.'));
+        $this->request->allowMethod(['post']);
+        $central = $this->Centrales->get($id);
+        $central->estado_id = 1;
+        if ($this->Centrales->save($central)) {
+            $message = 'La central fue habilitada correctamente';
         } else {
-            $this->Flash->error(__('The centrale could not be deleted. Please, try again.'));
+            $message = 'La central no fue habilitada correctamente';
+            $errors = $central->getErrors();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $this->set(compact('central', 'message', 'errors'));
+        $this->set('_serialize', ['central', 'message', 'errors']);
     }
     
     /**
      * Disable method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Central id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function disable($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $centrale = $this->Centrales->get($id);
-        if ($this->Centrales->delete($centrale)) {
-            $this->Flash->success(__('The centrale has been deleted.'));
+        $this->request->allowMethod(['post']);
+        $central = $this->Centrales->get($id);
+        $central->estado_id = 2;
+        if ($this->Centrales->save($central)) {
+            $message = 'La central fue deshabilitada correctamente';
         } else {
-            $this->Flash->error(__('The centrale could not be deleted. Please, try again.'));
+            $message = 'La central no fue deshabilitada correctamente';
+            $errors = $central->getErrors();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $this->set(compact('central', 'message', 'errors'));
+        $this->set('_serialize', ['central', 'message', 'errors']);
     }
 }

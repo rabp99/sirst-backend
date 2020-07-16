@@ -141,9 +141,9 @@ class MarcasController extends AppController
         $marca = $this->Marcas->get($id);
         $marca->estado_id = 2;
         if ($this->Marcas->save($marca)) {
-            $message = 'La marca fue habilitada correctamente';
+            $message = 'La marca fue deshabilitada correctamente';
         } else {
-            $message = 'La marca no fue habilitada correctamente';
+            $message = 'La marca no fue deshabilitada correctamente';
             $errors = $marca->getErrors();
         }
 

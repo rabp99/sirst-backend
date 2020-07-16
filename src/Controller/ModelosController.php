@@ -120,38 +120,44 @@ class ModelosController extends AppController
     /**
      * Enable method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Modelo id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function enable($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $centrale = $this->Centrales->get($id);
-        if ($this->Centrales->delete($centrale)) {
-            $this->Flash->success(__('The centrale has been deleted.'));
+        $this->request->allowMethod(['post']);
+        $modelo = $this->Modelos->get($id);
+        $modelo->estado_id = 1;
+        if ($this->Modelos->save($modelo)) {
+            $message = 'El modelo fue habilitado correctamente';
         } else {
-            $this->Flash->error(__('The centrale could not be deleted. Please, try again.'));
+            $message = 'El modelo no fue habilitado correctamente';
+            $errors = $modelo->getErrors();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $this->set(compact('modelo', 'message', 'errors'));
+        $this->set('_serialize', ['modelo', 'message', 'errors']);
     }
     
     /**
      * Disable method
      *
-     * @param string|null $id Centrale id.
+     * @param string|null $id Modelo id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function disable($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $centrale = $this->Centrales->get($id);
-        if ($this->Centrales->delete($centrale)) {
-            $this->Flash->success(__('The centrale has been deleted.'));
+        $this->request->allowMethod(['post']);
+        $modelo = $this->Modelos->get($id);
+        $modelo->estado_id = 2;
+        if ($this->Modelos->save($modelo)) {
+            $message = 'El modelo fue deshabilitado correctamente';
         } else {
-            $this->Flash->error(__('The centrale could not be deleted. Please, try again.'));
+            $message = 'El modelo no fue deshabilitado correctamente';
+            $errors = $modelo->getErrors();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $this->set(compact('modelo', 'message', 'errors'));
+        $this->set('_serialize', ['modelo', 'message', 'errors']);
     }
 }
