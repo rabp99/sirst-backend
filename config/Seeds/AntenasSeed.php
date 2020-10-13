@@ -22,7 +22,7 @@ class AntenasSeed extends AbstractSeed
         
         for ($i = 0; $i < 200; $i++) {
             $data[] = [
-                'punto_id' =>  $faker->numberBetween(1, 100),
+                'punto_id' => $faker->numberBetween(1, 100),
                 'enlace_id' => $faker->numberBetween(1, 100),
                 'modelo_id' => $faker->numberBetween(1, 100),
                 'puerto_id' => $faker->numberBetween(1, 300),
