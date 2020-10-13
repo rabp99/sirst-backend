@@ -2,7 +2,7 @@
 use Migrations\AbstractSeed;
 
 /**
- * Database7 seed.
+ * Database1 seed.
  */
 class Database1Seed extends AbstractSeed
 {
